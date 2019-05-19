@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+ * PopulateDatabase.xml
+ *
+ * Copyright (C) 2019 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	">
+	<!-- Util beans -->
+	<bean id="dateFormat" class="java.text.SimpleDateFormat">
+		<constructor-arg value="yyyy/MM/dd" />
+	</bean>
+	
+	<!-- User accounts -->
+
+	<bean id="userAccount1" class="security.UserAccount">
+		<property name="username" value="admin1" />
+		<property name="password" value="e00cf25ad42683b3df678c61f42c6bda" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMIN" />
+				</bean>
+			</list>
+		</property>
+		<property name="enabled" value="true" />
+	</bean>
+	
+	
+	<bean id="profile1" class="domain.Profile">
+		<property name="nick" value="DP1010" />
+		<property name="socialNetworkName" value="LinkedIn" />
+		<property name="link" value="https://www.linkedin/DP1010" />
+	</bean>
+	<bean id="profile2" class="domain.Profile">
+		<property name="nick" value="DP1011" />
+		<property name="socialNetworkName" value="Tuenti" />
+		<property name="link" value="https://www.tuenti/DP1011" />
+	</bean>
+
+	<bean id="customisationsys1" class="domain.CustomisationSystem">
+		<property name="systemName" value="Acme-Rookies" />
+		<property name="banner" value="https://i.imgur.com/RyOrQZ7.jpg" />
+		<property name="vat" value="0.21" />
+		<property name="flat_rate" value="0.20" />
+		<property name="message"
+			value="Welcome to Acme-Rookies! We're IT rookies' favourite job marketplace!.  ¡Bienvenidos a Acme-Rookies! ¡Somos el mercado de trabajo favorito de los profesionales de las TICs!"/>
+		<property name="spamwords">
+
+			<map>
+				<entry key="en">
+					<value>sex, cialis, one millon, you´ve been selected, Nigeria
+					</value>
+				</entry>
+				<entry key="es">
+					<value>sexo, un millon, ha sido seleccionado, viagra</value>
+				</entry>
+			</map>
+
+		</property>
+
+		<property name="phonePrefix" value="34" />
+		<property name="hoursFinder" value="24" />
+		<property name="resultFinder" value="10" />
+	</bean>
+	
+	<bean id="creditcard1" class="domain.CreditCard">
+		<property name="holder" value="John Doe" />
+		<property name="make" value="VISA" />
+		<property name="number" value="1111222233334444" />
+		<property name="expiration">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2018/12/15" />
+			</bean>
+		</property>
+		<property name="cvv" value="134" />
+	</bean>
+	
+	<bean id="administrator1" class="domain.Administrator">
+		<property name="name" value="Admin1" />
+		<property name="surname" value="Admin1" />
+		<property name="photo" value="" />
+		<property name="email" value="admin&lt;admin@gmail.com&gt;" />
+		<property name="phone" value="955582516" />
+		<property name="adress" value="" />
+		<property name="vat" value="0.21" />
+		<property name="creditCard">
+			<ref bean="creditcard1" />
+		</property>
+		<property name="profiles">
+			<list>
+				<ref bean="profile1" />
+				<ref bean="profile2" />
+			</list>
+		</property>
+		<property name="account">
+			<ref bean="userAccount1" />
+		</property>
+		<property name="boxes">
+			<list>
+				<ref bean="box1" />
+				<ref bean="box2" />
+				<ref bean="box3" />
+				<ref bean="box4" />
+				<ref bean="box5" />
+			</list>
+		</property>
+		<property name="spammer" value="false" />
+	</bean>
+	
+	<bean id="box1" class="domain.Box">
+		<property name="name" value="In Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box2" class="domain.Box">
+		<property name="name" value="Out Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box3" class="domain.Box">
+		<property name="name" value="Spam Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box4" class="domain.Box">
+		<property name="name" value="Trash Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box5" class="domain.Box">
+		<property name="name" value="Notification Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	* data.xml 
+	* 
+	* Copyright (C) 2019 Universidad de Sevilla 
+	* 
+	* The use of this project is hereby constrained to the conditions of the 
+	* TDG Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html 
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd                           
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<!-- Repository packages -->
+
+	<jpa:repositories base-package="repositories" />
+	<jpa:repositories base-package="security" />
+
+	<!-- Data source -->
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"	destroy-method="close">
+<!-- CleverCloud 
+    <property name="jdbcUrl" value="jdbc:mysql://b7rvejv0nlpeyuie6bni-mysql.services.clever-cloud.com:3306/b7rvejv0nlpeyuie6bni" />
+    <property name="user" value="utxzg2dmpjpaiuwz" />
+    <property name="password" value="CJRlW3bmf6xvdh082dWb" />
+    -->
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/del5" />
+		<property name="user" value="acme-user" />
+		<property name="password" value="ACME-Us3r-P@ssw0rd" />
+		<property name="minPoolSize" value="1" />
+		<property name="maxPoolSize" value="5" />
+	</bean>
+
+	<!-- JPA -->
+
+	<bean id="persistenceUnit" class="java.lang.String">
+		<constructor-arg value="DEL5" />
+	</bean>
+
+	<bean id="sqlDialect" class="java.lang.String">
+		<constructor-arg value="org.hibernate.dialect.MySQLDialect" />
+	</bean>
+
+	<util:properties id="jpaProperties">
+		<prop key="hibernate.show_sql">false</prop>
+		<prop key="hibernate.format_sql">true</prop>		
+		<!-- <prop key="hibernate.hbm2ddl.auto">validate</prop> -->
+		<prop key="hibernate.cglib.use_reflection_optimizer">false</prop>
+		<prop key="hibernate.ejb.entitymanager_factory_name">entity-manager</prop>		
+		<prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+	</util:properties>
+	
+	<cache:annotation-driven/>
+	
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+        p:cacheManager-ref="ehcache"/>
+
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+        p:configLocation="classpath:spring/ehcache.xml"/>
+	
+</beans>
