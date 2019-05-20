@@ -1,16 +1,27 @@
 
 package services;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.FinderRepository;
+import security.Authority;
+import security.LoginService;
+import domain.Category;
 import domain.Finder;
+import domain.Member;
+import domain.Proclaim;
 
 @Service
 @Transactional
@@ -25,61 +36,44 @@ public class FinderService extends AbstractService {
 	@Autowired
 	private ActorService		actorService;
 
+	@Autowired
+	private ProclaimService		serviceProclaim;
+
 
 	public Finder findOne(final Finder finder) {
 		return this.repository.findOne(finder.getId());
 	}
 
-	//	public Collection<Position> findBySingleKey(final String singleKey) {
-	//		List<Position> result;
-	//
-	//		result = new ArrayList<Position>(this.repository.findBySingleKey(singleKey));
-	//
-	//		Integer finderSize;
-	//		finderSize = Integer.valueOf(System.getProperty("finderSize"));
-	//
-	//		if (result.size() > finderSize)
-	//			result = result.subList(0, finderSize);
-	//
-	//		return result;
-	//	}
-	//
+	public Finder save(final Finder finder, final Collection<Proclaim> col) {
+		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER));
+		Finder result;
+		result = this.repository.save(finder);
+		if (finder.getId() != 0) {
+			result.setProclaims(col);
+			result.setCreationDate(new Date());
+		}
+		return result;
+	}
 
-	//	public Finder save(final Finder finder, final Collection<Position> col) {
-	//		//		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ROOKIE));
-	//		Finder result;
-	//		result = this.repository.save(finder);
-	//		if (finder.getId() != 0) {
-	//			result.setPositions(col);
-	//			result.setCreationDate(new Date());
-	//		}
-	//		return result;
-	//	}
-
-	//	public Finder create() {
-	//
-	//		Finder finder;
-	//		finder = new Finder();
-	//		try {
-	//			//			Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ROOKIE));
-	//			finder.setCreationDate(new Date());
-	//			finder.setPositions(new ArrayList<Position>());
-	//		} catch (final IllegalArgumentException e) {
-	//
-	//			finder.setSingleKey("");
-	//
-	//		}
-	//		return finder;
-	//	}
+	public Finder create() {
+		Finder finder;
+		finder = new Finder();
+		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER));
+		finder.setCreationDate(new Date());
+		finder.setRegisteredDate(new Date());
+		finder.setCategory(null);
+		finder.setProclaims(new ArrayList<Proclaim>());
+		return finder;
+	}
 
 	public Finder oldFinder() {
 		Finder res;
 		res = null;
 		try {
-			//			if (this.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ROOKIE)) {
-			//				final Rookie h = (Rookie) this.actorService.findByUserAccount(LoginService.getPrincipal().getId());
-			//				res = h.getFinder();
-			//			}
+			if (this.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
+				final Member h = (Member) this.actorService.findByUserAccount(LoginService.getPrincipal().getId());
+				res = h.getFinder();
+			}
 		} catch (final IllegalArgumentException e) {
 		}
 		return res;
@@ -90,18 +84,13 @@ public class FinderService extends AbstractService {
 		Finder result;
 		result = new Finder();
 
-		try {
-			//			Rookie h;
-			//			h = (Rookie) this.repository.findActorByUserAccountId(LoginService.getPrincipal().getId());
-			//			result = h.getFinder();
-			result.setSingleKey(finder.getSingleKey());
-			//			result.setDeadline(finder.getDeadline());
-			//			result.setMinSalary(finder.getMinSalary());
-			//			result.setMaxSalary(finder.getMaxSalary());
-		} catch (final IllegalArgumentException e) {
-			result = finder;
-		}
-
+		Member h;
+		h = (Member) this.repository.findActorByUserAccountId(LoginService.getPrincipal().getId());
+		result = h.getFinder();
+		result.setSingleKey(finder.getSingleKey());
+		result.setCategory(finder.getCategory());
+		result.setRegisteredDate(finder.getRegisteredDate());
+		result.setBefore(finder.isBefore());
 		this.validator.validate(result, binding);
 
 		if (binding.hasErrors())
@@ -110,24 +99,25 @@ public class FinderService extends AbstractService {
 		return result;
 	}
 
-	//	public void clear(final Finder aux) {
-	//		aux.setPositions(new ArrayList<Position>());
-	//		aux.setCreationDate(new Date());
-	//	}
-	//
-	//	public List<Position> searchWithRetain(final String s, final Date deadlineDate, final Double minSalary, final Double maxSalary) {
-	//		final List<Position> result;
-	//
-	//		//		result = new ArrayList<Position>(this.servicePosition.getPublicPositions());
-	//		//
-	//		//		if (s != "" || s != null)
-	//		//			result.retainAll(this.repository.findBySingleKey(s));
-	//		//		if (deadlineDate != null)
-	//		//			result.retainAll(this.repository.findByDate(deadlineDate));
-	//		//		if (minSalary != null && maxSalary != null)
-	//		//			result.retainAll(this.repository.findBySalary(minSalary, maxSalary));
-	//
-	//		//		return result;
-	//		return null;
-	//	}
+	public void clear(final Finder aux) {
+		aux.setProclaims(new ArrayList<Proclaim>());
+		aux.setCreationDate(new Date());
+	}
+
+	public List<Proclaim> searchWithRetain(final String s, final Category category, final Date registered, final boolean before) {
+		List<Proclaim> result;
+
+		result = new ArrayList<Proclaim>(this.serviceProclaim.findNoAssigned());
+
+		if (s != "" || s != null)
+			result.retainAll(this.repository.findBySingleKey(s));
+
+		if (category != null)
+			result.retainAll(this.repository.findByCategory(category.getId()));
+
+		if (registered != null)
+			result.retainAll(before ? this.repository.findByRegisteredBeforeDate(registered) : this.repository.findByRegisteredAfterDate(registered));
+
+		return result;
+	}
 }

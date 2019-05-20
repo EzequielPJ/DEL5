@@ -23,10 +23,19 @@ public class Finder extends DomainEntity {
 
 	private String					singleKey;
 	private Date					registeredDate;
+	private boolean					before;
 	private Date					creationDate;
-	private String					proclaimType;
+	private Category				category;
 	private Collection<Proclaim>	proclaims;
 
+
+	public boolean isBefore() {
+		return this.before;
+	}
+
+	public void setBefore(final boolean before) {
+		this.before = before;
+	}
 
 	@ManyToMany
 	public Collection<Proclaim> getProclaims() {
@@ -56,13 +65,12 @@ public class Finder extends DomainEntity {
 		this.creationDate = creationDate;
 	}
 
-	@SafeHtml
-	public String getProclaimType() {
-		return this.proclaimType;
+	public Category getCategory() {
+		return this.category;
 	}
 
-	public void setProclaimType(final String proclaimType) {
-		this.proclaimType = proclaimType;
+	public void setCategory(final Category category) {
+		this.category = category;
 	}
 
 	@Temporal(TemporalType.DATE)

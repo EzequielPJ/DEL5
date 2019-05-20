@@ -921,7 +921,7 @@
 		</property>
 		<property name="attachments" value="Demo"></property>
 		<property name="finalMode" value="true"></property>
-		<property name="status" value="accepted"></property>
+		<property name="status" value="ACCEPTED"></property>
 		<property name="reason" value=""></property>
 		<property name="law" value="Reglamento de la US, Art.1.9"></property>
 		<property name="closed" value="false"></property>
@@ -970,7 +970,7 @@
 		</property>
 		<property name="attachments" value="Demo"></property>
 		<property name="finalMode" value="true"></property>
-		<property name="status" value="rejected"></property>
+		<property name="status" value="REJECTED"></property>
 		<property name="reason" value="Unreacheable"></property>
 		<property name="law" value=""></property>
 		<property name="closed" value="true"></property>
@@ -995,7 +995,7 @@
 		</property>
 		<property name="attachments" value="Demo"></property>
 		<property name="finalMode" value="true"></property>
-		<property name="status" value="accepted"></property>
+		<property name="status" value="ACCEPTED"></property>
 		<property name="reason" value=""></property>
 		<property name="law" value="Reglamento de la US, Art.37.5"></property>
 		<property name="closed" value="false"></property>
@@ -1015,17 +1015,17 @@
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1088"></property>
 	</bean>
-	
+
 	<bean id="studentCard2" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="7982"></property>
 	</bean>
-	
+
 	<bean id="studentCard3" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1030"></property>
 	</bean>
-	
+
 	<bean id="studentCard4" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1088"></property>
@@ -1052,7 +1052,8 @@
 	<bean id="customisationsys1" class="domain.CustomisationSystem">
 		<property name="systemName" value="DEL5-Student Representation" />
 		<property name="banner" value="https://i.imgur.com/RyOrQZ7.jpg" />
-		<property name="message" value="Welcome to DEL5! The best website for student rights defense. ¡Bienvenidos a DEL5 – El mejor lugar para la defensa de los derechos de los estudiantes" />
+		<property name="message"
+			value="Welcome to DEL5! The best website for student rights defense. ¡Bienvenidos a DEL5 – El mejor lugar para la defensa de los derechos de los estudiantes" />
 		<property name="spamwords">
 			<map>
 				<entry key="en">
@@ -1257,7 +1258,8 @@
 				<constructor-arg value="2019/04/10T10:18Z" />
 			</bean>
 		</property>
-		<property name="proclaimType" value=""></property>
+		<property name="category" ref="category1" />
+		<property name="before" value="true" />
 		<property name="proclaims">
 			<list>
 			</list>
@@ -1276,7 +1278,8 @@
 				<constructor-arg value="2019/05/12T19:26Z" />
 			</bean>
 		</property>
-		<property name="proclaimType" value=""></property>
+		<property name="before" value="false" />
+		<property name="category" ref="category1" />
 		<property name="proclaims">
 			<list>
 			</list>
@@ -1431,13 +1434,13 @@
 			<list></list>
 		</property>
 	</bean>
-	
+
 	<bean id="swap1" class="domain.Swap">
-	<property name="phone" value="000000000"></property>
-	<property name="status" value="Pending"></property>
-	<property name="description" value="Demo swap"></property>
-	<property name="organization" ref="organization1"></property>
-	<property name="receiver" ref="collaborator1"></property>
-	<property name="sender" ref="collaborator2"></property>
+		<property name="phone" value="000000000"></property>
+		<property name="status" value="Pending"></property>
+		<property name="description" value="Demo swap"></property>
+		<property name="organization" ref="organization1"></property>
+		<property name="receiver" ref="collaborator1"></property>
+		<property name="sender" ref="collaborator2"></property>
 	</bean>
 </beans>
