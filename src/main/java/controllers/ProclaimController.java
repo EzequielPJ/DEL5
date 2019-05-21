@@ -208,7 +208,7 @@ public class ProclaimController extends BasicController {
 				if (this.checkFinderProperties(this.oldMemberFinder, finder) && this.checkFinderTime(finder))
 					res = h.getFinder().getProclaims();
 				else {
-					res = this.serviceFinder.searchWithRetain(finder.getSingleKey(), finder.getCategory(), finder.getRegisteredDate(), finder.isBefore());
+					res = this.serviceFinder.searchWithRetain(finder.getSingleKey(), finder.getCategory(), finder.getRegisteredDate(), finder.isBeforeOrNot());
 					this.serviceFinder.save(finder, res);
 				}
 			}

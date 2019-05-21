@@ -1259,7 +1259,7 @@
 			</bean>
 		</property>
 		<property name="category" ref="category1" />
-		<property name="before" value="true" />
+		<property name="beforeOrNot" value="true" />
 		<property name="proclaims">
 			<list>
 			</list>
@@ -1278,7 +1278,7 @@
 				<constructor-arg value="2019/05/12T19:26Z" />
 			</bean>
 		</property>
-		<property name="before" value="false" />
+		<property name="beforeOrNot" value="false" />
 		<property name="category" ref="category1" />
 		<property name="proclaims">
 			<list>

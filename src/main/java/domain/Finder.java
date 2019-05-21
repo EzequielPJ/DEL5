@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -23,18 +24,19 @@ public class Finder extends DomainEntity {
 
 	private String					singleKey;
 	private Date					registeredDate;
-	private boolean					before;
+	private boolean					beforeOrNot;
+
 	private Date					creationDate;
 	private Category				category;
 	private Collection<Proclaim>	proclaims;
 
 
-	public boolean isBefore() {
-		return this.before;
+	public boolean isBeforeOrNot() {
+		return this.beforeOrNot;
 	}
 
-	public void setBefore(final boolean before) {
-		this.before = before;
+	public void setBeforeOrNot(final boolean beforeOrNot) {
+		this.beforeOrNot = beforeOrNot;
 	}
 
 	@ManyToMany
@@ -65,6 +67,7 @@ public class Finder extends DomainEntity {
 		this.creationDate = creationDate;
 	}
 
+	@ManyToOne(optional = true)
 	public Category getCategory() {
 		return this.category;
 	}

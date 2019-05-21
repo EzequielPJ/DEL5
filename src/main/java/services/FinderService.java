@@ -90,7 +90,7 @@ public class FinderService extends AbstractService {
 		result.setSingleKey(finder.getSingleKey());
 		result.setCategory(finder.getCategory());
 		result.setRegisteredDate(finder.getRegisteredDate());
-		result.setBefore(finder.isBefore());
+		result.setBeforeOrNot(finder.isBeforeOrNot());
 		this.validator.validate(result, binding);
 
 		if (binding.hasErrors())
