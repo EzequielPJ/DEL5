@@ -24,18 +24,15 @@ import domain.Student;
 
 @Service
 @Transactional
-public class ProclaimService extends AbstractService {
+public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimRepository> {
 
 	@Autowired
-	private ProclaimRepository			repository;
+	private ProclaimRepository	repository;
 
 	@Autowired
-	private ProclaimTickerServiceInter	intermediary;
+	private Validator			validator;
 
-	@Autowired
-	private Validator					validator;
-
-	private boolean						inFinal;
+	private boolean				inFinal;
 
 
 	public Actor findByUserAccount(final int id) {
@@ -72,7 +69,7 @@ public class ProclaimService extends AbstractService {
 		proclaim.setMoment(new Date());
 		proclaim.setReason("");
 		proclaim.setTitle("");
-		proclaim.setTicker(this.intermediary.createTicker());
+		proclaim.setTicker(super.createTicker());
 		proclaim.setMembers(new ArrayList<Member>());
 		proclaim.setAttachments("");
 
@@ -129,7 +126,9 @@ public class ProclaimService extends AbstractService {
 
 		Assert.isTrue(this.inFinal == false);
 
-		result = this.intermediary.proclaimWithTicker(aux);
+		super.setRepository(this.repository);
+
+		result = super.withTicker(aux);
 
 		return result;
 	}
@@ -142,7 +141,7 @@ public class ProclaimService extends AbstractService {
 		Assert.isTrue(p.getStudent().getId() == ((Student) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId())).getId());
 
 		this.repository.delete(id);
-		this.intermediary.deleteTicker(p.getTicker());
+		super.deleteTicker(p.getTicker());
 	}
 
 	public Proclaim reconstruct(final Proclaim aux, final BindingResult binding) {
