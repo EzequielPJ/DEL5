@@ -7,20 +7,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import repositories.OrganizationRepository;
-import domain.Organization;
+import repositories.ComissionRepository;
+import domain.Comission;
 
 @Component
 @Transactional
-public class StringToOrganizationConverter implements Converter<String, Organization> {
+public class StringToComissionConverter implements Converter<String, Comission> {
 
 	@Autowired
-	private OrganizationRepository	repositoryOrganization;
+	private ComissionRepository	repositoryComission;
 
 
 	@Override
-	public Organization convert(final String source) {
-		Organization res;
+	public Comission convert(final String source) {
+		Comission res;
 		int id;
 		try {
 			if (StringUtils.isEmpty(source))
@@ -28,9 +28,9 @@ public class StringToOrganizationConverter implements Converter<String, Organiza
 			else {
 				id = Integer.valueOf(source);
 				if (id == 0)
-					res = new Organization();
+					res = new Comission();
 				else
-					res = this.repositoryOrganization.findOne(id);
+					res = this.repositoryComission.findOne(id);
 
 			}
 		} catch (final Exception oops) {

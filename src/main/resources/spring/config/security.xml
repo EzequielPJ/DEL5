@@ -33,8 +33,6 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/actor/**"
 			access="permitAll" />
-		<security:intercept-url pattern="/audit/**"
-			access="permitAll" />
 		<security:intercept-url pattern="/views/misc/index.jsp"
 			access="permitAll" />
 
@@ -50,13 +48,25 @@
 			access="isAuthenticated()" />
 		<security:intercept-url pattern="/message/**"
 			access="isAuthenticated()" />
-			
+
 		<!-- Administrator -->
+		
 		<security:intercept-url pattern="/customisation/administrator/**"
 			access="hasRole('ADMIN')" />
+			
 		<security:intercept-url pattern="/category/administrator/**"
 			access="hasRole('ADMIN')" />
+
+		<!-- Student -->
 		
+		<security:intercept-url pattern="/proclaim/student/**"
+			access="hasRole('STUDENT')" />
+		
+		<!-- Member -->
+		
+		<security:intercept-url pattern="/proclaim/member/**"
+			access="hasRole('MEMBER')" />
+			
 		<!-- is Authenticated -->
 		<security:intercept-url pattern="/profile/**"
 			access="isAuthenticated()" />

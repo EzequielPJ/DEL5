@@ -57,9 +57,9 @@
 		<!-- Notes -->
 		<bean class="converters.NotesToStringConverter" />
 		<bean class="converters.StringToNotesConverter" />
-		<!-- Organization -->
-		<bean class="converters.OrganizationToStringConverter" />
-		<bean class="converters.StringToOrganizationConverter" />
+		<!-- Comission -->
+		<bean class="converters.ComissionToStringConverter" />
+		<bean class="converters.StringToComissionConverter" />
 		<!-- Portfolio -->
 		<bean class="converters.PortfolioToStringConverter" />
 		<bean class="converters.StringToPortfolioConverter" />
