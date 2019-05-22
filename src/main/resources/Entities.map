@@ -1,5 +1,5 @@
 #./src/main/resources/Entities.map
-#Sun May 19 19:08:08 CEST 2019
+#Tue May 21 21:06:52 CEST 2019
 box39=890
 box38=889
 box37=888
@@ -25,9 +25,7 @@ box25=876
 box24=875
 box23=874
 box22=873
-organization2=949
 box21=872
-organization1=948
 box20=871
 box9=860
 box8=859
@@ -91,9 +89,11 @@ userAccount1=897
 box42=893
 portfolio2=937
 box41=892
+comission2=949
 comment3=947
 portfolio1=936
 box40=891
+comission1=948
 comment2=946
 comment1=945
 sponsor2=912
