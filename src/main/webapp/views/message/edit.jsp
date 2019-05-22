@@ -57,6 +57,7 @@
 			</jstl:forEach>
 
 		</form:select>
+		<form:errors path="priority" cssClass="error" />
 	</jstl:if>
 
 	<security:authorize access="hasRole('ADMIN')">

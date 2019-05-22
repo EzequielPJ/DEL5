@@ -5,20 +5,20 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.Organization;
+import domain.Comission;
 
 @Component
 @Transactional
-public class OrganizationToStringConverter implements Converter<Organization, String> {
+public class ComissionToStringConverter implements Converter<Comission, String> {
 
 	@Override
-	public String convert(final Organization organization) {
+	public String convert(final Comission comission) {
 		String result;
 
-		if (organization == null)
+		if (comission == null)
 			result = null;
 		else
-			result = String.valueOf(organization.getId());
+			result = String.valueOf(comission.getId());
 
 		return result;
 	}

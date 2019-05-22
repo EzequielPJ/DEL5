@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import security.LoginService;
 import services.BoxService;
 import services.MessageService;
+import domain.Actor;
 import domain.Box;
 import domain.MessageEntity;
 
@@ -85,6 +86,9 @@ public class MessageEntityController extends BasicController {
 		ModelAndView result;
 		MessageEntity mesage = null;
 		mesage = this.messageService.findOne(id);
+		Actor loggued;
+		loggued = this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId());
+		Assert.isTrue(mesage.getReceiver().contains(loggued) || mesage.getSender().equals(loggued), "Not your message");
 		final int box = this.messageService.moveTo("In Box", mesage);
 		result = this.custom(new ModelAndView("redirect:list.do?boxId=" + box));
 		return result;
@@ -95,6 +99,9 @@ public class MessageEntityController extends BasicController {
 		ModelAndView result;
 		MessageEntity mesage = null;
 		mesage = this.messageService.findOne(mess);
+		Actor loggued;
+		loggued = this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId());
+		Assert.isTrue(mesage.getReceiver().contains(loggued) || mesage.getSender().equals(loggued), "Not your message");
 		final int box = this.messageService.moveTo(String.valueOf(boxId), mesage);
 		result = this.custom(new ModelAndView("redirect:list.do?boxId=" + box));
 		return result;
@@ -122,14 +129,20 @@ public class MessageEntityController extends BasicController {
 
 	@Override
 	public <T> ModelAndView deleteAction(final T e, final String nameResolver) {
-		ModelAndView result;
 		MessageEntity mess;
 		mess = (MessageEntity) e;
-		this.messageService.deleteMessage(mess);
-		if (this.messageService.getReceiver(mess.getId()).isEmpty() && !this.messageService.getMessageOutBox(mess.getSender().getId()).contains(mess))
-			this.messageService.delete(mess);
-		result = new ModelAndView(nameResolver);
-		return result;
+		Actor loggued;
+		boolean fail = false;
+		loggued = this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId());
+		try {
+			Assert.isTrue(mess.getReceiver().contains(loggued) || mess.getSender().equals(loggued), "Not your message");
+			this.messageService.deleteMessage(mess);
+			if (this.messageService.getReceiver(mess.getId()).isEmpty() && !this.messageService.getMessageOutBox(mess.getSender().getId()).contains(mess))
+				this.messageService.delete(mess);
+		} catch (final IllegalArgumentException exc) {
+			fail = true;
+		}
+		return fail ? new ModelAndView("403") : new ModelAndView(nameResolver);
 	}
 
 }

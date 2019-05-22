@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/organization")
-public class OrganizationController extends BasicController {
+@RequestMapping("/comission")
+public class ComissionController extends BasicController {
 
 	@Override
 	public <T> ModelAndView saveAction(final T e, final BindingResult binding, final String nameResolver) {

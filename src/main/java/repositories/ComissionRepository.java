@@ -4,9 +4,9 @@ package repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import domain.Organization;
+import domain.Comission;
 
 @Repository
-public interface OrganizationRepository extends JpaRepository<Organization, Integer> {
+public interface ComissionRepository extends JpaRepository<Comission, Integer> {
 
 }

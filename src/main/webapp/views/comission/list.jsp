@@ -18,7 +18,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<display:table name="organizations" id="row" requestURI="${requestURI}"
+<display:table name="comissions" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
 
 </display:table>

@@ -19,7 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Organization extends DomainEntity {
+public class Comission extends DomainEntity {
 
 	private String	name;
 	private String	description;
