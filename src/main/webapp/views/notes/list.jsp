@@ -20,5 +20,18 @@
 
 <display:table name="notesCollection" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
+	
+	<display:column titleKey="notes.show">
+		<a href="notes/show.do?id=${row.id}"><spring:message
+				code="notes.show" /></a>
+	</display:column>
+	
+	<display:column titleKey="notes.note">
+		<jstl:out value="${row.note}" />
+	</display:column>
+	
+	<display:column titleKey="notes.description">
+		<jstl:out value="${row.description}" />
+	</display:column>
 
 </display:table>

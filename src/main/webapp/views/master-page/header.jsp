@@ -55,7 +55,6 @@
 			<li><a href="actor/createAdmin.do"><spring:message
 						code="master.page.actor.admin" /></a></li>
 		</security:authorize>
-
 		
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message
@@ -64,6 +63,9 @@
 		<li><a class="fNiv" href="about-us/terms.do"><spring:message
 					code="master.page.terms" /></a></li>
 		</security:authorize>
+		
+		<li><a class="fNiv" href="event/listEvents.do"><spring:message
+						code="master.page.listEvent" /></a>
 
 		<security:authorize access="isAuthenticated()">
 			<li><a class="fNiv"> <spring:message
