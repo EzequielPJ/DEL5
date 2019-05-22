@@ -22,4 +22,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 	@Query("select c from Category c join c.categories ca where ca.id = ?1")
 	public Category getCategoryFather(int id);
 
+	@Query("select c From Proclaim p join p.category c group by c having count(c) > 2")
+	Collection<Category> getCategoryInMoreThan2Proclaims();
+
 }

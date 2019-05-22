@@ -37,6 +37,12 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/views/misc/index.jsp"
 			access="permitAll" />
+		<security:intercept-url pattern="/event/listEvents.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/notes/list.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/notes/show.do"
+			access="permitAll" />
 
 		<security:intercept-url pattern="/security/login.do"
 			access="permitAll" />
@@ -56,6 +62,12 @@
 			access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/category/administrator/**"
 			access="hasRole('ADMIN')" />
+			
+		<!-- Collaborator, Member, Student -->
+		<security:intercept-url pattern="/notes/create.do"
+			access="hasAnyRole('COLLABORATOR', 'MEMBER', 'STUDENT')" />
+		<security:intercept-url pattern="/notes/edit.do"
+			access="hasAnyRole('COLLABORATOR', 'MEMBER', 'STUDENT')" />
 		
 		<!-- is Authenticated -->
 		<security:intercept-url pattern="/profile/**"

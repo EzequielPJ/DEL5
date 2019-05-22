@@ -17,6 +17,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <display:table name="categories" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
@@ -38,10 +39,10 @@
 
 	</display:column>
 	<display:column titleKey="category.delete">
-
+	<jstl:if test="${!fn:contains(colRep, row)}">
 		<a href="category/administrator/delete.do?cat=${row.id}"><spring:message
 				code="category.delete" /></a>
-
+	</jstl:if>
 	</display:column>
 	<security:authorize access="hasRole('ADMIN')">
 		<display:column>
