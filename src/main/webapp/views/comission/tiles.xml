@@ -22,7 +22,7 @@
 	</definition>
 	
 	<definition name="comission/edit" extends="master.page">	
-		<put-attribute name="title" value="Create Comission" />
+		<put-attribute name="title" value="Edit comission" />
 		<put-attribute name="body" value="/views/comission/edit.jsp" />
 	</definition>
 	

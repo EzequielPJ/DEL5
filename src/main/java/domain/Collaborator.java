@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 public class Collaborator extends Actor {
 
 	private Comission	comission;
-	private Portfolio		portfolio;
+	private Portfolio	portfolio;
 
 
 	@ManyToOne(optional = true)

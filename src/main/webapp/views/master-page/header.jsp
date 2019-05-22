@@ -56,6 +56,29 @@
 						code="master.page.actor.admin" /></a></li>
 		</security:authorize>
 		
+		<security:authorize access="hasRole('MEMBER')">
+			<li><a class="fNiv"><spring:message
+						code="master.page.comission" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="comission/member/list.do"><spring:message
+								code="master.page.member.listComission" /></a></li>
+					<li><a href="comission/member/create.do"><spring:message
+								code="master.page.member.create" /></a></li>
+				</ul></li>
+		</security:authorize>
+		
+		<security:authorize access="hasRole('COLLABORATOR')">
+			<li><a class="fNiv"><spring:message
+						code="master.page.comission" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="comission/collaborator/list.do"><spring:message
+								code="master.page.collaborator.listComission" /></a></li>
+				</ul></li>
+		</security:authorize>
+
+		
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message
 						code="master.page.login" /></a></li>

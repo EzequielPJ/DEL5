@@ -20,5 +20,38 @@
 
 <display:table name="comissions" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
+	
+	<security:authorize access="hasRole('MEMBER')">
+	<display:column>
+		<a href="comission/member/show.do?idComission=${row.id}"><spring:message
+				code="comission.show" /></a>
+	</display:column>
+	</security:authorize>
+	<display:column titleKey="comission.moment">
+		<jstl:out value="${row.moment}" />
+		</display:column>
+	<display:column titleKey="comission.name">
+		<jstl:out value="${row.name}" />
+		</display:column>
+	<display:column titleKey="comission.description">
+		<jstl:out value="${row.description}" />
+		</display:column>
+	<display:column titleKey="comission.finalMode">
+		<jstl:out value="${row.finalMode}" />
+		</display:column>
+	<security:authorize access="hasRole('MEMBER')">
+	<display:column>
+	<jstl:if test="${!row.finalMode}">
+		<a href="comission/member/update.do?idComission=${row.id}"><spring:message
+				code="comission.update" /></a>
+				</jstl:if>
+	</display:column>
+	<display:column>
+	<jstl:if test="${!row.finalMode}">
+		<a href="comission/member/delete.do?idComission=${row.id}"><spring:message
+				code="comission.delete" /></a>
+	</jstl:if>
+	</display:column>
+	</security:authorize>
 
 </display:table>

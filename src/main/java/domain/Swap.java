@@ -20,7 +20,7 @@ public class Swap extends DomainEntity {
 	private String			phone;
 	private String			status;
 	private String			description;
-	private Comission	comission;
+	private Comission		comission;
 	private Collaborator	receiver;
 	private Collaborator	sender;
 
