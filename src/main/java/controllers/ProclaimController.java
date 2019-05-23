@@ -2,7 +2,6 @@
 package controllers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -123,12 +122,12 @@ public class ProclaimController extends BasicController {
 		if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT)) {
 			requestURI = "proclaim/student/edit.do";
 			requestCancel = "/proclaim/student/list.do";
-			nameResolver = "redirect:proclaim/student/list.do";
+			nameResolver = "redirect:/proclaim/student/list.do";
 		}
 		if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
 			requestURI = "proclaim/member/edit.do";
 			requestCancel = "/proclaim/member/list.do";
-			nameResolver = "redirect:proclaim/student/list.do";
+			nameResolver = "redirect:/proclaim/member/list.do";
 		}
 
 		return super.save(proclaim, binding, "proclaim.commit.error", "proclaim/edit", requestURI, requestCancel, nameResolver).addAllObjects(this.model());
@@ -140,16 +139,11 @@ public class ProclaimController extends BasicController {
 		String requestCancel = null;
 		String nameResolver = null;
 
-		if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT)) {
-			requestURI = "proclaim/student/edit.do";
-			requestCancel = "/proclaim/student/list.do";
-			nameResolver = "redirect:proclaim/student/list.do";
-		}
-		if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
-			requestURI = "proclaim/member/edit.do";
-			requestCancel = "/proclaim/member/list.do";
-			nameResolver = "redirect:proclaim/student/list.do";
-		}
+		Assert.isTrue(this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
+
+		requestURI = "proclaim/student/edit.do";
+		requestCancel = "/proclaim/student/list.do";
+		nameResolver = "redirect:/proclaim/student/list.do";
 
 		return super.delete(proclaim, "proclaim.commit.error", "proclaim/edit", requestURI, requestCancel, nameResolver).addAllObjects(this.model());
 	}
@@ -182,7 +176,7 @@ public class ProclaimController extends BasicController {
 
 		this.oldMemberFinder = finder;
 
-		result = super.create(finder, "proclaim/find", "proclaim/search.do", "/").addObject("categories", this.model().get("categories"));
+		result = super.create(finder, "proclaim/find", "proclaim/member/search.do", "/").addObject("categories", this.model().get("categories"));
 
 		return result;
 	}
@@ -261,11 +255,9 @@ public class ProclaimController extends BasicController {
 		map = new HashMap<String, Object>();
 
 		map.put("categories", this.categoryService.findAll());
-		map.put("statusCol", this.status());
+		map.put("statusCol", super.statusByLang());
 
 		return map;
 	}
-	public Collection<String> status() {
-		return Arrays.asList("ACCEPTED", "REJECTED", "PENDING", "SUBMITTED");
-	}
+
 }

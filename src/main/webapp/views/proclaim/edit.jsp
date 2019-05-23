@@ -38,34 +38,62 @@
 		</form:select>
 	</security:authorize>
 
-	<acme:textbox code="proclaim.title" path="title" />
-	<acme:textbox code="proclaim.description" path="description" />
-	<acme:textarea code="proclaim.attachments" path="attachments" />
+	<acme:textbox code="proclaim.title" path="title"
+		readonly="${proclaim.finalMode or view}" />
+	<acme:textbox code="proclaim.description" path="description"
+		readonly="${proclaim.finalMode or view}" />
+	<acme:textarea code="proclaim.attachments" path="attachments"
+		readonly="${proclaim.finalMode or view}" />
 
 	<security:authorize access="hasRole('MEMBER')">
-		<acme:textbox code="proclaim.reason" path="reason" />
+		<acme:textbox code="proclaim.reason" path="reason"
+			readonly="${proclaim.finalMode}" />
 	</security:authorize>
 
 	<security:authorize access="hasRole('MEMBER')">
 		<spring:message code="proclaim.cancel" />
-		<form:checkbox path="cancel" />
+		<form:checkbox path="cancel" disabled="${proclaim.finalMode or view}" />
 	</security:authorize>
 
 	<security:authorize access="hasRole('STUDENT')">
 		<acme:textbox code="proclaim.studentCard.centre"
-			path="studentCard.centre" />
-		<acme:textbox code="proclaim.studentCard.code" path="studentCard.code" />
+			path="studentCard.centre" readonly="${proclaim.finalMode or view}" />
+		<acme:textbox code="proclaim.studentCard.code" path="studentCard.code"
+			readonly="${proclaim.finalMode or view}" />
+		<acme:textbox code="proclaim.studentCard.vat" path="studentCard.vat"
+			readonly="${proclaim.finalMode or view}" />
 
-		<acme:select items="${categories}" itemLabel="name"
-			code="proclaim.category" path="category" />
+		<jstl:if test="${proclaim.finalMode eq 'false'}">
+			<acme:select items="${categories}" itemLabel="name"
+				code="proclaim.category" path="category" />
+		</jstl:if>
+		<div>
+			<jstl:if test="${proclaim.finalMode eq 'true' or view}">
+				<form:hidden path="category" />
+				<acme:textbox code="proclaim.category" path="category.name"
+					readonly="true" />
+			</jstl:if>
+		</div>
 		<spring:message code="proclaim.finalMode" />
-		<form:checkbox path="finalMode" />
+		<form:checkbox path="finalMode" disabled="${proclaim.finalMode}" />
 	</security:authorize>
 
-	<acme:submit name="save" code="proclaim.save" />
-	<jstl:if test="${proclaim.id != 0}">
-		<acme:submit name="delete" code="proclaim.delete" />
+	<security:authorize access="hasRole('STUDENT')">
+		<jstl:if test="${proclaim.finalMode eq 'false'}">
+			<acme:submit name="save" code="proclaim.save" />
+		</jstl:if>
+	</security:authorize>
+	<jstl:if test="${view}">
+		<security:authorize access="hasRole('MEMBER')">
+			<acme:submit name="save" code="proclaim.save" />
+		</security:authorize>
 	</jstl:if>
+	<security:authorize access="hasRole('STUDENT')">
+		<jstl:if test="${proclaim.id != 0 and proclaim.finalMode eq 'false'}">
+			<acme:submit name="delete" code="proclaim.delete" />
+		</jstl:if>
+	</security:authorize>
+
 </form:form>
 
-<acme:cancel url="" code="proclaim.cancel" />
+<acme:cancel url="${requestCancel}" code="proclaim.cancel" />

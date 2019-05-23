@@ -20,7 +20,7 @@ public class Swap extends DomainEntity {
 	private String			phone;
 	private String			status;
 	private String			description;
-	private Organization	organization;
+	private Comission		comission;
 	private Collaborator	receiver;
 	private Collaborator	sender;
 
@@ -55,12 +55,12 @@ public class Swap extends DomainEntity {
 	}
 
 	@OneToOne
-	public Organization getOrganization() {
-		return this.organization;
+	public Comission getComission() {
+		return this.comission;
 	}
 
-	public void setOrganization(final Organization organization) {
-		this.organization = organization;
+	public void setComission(final Comission comission) {
+		this.comission = comission;
 	}
 
 	@ManyToOne

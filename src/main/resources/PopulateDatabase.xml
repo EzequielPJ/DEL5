@@ -775,7 +775,7 @@
 			</list>
 		</property>
 		<property name="suspicious" value="false" />
-		<property name="organization" ref="organization1"></property>
+		<property name="comission" ref="comission1"></property>
 		<property name="portfolio" ref="portfolio1"></property>
 	</bean>
 
@@ -800,7 +800,7 @@
 			</list>
 		</property>
 		<property name="suspicious" value="false" />
-		<property name="organization" ref="organization2"></property>
+		<property name="comission" ref="comission2"></property>
 		<property name="portfolio" ref="portfolio2"></property>
 	</bean>
 
@@ -1014,21 +1014,25 @@
 	<bean id="studentCard1" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1088"></property>
+		<property name="vat" value="12345678Z" />
 	</bean>
 
 	<bean id="studentCard2" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="7982"></property>
+		<property name="vat" value="12345698Z" />
 	</bean>
 
 	<bean id="studentCard3" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1030"></property>
+		<property name="vat" value="12345678Y" />
 	</bean>
 
 	<bean id="studentCard4" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1088"></property>
+		<property name="vat" value="22345678Z" />
 	</bean>
 
 	<bean id="ticker1" class="domain.Ticker">
@@ -1051,9 +1055,9 @@
 
 	<bean id="customisationsys1" class="domain.CustomisationSystem">
 		<property name="systemName" value="DEL5-Student Representation" />
-		<property name="banner" value="https://i.imgur.com/RyOrQZ7.jpg" />
+		<property name="banner" value="https://i.imgur.com/eDCGHR9.png" />
 		<property name="message"
-			value="Welcome to DEL5! The best website for student rights defense. ¡Bienvenidos a DEL5 – El mejor lugar para la defensa de los derechos de los estudiantes" />
+			value="Welcome to DEL5! The best website for student rights defense. ¡Bienvenidos a DEL5! El mejor lugar para la defensa de los derechos de los estudiantes" />
 		<property name="spamwords">
 			<map>
 				<entry key="en">
@@ -1370,9 +1374,9 @@
 		<property name="collaborator" ref="collaborator2"></property>
 	</bean>
 
-	<bean id="organization1" class="domain.Organization">
-		<property name="name" value="Organization1"></property>
-		<property name="description" value="Description Organization 1"></property>
+	<bean id="comission1" class="domain.Comission">
+		<property name="name" value="Comission1"></property>
+		<property name="description" value="Description Comission 1"></property>
 		<property name="moment">
 			<bean factory-bean="dateFormat" factory-method="parse">
 				<constructor-arg value="2019/05/08" />
@@ -1382,9 +1386,9 @@
 		<property name="member" ref="member1"></property>
 	</bean>
 
-	<bean id="organization2" class="domain.Organization">
-		<property name="name" value="Organization2"></property>
-		<property name="description" value="Description Organization 2"></property>
+	<bean id="comission2" class="domain.Comission">
+		<property name="name" value="Comission2"></property>
+		<property name="description" value="Description Comission 2"></property>
 		<property name="moment">
 			<bean factory-bean="dateFormat" factory-method="parse">
 				<constructor-arg value="2019/02/26" />
@@ -1439,7 +1443,7 @@
 		<property name="phone" value="000000000"></property>
 		<property name="status" value="Pending"></property>
 		<property name="description" value="Demo swap"></property>
-		<property name="organization" ref="organization1"></property>
+		<property name="comission" ref="comission1"></property>
 		<property name="receiver" ref="collaborator1"></property>
 		<property name="sender" ref="collaborator2"></property>
 	</bean>

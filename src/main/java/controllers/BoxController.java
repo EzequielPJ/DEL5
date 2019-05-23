@@ -91,13 +91,17 @@ public class BoxController extends BasicController {
 
 	@Override
 	public <T> ModelAndView deleteAction(final T e, final String nameResolver) {
-		ModelAndView result;
 		Box box;
+		boolean fail = false;
 		box = (Box) e;
-		if (!box.isFromSystem())
-			this.boxService.delete(box);
-		result = new ModelAndView(nameResolver);
-		return result;
+		try {
+			Assert.isTrue(this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId()).getBoxes().contains(box), "Don´t have access");
+			if (!box.isFromSystem())
+				this.boxService.delete(box);
+		} catch (final IllegalArgumentException exp) {
+			fail = true;
+		}
+		return fail ? new ModelAndView("403") : new ModelAndView(nameResolver);
 	}
 
 }

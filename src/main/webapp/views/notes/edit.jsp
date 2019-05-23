@@ -20,5 +20,22 @@
 <form:form action="${requestURI}" modelAttribute="notes">
 
 	<form:hidden path="id"/>
+	<form:hidden path="event"/>
+
+	<acme:textbox code="notes.note" path="note" readonly="${view}" />
+	
+	<acme:textbox code="notes.description" path="description"
+		readonly="${view}" />
+		
+	<jstl:if test="${view}">
+		<spring:message code="notes.actor" />
+		<jstl:out value=" --> ${notes.actor.name}" />
+	</jstl:if>
+	
+	<jstl:if test="${!view}">
+		<acme:submit name="save" code="user.save" />
+	</jstl:if>
 
 </form:form>
+
+<acme:cancel url="${requestCancel}" code="notes.cancel" />

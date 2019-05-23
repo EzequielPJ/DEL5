@@ -14,17 +14,17 @@ import javax.persistence.OneToOne;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Collaborator extends Actor {
 
-	private Organization	organization;
-	private Portfolio		portfolio;
+	private Comission	comission;
+	private Portfolio	portfolio;
 
 
 	@ManyToOne(optional = true)
-	public Organization getOrganization() {
-		return this.organization;
+	public Comission getComission() {
+		return this.comission;
 	}
 
-	public void setOrganization(final Organization organization) {
-		this.organization = organization;
+	public void setComission(final Comission comission) {
+		this.comission = comission;
 	}
 
 	@OneToOne(optional = true)

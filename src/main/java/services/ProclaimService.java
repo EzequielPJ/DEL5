@@ -44,7 +44,9 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 	}
 
 	public Collection<Proclaim> findAllByMember() {
-		return this.repository.findAllByMember((Member) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId()));
+		Member m;
+		m = (Member) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId());
+		return this.repository.findAllByMember(m.getId());
 	}
 
 	public Collection<Proclaim> findAllByStudent() {
@@ -72,6 +74,7 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		proclaim.setTicker(super.createTicker());
 		proclaim.setMembers(new ArrayList<Member>());
 		proclaim.setAttachments("");
+		proclaim.setStatus("SUBMITTED");
 
 		return proclaim;
 	}
@@ -110,29 +113,33 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 			Student m;
 			m = (Student) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId());
 			aux.setStudent(m);
-		} else if (aux.getId() != 0) {
-			Proclaim checkIf;
-			checkIf = this.findOne(aux.getId());
+		} else if (aux.getId() != 0)
 			if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
 				Member m;
 				m = (Member) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId());
-				Assert.isTrue(checkIf.getMembers().contains(m));
+				Assert.isTrue(aux.getMembers().contains(m));
 			} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT)) {
 				Student m;
 				m = (Student) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId());
-				Assert.isTrue(checkIf.getStudent().getId() == m.getId());
+				Assert.isTrue(aux.getStudent().getId() == m.getId());
 			}
-		}
 
 		Assert.isTrue(this.inFinal == false);
 
-		super.setRepository(this.repository);
+		if (aux.isFinalMode()) {
+			if (aux.getStatus().equals("SUBMITTED"))
+				aux.setStatus("PENDING");
+			if (aux.getStatus().equals("ENVIADO"))
+				aux.setStatus("PENDIENTE");
+		}
 
+		super.setRepository(this.repository);
 		result = super.withTicker(aux);
 
 		return result;
 	}
 
+	@Override
 	public void delete(final int id) {
 		Proclaim p;
 		p = this.repository.findOne(id);
@@ -140,8 +147,10 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		Assert.isTrue(p.isFinalMode() == false);
 		Assert.isTrue(p.getStudent().getId() == ((Student) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId())).getId());
 
-		this.repository.delete(id);
-		super.deleteTicker(p.getTicker());
+		super.setRepository(this.repository);
+
+		super.delete(p.getId());
+
 	}
 
 	public Proclaim reconstruct(final Proclaim aux, final BindingResult binding) {
@@ -157,19 +166,23 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 					result.setCategory(aux.getCategory());
 					result.setFinalMode(aux.isFinalMode());
 					result.setDescription(aux.getDescription());
-					result.setLaw(aux.getLaw());
+					result.setTitle(aux.getTitle());
 					result.setMoment(new Date());
 					result.setStudentCard(aux.getStudentCard());
+					this.inFinal = false;
 				}
 
 			if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER))
 				if (this.inFinal == true) {
+					result.setLaw(aux.getLaw());
 					result.setReason(aux.getReason());
 					result.setStatus(aux.getStatus());
+					result.setClosed(aux.isClosed());
+					this.inFinal = true;
 				}
 		}
 
-		this.validator.validate(aux, binding);
+		this.validator.validate(result, binding);
 
 		if (binding.hasErrors())
 			throw new ValidationException();
