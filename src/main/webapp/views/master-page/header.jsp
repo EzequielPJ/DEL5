@@ -54,6 +54,10 @@
 						code="master.page.dashboard" /></a></li>
 			<li><a href="actor/createAdmin.do"><spring:message
 						code="master.page.actor.admin" /></a></li>
+							
+			<li><a href="actor/createAdmin.do"><spring:message
+								code="master.page.actor.admin" /></a></li>		
+										
 		</security:authorize>
 		
 		<security:authorize access="hasRole('MEMBER')">
@@ -131,26 +135,39 @@
 
 
 		<security:authorize access="isAnonymous()">
-			<li><a class="fNiv" href="security/login.do"><spring:message
+		<li><a class="fNiv" href="security/login.do"><spring:message
 						code="master.page.login" /></a></li>
-
-			<li><a class="fNiv" href="about-us/terms.do"><spring:message
-						code="master.page.terms" /></a></li>
-		</security:authorize>
-
+		<li><a class="fNiv" href="about-us/terms.do"><spring:message
+					code="master.page.terms" /></a></li>
+				
 		<li><a class="fNiv" href="event/listEvents.do"><spring:message
-					code="master.page.listEvent" /></a> <security:authorize
-				access="isAuthenticated()">
-				<li><a class="fNiv"> <spring:message
-							code="master.page.profile" /> (<security:authentication
-							property="principal.username" />)
-				</a>
-					<ul>
-						<li class="arrow"></li>
-						<li><a href="profile/list.do"><spring:message
-									code="master.page.profile.list" /></a></li>
-						<li><a href="actor/personal.do"><spring:message
-									code="master.page.edit.data" /></a></li>
+						code="master.page.listEvent" /></a>
+					
+		<li><a class="fNiv"><spring:message
+						code="master.page.actor.register" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="actor/createMember.do"><spring:message
+								code="master.page.actor.member" /> </a></li>
+					<li><a href="actor/createCollaborator.do"><spring:message
+								code="master.page.actor.collaborator" /></a></li>
+					<li><a href="actor/createStudent.do"><spring:message
+								code="master.page.actor.student" /></a></li>
+					<li><a href="actor/createSponsor.do"><spring:message
+								code="master.page.actor.sponsor" /></a></li>
+				</ul></li>
+		</security:authorize>
+		<security:authorize access="isAuthenticated()">
+			<li><a class="fNiv"> <spring:message
+						code="master.page.profile" /> (<security:authentication
+						property="principal.username" />)
+			</a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="profile/list.do"><spring:message
+								code="master.page.profile.list" /></a></li>
+					<li><a href="actor/personal.do"><spring:message
+								code="master.page.edit.data" /></a></li>
 
 						<li><a href="box/list.do"><spring:message
 									code="master.page.boxes" /></a></li>

@@ -72,7 +72,7 @@ public class ComissionService extends AbstractService {
 		if (com.getId() == 0)
 			modify = this.comissionRepository.save(com);
 		else {
-			Assert.isTrue(com.getMember().getId() == a.getId(), "You don´t have access, you can only update your comissions");
+			Assert.isTrue(com.getMember().getId() == a.getId(), "You donï¿½t have access, you can only update your comissions");
 			modify = this.comissionRepository.save(com);
 		}
 		return modify;
@@ -85,7 +85,7 @@ public class ComissionService extends AbstractService {
 		Comission org;
 		org = this.comissionRepository.findOne(idComission);
 
-		Assert.isTrue(org.getMember().getId() == a.getId(), "You don´t have access, you can only delete your comissions");
+		Assert.isTrue(org.getMember().getId() == a.getId(), "You donï¿½t have access, you can only delete your comissions");
 
 		this.comissionRepository.delete(idComission);
 	}

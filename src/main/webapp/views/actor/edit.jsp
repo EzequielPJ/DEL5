@@ -74,7 +74,7 @@
 	<form:hidden path="authority" />
 	<acme:textbox code="actor.name" path="name" readonly="${view}" />
 	<acme:textbox code="actor.surname" path="surname" readonly="${view}" />
-	<acme:textbox code="actor.legalName" path="vat" readonly="${view}" />
+	
 	<acme:textbox code="actor.phone" path="phone" id="phone"
 		readonly="${view}" />
 	<acme:textbox code="actor.email" path="email" readonly="${view}" />
@@ -97,34 +97,9 @@
 		</form:label>
 		<form:password path="password2" />
 		
-		<jstl:if test="${authority eq 'COMPANY'}">
-			<acme:textbox code="actor.commercialName" path="commercialName" />
-		</jstl:if>
-		
-		<jstl:if test="${authority eq 'PROVIDER'}">
-			<acme:textbox code="actor.provider.make" path="make" />
-		</jstl:if>
-
 	</jstl:if>
 
-	<jstl:if test="${!view}">
-		<h3>
-			<spring:message code="actor.creditCard"></spring:message>
-		</h3>
-		<acme:textbox code="creditCard.holder" path="creditCard.holder"
-			readonly="${view}" />
-		<spring:message code="creditCard.make"></spring:message>
-		<form:select path="creditCard.make" disabled="${view}">
-			<form:option value="0" label="---" disabled="${view}" />
-			<form:options items="${makes}" disabled="${view}" />
-		</form:select>
-		<acme:textbox code="creditCard.number" path="creditCard.number"
-			readonly="${view}" />
-		<acme:textbox code="creditCard.date" path="creditCard.expiration"
-			id="datepicker-1" readonly="${view}" />
-		<acme:textbox code="creditCard.cvv" path="creditCard.cvv"
-			readonly="${view}" />
-	</jstl:if>
+
 	<br>
 	<jstl:if test="${actor.terms}">
 		<form:hidden path="terms" />
