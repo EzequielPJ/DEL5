@@ -2,7 +2,6 @@
 package forms;
 
 import security.UserAccount;
-import domain.CreditCard;
 
 public class ActorForm {
 
@@ -13,34 +12,12 @@ public class ActorForm {
 	private String		phone;
 	private String		adress;
 	private String		authority;
-	private String		commercialName;
-	private String		vat;
-	private String		make;
-	private CreditCard	creditCard;
-
-
-	public String getVat() {
-		return this.vat;
-	}
-
-	public void setVat(final String vat) {
-		this.vat = vat;
-	}
-
 
 	private int			id;
 
 	private UserAccount	account;
 	private boolean		terms;
 
-
-	public String getCommercialName() {
-		return this.commercialName;
-	}
-
-	public void setCommercialName(final String commercialName) {
-		this.commercialName = commercialName;
-	}
 
 	public UserAccount getAccount() {
 		return this.account;
@@ -133,21 +110,4 @@ public class ActorForm {
 	public void setTerms(final boolean terms) {
 		this.terms = terms;
 	}
-
-	public CreditCard getCreditCard() {
-		return this.creditCard;
-	}
-
-	public void setCreditCard(final CreditCard creditCard) {
-		this.creditCard = creditCard;
-	}
-
-	public String getMake() {
-		return make;
-	}
-
-	public void setMake(String make) {
-		this.make = make;
-	}
-
 }

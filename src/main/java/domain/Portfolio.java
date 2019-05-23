@@ -28,6 +28,7 @@ public class Portfolio extends DomainEntity {
 	private String							fullName;
 	private String							address;
 	private String							photo;
+	private String							phone;
 	private Collection<WorkReport>			workReport;
 	private Collection<StudyReport>			studyReport;
 	private Collection<MiscellaneousReport>	miscellaneousReport;
@@ -80,6 +81,15 @@ public class Portfolio extends DomainEntity {
 
 	public void setPhoto(final String photo) {
 		this.photo = photo;
+	}
+
+	@SafeHtml
+	public String getPhone() {
+		return this.phone;
+	}
+
+	public void setPhone(final String phone) {
+		this.phone = phone;
 	}
 
 	@OneToMany

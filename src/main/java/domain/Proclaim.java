@@ -12,7 +12,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -23,7 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Proclaim extends DomainEntity {
+public class Proclaim extends Ticketable {
 
 	private String				title;
 	private String				description;
@@ -37,7 +36,7 @@ public class Proclaim extends DomainEntity {
 	private Student				student;
 	private Collection<Member>	members;
 	private Category			category;
-	private Ticker				ticker;
+
 	private StudentCard			studentCard;
 
 
@@ -66,15 +65,6 @@ public class Proclaim extends DomainEntity {
 
 	public void setCategory(final Category category) {
 		this.category = category;
-	}
-
-	@OneToOne(optional = false)
-	public Ticker getTicker() {
-		return this.ticker;
-	}
-
-	public void setTicker(final Ticker ticker) {
-		this.ticker = ticker;
 	}
 
 	@NotBlank

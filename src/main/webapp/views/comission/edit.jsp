@@ -17,8 +17,23 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="${requestURI}" modelAttribute="organization">
+<form:form action="${requestURI}" modelAttribute="comission">
 
 	<form:hidden path="id"/>
-
+	
+	<acme:textbox code="comission.name" path="name"
+		readonly="${view}" />
+	<acme:textbox code="comission.description" path="description"
+		readonly="${view}" />
+	<security:authorize access="hasRole('MEMBER')">
+	<form:label path="finalMode">
+			<spring:message code="comission.finalMode" />
+		</form:label>
+	<form:checkbox path="finalMode"
+			disabled="${view or comission.finalMode}" />
+			<jstl:if test="${!comission.finalMode and !view}">
+				<acme:submit name="save" code="comission.save" />
+			</jstl:if>
+	</security:authorize>
 </form:form>
+<acme:cancel url="${requestCancel}" code="comission.cancel" />

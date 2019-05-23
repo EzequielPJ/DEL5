@@ -57,9 +57,9 @@
 		<!-- Notes -->
 		<bean class="converters.NotesToStringConverter" />
 		<bean class="converters.StringToNotesConverter" />
-		<!-- Organization -->
-		<bean class="converters.OrganizationToStringConverter" />
-		<bean class="converters.StringToOrganizationConverter" />
+		<!-- Comission -->
+		<bean class="converters.ComissionToStringConverter" />
+		<bean class="converters.StringToComissionConverter" />
 		<!-- Portfolio -->
 		<bean class="converters.PortfolioToStringConverter" />
 		<bean class="converters.StringToPortfolioConverter" />
@@ -72,6 +72,9 @@
 		<!-- Proclaim -->
 		<bean class="converters.ProclaimToStringConverter" />
 		<bean class="converters.StringToProclaimConverter" />
+		<!-- Student -->
+		<bean class="converters.StudentToStringConverter" />
+		<bean class="converters.StringToStudentConverter" />
 	</util:list>
 
 </beans>

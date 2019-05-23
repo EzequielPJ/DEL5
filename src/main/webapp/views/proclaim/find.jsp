@@ -21,17 +21,19 @@
 
 <form:form action="${requestURI}" modelAttribute="finder">
 
-	<form:hidden path="id" />
+	<security:authorize access="hasRole('MEMBER')">
+		<form:hidden path="id" />
+		<acme:textbox code="finder.singleKey" path="singleKey" />
+		<acme:date code="finder.registeredDate" path="registeredDate"
+			id="datepicker1" />
 
-	<acme:textbox code="finder.singleKey" path="singleKey" />
-	<security:authorize access="hasRole('ROOKIE')">
-		<acme:date code="finder.deadline" path="deadline" id="datepicker1" />
-		<acme:textbox code="finder.minSalary" path="minSalary" />
-		<acme:textbox code="finder.maxSalary" path="maxSalary" />
-<!--  		
-		<a href="position/clear.do"><spring:message code="finder.clear"></spring:message></a>
-		<br>
-		-->
+		<acme:select code="finder.category" path="category" itemLabel="name"
+			items="${categories}" />
+
+		<div>
+			<spring:message code="finder.before" />
+			<form:checkbox path="before" />
+		</div>
 	</security:authorize>
 	<acme:submit name="search" code="finder.search" />
 </form:form>
