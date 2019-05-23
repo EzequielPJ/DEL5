@@ -59,28 +59,6 @@
 								code="master.page.actor.admin" /></a></li>		
 										
 		</security:authorize>
-		
-		<security:authorize access="hasRole('MEMBER')">
-			<li><a class="fNiv"><spring:message
-						code="master.page.comission" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="comission/member/list.do"><spring:message
-								code="master.page.member.listComission" /></a></li>
-					<li><a href="comission/member/create.do"><spring:message
-								code="master.page.member.create" /></a></li>
-				</ul></li>
-		</security:authorize>
-		
-		<security:authorize access="hasRole('COLLABORATOR')">
-			<li><a class="fNiv"><spring:message
-						code="master.page.comission" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="comission/collaborator/list.do"><spring:message
-								code="master.page.collaborator.listComission" /></a></li>
-				</ul></li>
-		</security:authorize>
 
 		<security:authorize access="hasRole('MEMBER')">
 			<li><a class="fNiv"><spring:message
@@ -104,9 +82,6 @@
 			<li><a class="fNiv" href="proclaim/member/finder.do"><spring:message
 						code="master.page.finder" /></a></li>
 		</security:authorize>
-		
-		<li><a class="fNiv" href="event/listEvents.do"><spring:message
-						code="master.page.listEvent" /></a>
 
 		<security:authorize access="hasRole('STUDENT')">
 			<li><a class="fNiv"><spring:message
@@ -119,9 +94,6 @@
 								code="master.page.student.createProclaims" /></a></li>
 				</ul></li>
 		</security:authorize>
-		
-		<li><a class="fNiv" href="event/listEvents.do"><spring:message
-						code="master.page.listEvent" /></a>
 
 		<security:authorize access="hasRole('COLLABORATOR')">
 			<li><a class="fNiv"><spring:message
@@ -132,7 +104,6 @@
 								code="master.page.collaborator.listComission" /></a></li>
 				</ul></li>
 		</security:authorize>
-
 
 		<security:authorize access="isAnonymous()">
 		<li><a class="fNiv" href="security/login.do"><spring:message
@@ -157,6 +128,7 @@
 								code="master.page.actor.sponsor" /></a></li>
 				</ul></li>
 		</security:authorize>
+		
 		<security:authorize access="isAuthenticated()">
 			<li><a class="fNiv"> <spring:message
 						code="master.page.profile" /> (<security:authentication

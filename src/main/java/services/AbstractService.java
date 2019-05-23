@@ -87,16 +87,16 @@ public class AbstractService {
 		return res;
 	}
 	private boolean isSpammer(final Collection<MessageEntity> cm) {
-		boolean res = false;
-		if (cm.size() != 0) {
-			int i = 0;
+		final boolean res = false;
+		if (cm.size() != 0)
+			//			int i = 0;
 			for (final MessageEntity message : cm) {
 				final boolean spam = this.spamWord(this.limpiaString(message.getSubject())) && this.spamWord(this.limpiaString(message.getBody()));
 				if (spam)
-					i++;
+					//					i++;
+					break;
 			}
-			res = (i / cm.size()) >= 0.1;
-		}
+		//			res = (i / cm.size()) >= 0.1;
 		return res;
 	}
 	public boolean checkSpammer(final Actor a) {
