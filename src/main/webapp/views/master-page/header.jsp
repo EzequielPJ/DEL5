@@ -16,8 +16,8 @@
 	uri="http://www.springframework.org/security/tags"%>
 
 <div>
-	<a href="#"><img src="${banner}" alt="${systemName}" height="150"
-		width="400" /></a>
+	<a href="#"><img src="${banner}" alt="${systemName}" height="190"
+		width="300" /></a>
 </div>
 
 <div>
@@ -115,6 +115,9 @@
 								code="master.page.student.createProclaims" /></a></li>
 				</ul></li>
 		</security:authorize>
+		
+		<li><a class="fNiv" href="event/listEvents.do"><spring:message
+						code="master.page.listEvent" /></a>
 
 		<security:authorize access="hasRole('COLLABORATOR')">
 			<li><a class="fNiv"><spring:message

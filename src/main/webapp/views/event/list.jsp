@@ -21,6 +21,11 @@
 <display:table name="events" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
 	
+	<display:column>
+		<a href="event/showEvent.do?idEvent=${row.id}"><spring:message
+				code="event.show" /></a>
+	</display:column>
+	
 	<display:column titleKey="event.title">
 		<jstl:out value="${row.title}" />
 	</display:column>
