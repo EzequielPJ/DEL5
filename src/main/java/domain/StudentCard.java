@@ -16,7 +16,18 @@ public class StudentCard {
 
 	private String	centre;
 	private int		code;
+	private String	vat;
 
+
+	@SafeHtml
+	@NotBlank
+	public String getVat() {
+		return this.vat;
+	}
+
+	public void setVat(final String vat) {
+		this.vat = vat;
+	}
 
 	@SafeHtml
 	@NotBlank

@@ -52,7 +52,7 @@ public class TickerService {
 		return new SimpleDateFormat("yyyyMMdd").format(new Date()) + "-" + c;
 	}
 
-	public void deleteTicker(final Ticker ticker) {
-		this.repository.delete(ticker.getId());
+	public void deleteTicker(final int ticker) {
+		this.repository.delete(ticker);
 	}
 }
