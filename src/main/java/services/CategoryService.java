@@ -39,6 +39,10 @@ public class CategoryService extends AbstractService {
 		return this.categoryRepository.findOne(id);
 	}
 
+	public Collection<Category> getCategoryInMoreThan2Proclaims() {
+		return this.categoryRepository.getCategoryInMoreThan2Proclaims();
+	}
+
 	public Category getCategoryFather(final int id) {
 		return this.categoryRepository.getCategoryFather(id);
 	}

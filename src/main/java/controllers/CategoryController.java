@@ -27,8 +27,11 @@ public class CategoryController extends BasicController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
+		ModelAndView result;
 		Assert.isTrue(this.serviceCategory.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
-		return super.listModelAndView("categories", "category/list", this.serviceCategory.findAll(), "category/administrator/list.do");
+		result = super.listModelAndView("categories", "category/list", this.serviceCategory.findAll(), "category/administrator/list.do");
+		result.addObject("colRep", this.serviceCategory.getCategoryInMoreThan2Proclaims());
+		return result;
 	}
 
 	//	@RequestMapping(value = "/list", method = RequestMethod.GET)

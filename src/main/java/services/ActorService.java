@@ -419,7 +419,7 @@ public class ActorService extends AbstractService {
 	//		return result;
 	//	}
 
-	public void delete(final int actorId) { //FIXME ESTE ES EL METODO ANTIGUO, HAY QUE CAMBIARLO POR EL ULTIMO DE ROOKIES
+	public void delete(final int actorId) {
 		Assert.notNull(LoginService.getPrincipal().getUsername());
 		Administrator admin;
 		//		final Rookie rookie;

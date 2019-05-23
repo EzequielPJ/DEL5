@@ -16,8 +16,8 @@
 	uri="http://www.springframework.org/security/tags"%>
 
 <div>
-	<a href="#"><img src="${banner}" alt="${systemName}" height="150"
-		width="400" /></a>
+	<a href="#"><img src="${banner}" alt="${systemName}" height="190"
+		width="300" /></a>
 </div>
 
 <div>
@@ -86,6 +86,9 @@
 		<li><a class="fNiv" href="about-us/terms.do"><spring:message
 					code="master.page.terms" /></a></li>
 		</security:authorize>
+		
+		<li><a class="fNiv" href="event/listEvents.do"><spring:message
+						code="master.page.listEvent" /></a>
 
 		<security:authorize access="isAuthenticated()">
 			<li><a class="fNiv"> <spring:message
