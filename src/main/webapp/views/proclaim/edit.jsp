@@ -30,14 +30,6 @@
 		<acme:textbox code="proclaim.status" path="status" readonly="true" />
 	</security:authorize>
 
-	<security:authorize access="hasRole('MEMBER')">
-		<form:select path="status" title="proclaim.status">
-			<jstl:forEach items="${statusCol}" var="i">
-				<form:option value="${i}" />
-			</jstl:forEach>
-		</form:select>
-	</security:authorize>
-
 	<acme:textbox code="proclaim.title" path="title"
 		readonly="${proclaim.finalMode or view}" />
 	<acme:textbox code="proclaim.description" path="description"
@@ -45,49 +37,59 @@
 	<acme:textarea code="proclaim.attachments" path="attachments"
 		readonly="${proclaim.finalMode or view}" />
 
-	<security:authorize access="hasRole('MEMBER')">
-		<acme:textbox code="proclaim.reason" path="reason"
-			readonly="${proclaim.finalMode}" />
-	</security:authorize>
+	<acme:textbox code="proclaim.studentCard.centre"
+		path="studentCard.centre" readonly="${proclaim.finalMode or view}" />
+	<acme:textbox code="proclaim.studentCard.code" path="studentCard.code"
+		readonly="${proclaim.finalMode or view}" />
+	<acme:textbox code="proclaim.studentCard.vat" path="studentCard.vat"
+		readonly="${proclaim.finalMode or view}" />
 
-	<security:authorize access="hasRole('MEMBER')">
-		<spring:message code="proclaim.cancel" />
-		<form:checkbox path="cancel" disabled="${proclaim.finalMode or view}" />
-	</security:authorize>
-
-	<security:authorize access="hasRole('STUDENT')">
-		<acme:textbox code="proclaim.studentCard.centre"
-			path="studentCard.centre" readonly="${proclaim.finalMode or view}" />
-		<acme:textbox code="proclaim.studentCard.code" path="studentCard.code"
-			readonly="${proclaim.finalMode or view}" />
-		<acme:textbox code="proclaim.studentCard.vat" path="studentCard.vat"
-			readonly="${proclaim.finalMode or view}" />
-
-		<jstl:if test="${proclaim.finalMode eq 'false'}">
-			<acme:select items="${categories}" itemLabel="name"
-				code="proclaim.category" path="category" />
-		</jstl:if>
-		<div>
-			<jstl:if test="${proclaim.finalMode eq 'true' or view}">
-				<form:hidden path="category" />
-				<acme:textbox code="proclaim.category" path="category.name"
-					readonly="true" />
-			</jstl:if>
-		</div>
-		<spring:message code="proclaim.finalMode" />
-		<form:checkbox path="finalMode" disabled="${proclaim.finalMode}" />
-	</security:authorize>
-
-	<security:authorize access="hasRole('STUDENT')">
-		<jstl:if test="${proclaim.finalMode eq 'false'}">
-			<acme:submit name="save" code="proclaim.save" />
-		</jstl:if>
-	</security:authorize>
-	<jstl:if test="${view}">
-		<security:authorize access="hasRole('MEMBER')">
-			<acme:submit name="save" code="proclaim.save" />
-		</security:authorize>
+	<jstl:if test="${proclaim.finalMode eq 'false'}">
+		<acme:select items="${categories}" itemLabel="name"
+			code="proclaim.category" path="category" />
 	</jstl:if>
+	<div>
+		<jstl:if test="${proclaim.finalMode eq 'true' or view}">
+			<form:hidden path="category" />
+			<acme:textbox code="proclaim.category" path="category.name"
+				readonly="true" />
+		</jstl:if>
+	</div>
+	<spring:message code="proclaim.finalMode" />
+	<form:checkbox path="finalMode" disabled="${proclaim.finalMode}" />
+
+	<security:authorize access="hasRole('STUDENT')">
+		<jstl:if test="${proclaim.finalMode eq 'false'}">
+			<acme:submit name="save" code="proclaim.save" />
+		</jstl:if>
+	</security:authorize>
+	<security:authorize access="hasRole('MEMBER')">
+		<div>
+			<spring:message code="proclaim.status" />
+			<form:select path="status" onchange="check(this)" id="status1"
+				disabled="${proclaim.status != 'PENDING' or 'PENDIENTE'}">
+				<jstl:forEach items="${statusCol}" var="i">
+					<form:option value="${i}" />
+				</jstl:forEach>
+			</form:select>
+		</div>
+		<div id="law1">
+			<acme:textarea code="proclaim.law" path="law"
+				readonly="${proclaim.status == 'ACCEPTED' or 'ACEPTADO'}" />
+		</div>
+
+		<div id="reason1">
+			<acme:textarea code="proclaim.reason" path="reason"
+				readonly="${proclaim.status == 'REJECTED' or 'RECHAZADO'}" />
+		</div>
+		<div>
+			<spring:message code="proclaim.closed" />
+			<form:checkbox path="closed" />
+		</div>
+
+		<acme:submit name="save" code="proclaim.save" />
+
+	</security:authorize>
 	<security:authorize access="hasRole('STUDENT')">
 		<jstl:if test="${proclaim.id != 0 and proclaim.finalMode eq 'false'}">
 			<acme:submit name="delete" code="proclaim.delete" />
@@ -95,5 +97,43 @@
 	</security:authorize>
 
 </form:form>
-
 <acme:cancel url="${requestCancel}" code="proclaim.cancel" />
+
+<script>
+	var status = $("#status1").val();
+
+	if (status == 'PENDING' || status == 'PENDIENTE') {
+		$("#reason1").show();
+		$("#law1").show();
+	}
+
+	if (status == 'ACCEPTED' || status == 'ACEPTADO') {
+		$("#reason1").hide();
+		$("#law1").show();
+	}
+
+	if (status == 'REJECTED' || status == 'RECHAZADO') {
+		$("#law1").hide();
+		$("#reason1").show();
+	}
+
+	function check(o) {
+		var statusCheck = o.value;
+
+		if (statusCheck == 'PENDING' || statusCheck == 'PENDIENTE') {
+			$("#reason1").show();
+			$("#law1").show();
+		}
+
+		if (statusCheck == 'ACCEPTED' || statusCheck == 'ACEPTADO') {
+			$("#reason1").hide();
+			$("#law1").show();
+		}
+
+		if (statusCheck == 'REJECTED' || statusCheck == 'RECHAZADO') {
+			$("#law1").hide();
+			$("#reason1").show();
+		}
+
+	}
+</script>

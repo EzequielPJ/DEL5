@@ -34,7 +34,6 @@
 		<jstl:out value="${row.category.name}" />
 	</display:column>
 	<display:column titleKey="proclaim.edit">
-
 		<security:authorize access="hasRole('STUDENT')">
 			<jstl:if test="${row.finalMode eq 'false'}">
 				<a href="proclaim/student/edit.do?id=${row.id}"><spring:message
@@ -46,16 +45,39 @@
 					code="proclaim.edit" /></a>
 		</security:authorize>
 	</display:column>
+	<jstl:if test="${startAssignation}">
+		<display:column titleKey="proclaim.assign">
+			<security:authorize access="hasRole('MEMBER')">
+				<a href="proclaim/member/assign.do?id=${row.id}"><spring:message
+						code="proclaim.assign" /></a>
+			</security:authorize>
+		</display:column>
+	</jstl:if>
+
+
+	<jstl:if test="${row.status == 'ACCEPTED' or row.status == 'ACEPTADO'}">
+
+		<display:column titleKey="proclaim.commentaries">
+			<a href=""><spring:message code="proclaim.commentaries" /></a>
+		</display:column>
+
+		<display:column titleKey="proclaim.createCommentary">
+			<a href=""><spring:message code="proclaim.createCommentary" /></a>
+		</display:column>
+
+	</jstl:if>
+
 </display:table>
 
-<script>
+<jstl:out value="${asignedYet}" />
 
+<script>
 	var table = document.getElementById("row");
 	var tbody = table.getElementsByTagName("tbody")[0];
 	var row = tbody.getElementsByTagName("tr");
-	
+
 	for (i = 0; i < row.length; i++) {
-		
+
 		var value = trim(row[i].getElementsByTagName("td")[0].firstChild.nodeValue);
 		console.log(value);
 		if (value == 'ACCEPTED' || value == 'ACEPTADO') {
@@ -63,11 +85,12 @@
 		} else if (value == 'REJECTED' || value == 'RECHAZADO') {
 			row[i].style.backgroundColor = "#FF8000";
 		} else if (value == 'PENDING' || value == 'PENDIENTE') {
+			row[i].style.backgroundColor = "#33E6FF";
 		} else if (value == 'SUBMITTED' || value == 'ENVIADO') {
 			row[i].style.backgroundColor = "#9C9C9C";
 		}
 	}
-	
+
 	function trim(cadena) {
 		// USO: Devuelve un string como el
 		// parametro cadena pero quitando los
