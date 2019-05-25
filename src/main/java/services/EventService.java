@@ -50,7 +50,7 @@ public class EventService extends AbstractService {
 	public Event createEvent() {
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR));
 		Collaborator c;
-		c = (Collaborator) this.getActorByUserId(LoginService.getPrincipal().getId());
+		c = (Collaborator) this.eventRepository.findActorByUserAccountId(LoginService.getPrincipal().getId());
 		Event e;
 		e = new Event();
 		e.setTitle("");

@@ -10,82 +10,75 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import utilities.AbstractTest;
-import domain.Event;
+import domain.Comission;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
 })
 @Transactional
-public class EventServiceTest extends AbstractTest {
+public class ComissionServiceTest extends AbstractTest {
 
 	@Autowired
-	private EventService	service;
+	private ComissionService	service;
 
 
 	/**
 	 * TEST 1
 	 * 
 	 * Requirement tested:
-	 * 15. Once a collaborator is in an organization, he/she can create events.
-	 * For every event, the system must store the title, description,
-	 * the celebration moment and a state. When an event is created takes pending status and is registered in draft mode.
-	 * It is only gets final mode when a member accepts or rejects it.
+	 * 14. Members can create organizations. Every organization must have a name, a description and the moment when it was created.
+	 * Furthermore, the different interested collaborators can join to any organization depending on its wishes.
 	 * 
-	 * - Analysis of sentence coverage of EventService: 40.2%
-	 * Total instructions: 239; Covered Instructions: 96
+	 * - Analysis of sentence coverage of ComissionService: 38.9%
 	 * 
-	 * - Analysis of data coverage: 66.7%
+	 * Total instructions: 203; Covered Instructions: 79
 	 * 
-	 * Attribute: title| Bad value: - | Normal value: Yes | Coverage: 50% |
+	 * - Analysis of data coverage: 70%
+	 * 
+	 * Attribute: name| Bad value: - | Normal value: Yes | Coverage: 50% |
 	 * Attribute: description| Bad value: - | Normal value: Yes | Coverage: 50% |
 	 * Attribute: finalMode| Bad value: false | Normal value: true | Coverage: 100% |
 	 * Attribute: moment| Bad value: - | Normal value: Yes | Coverage: 50% |
-	 * Attribute: status| Bad value: - | Normal value: Yes | Coverage: 50% |
-	 * Attribute: collaborator| Bad value: null | Normal value: Yes | Coverage: 100% |
+	 * Attribute: member| Bad value: null | Normal value: Yes | Coverage: 100% |
 	 */
 
 	@Test
-	public void test() {
+	public void driver() {
+
 		final Object[][] testingData = {
-			{	//Create an event. Positive Case.
-				"collaborator1", 0, null
+			{	//Positive Case - Creation of comission
+				"member1", 0, null
 			}, {
-				//Modifiying an event whose owner is not the one logged. Negative Case.
-				"collaborator2", super.getEntityId("event1"), IllegalArgumentException.class
+				//Negative Case - An administrator can not create comissions
+				"admin1", super.getEntityId("comission1"), IllegalArgumentException.class
 			}
 		};
 		for (int i = 0; i < testingData.length; i++)
 			this.template((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
-
 	protected void template(final String auth, final int entity, final Class<?> expected) {
-
 		Class<?> caught = null;
 
 		try {
 			super.authenticate(auth);
 
-			Event e;
+			Comission c;
+
 			if (entity == 0)
-				e = this.service.createEvent();
+				c = this.service.createComission();
 			else
-				e = this.service.findOne(entity);
+				c = this.service.findOne(entity);
 
-			e.setTitle("JUNIT4v1");
-			e.setDescription("JUNIT4v2");
-			e.setFinalMode(false);
+			c.setDescription("hola a la comission");
+			c.setName("DP");
 
-			this.service.save(e);
-
+			this.service.save(c);
 			this.service.flush();
-
 			super.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
-
 		super.checkExceptions(expected, caught);
 	}
-
 }
