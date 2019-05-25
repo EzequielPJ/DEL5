@@ -32,7 +32,7 @@
 
 	<acme:textbox code="proclaim.title" path="title"
 		readonly="${proclaim.finalMode or view}" />
-	<acme:textbox code="proclaim.description" path="description"
+	<acme:textarea code="proclaim.description" path="description"
 		readonly="${proclaim.finalMode or view}" />
 	<acme:textarea code="proclaim.attachments" path="attachments"
 		readonly="${proclaim.finalMode or view}" />
