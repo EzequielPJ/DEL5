@@ -37,6 +37,8 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/event/listEvents.do"
 			access="permitAll" />
+		<security:intercept-url pattern="/event/showEvent.do"
+			access="permitAll" />
 		<security:intercept-url pattern="/notes/list.do"
 			access="permitAll" />
 		<security:intercept-url pattern="/notes/show.do"
@@ -78,13 +80,12 @@
 		
 		<security:intercept-url pattern="/proclaim/member/**"
 			access="hasRole('MEMBER')" />
-			
-		<!-- Member -->
 		<security:intercept-url pattern="/comission/member/**"
 			access="hasRole('MEMBER')" />
 		<!-- Collaborator -->
 		<security:intercept-url pattern="/comission/collaborator/**"
 			access="hasRole('COLLABORATOR')" />
+		
 				
 		<!-- is Authenticated -->
 		<security:intercept-url pattern="/profile/**"

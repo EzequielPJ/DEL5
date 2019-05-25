@@ -45,7 +45,7 @@ public class FinderService extends AbstractService {
 	}
 
 	public Finder save(final Finder finder, final Collection<Proclaim> col) {
-		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER));
+		//Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER));
 		Finder result;
 		result = this.repository.save(finder);
 		if (finder.getId() != 0) {
@@ -58,7 +58,7 @@ public class FinderService extends AbstractService {
 	public Finder create() {
 		Finder finder;
 		finder = new Finder();
-		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER));
+		//Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER));
 		finder.setCreationDate(new Date());
 		finder.setRegisteredDate(new Date());
 		finder.setCategory(null);
