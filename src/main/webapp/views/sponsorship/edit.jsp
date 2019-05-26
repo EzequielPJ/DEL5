@@ -49,10 +49,10 @@
 	<form:hidden path="id" />
 	<form:hidden path="event"/>
 
-	<acme:textbox code="sponsorship.urlBanner" path="urlBanner"	readonly="${view}" />
-	<acme:textbox code="sponsorship.linkTPage" path="linkTPage"	readonly="${view}" />
+	<acme:textbox code="sponsorship.banner" path="banner"	readonly="${view}" />
+	<acme:textbox code="sponsorship.target" path="target"	readonly="${view}" />
 	<form:label path="event">
-		<spring:message code="sponsorship.event"> </spring:message>
+		<spring:message code="sponsorship.position"> </spring:message>
 	</form:label>
 	:<jstl:out value="${sponsorship.event.title}"></jstl:out>
 
@@ -81,5 +81,4 @@
 		<acme:submit name="save" code="sponsorship.save" />
 	</jstl:if>
 </form:form>
-<input type="submit" onclick="window.history.back()"
-	value="<spring:message code="sponsorship.cancel"/>" />
+<acme:cancel url="${requestCancel}" code="sponsorship.cancel"/>

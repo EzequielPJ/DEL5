@@ -59,10 +59,10 @@
 				</ul></li>
 			<li><a href="actor/createAdmin.do"><spring:message
 						code="master.page.actor.admin" /></a></li>
-							
+
 			<li><a href="actor/createAdmin.do"><spring:message
-								code="master.page.actor.admin" /></a></li>		
-										
+						code="master.page.actor.admin" /></a></li>
+
 		</security:authorize>
 
 		<security:authorize access="hasRole('MEMBER')">
@@ -110,16 +110,29 @@
 				</ul></li>
 		</security:authorize>
 
-		<security:authorize access="isAnonymous()">
-		<li><a class="fNiv" href="security/login.do"><spring:message
-						code="master.page.login" /></a></li>
-		<li><a class="fNiv" href="about-us/terms.do"><spring:message
-					code="master.page.terms" /></a></li>
-				
-		<li><a class="fNiv" href="event/listEvents.do"><spring:message
+		<security:authorize access="hasRole('SPONSOR')">
+			<li><a class="fNiv"><spring:message
+						code="master.page.sponsorship" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="sponsorship/sponsor/listSponsorship.do"><spring:message
+								code="master.page.sponsorship.list" /></a></li>
+					<li><a href="sponsorship/sponsor/listDesactive.do"><spring:message
+								code="master.page.sponsorship.listD" /></a></li>
+				</ul></li>
+			<li><a class="fNiv" href="event/listEvents.do"><spring:message
 						code="master.page.listEvent" /></a>
-					
-		<li><a class="fNiv"><spring:message
+		</security:authorize>
+
+		<security:authorize access="isAnonymous()">
+			<li><a class="fNiv" href="security/login.do"><spring:message
+						code="master.page.login" /></a></li>
+			<li><a class="fNiv" href="about-us/terms.do"><spring:message
+						code="master.page.terms" /></a></li>
+
+			<li><a class="fNiv" href="event/listEvents.do"><spring:message
+						code="master.page.listEvent" /></a>
+			<li><a class="fNiv"><spring:message
 						code="master.page.actor.register" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -133,7 +146,7 @@
 								code="master.page.actor.sponsor" /></a></li>
 				</ul></li>
 		</security:authorize>
-		
+
 		<security:authorize access="isAuthenticated()">
 			<li><a class="fNiv"> <spring:message
 						code="master.page.profile" /> (<security:authentication
@@ -146,14 +159,14 @@
 					<li><a href="actor/personal.do"><spring:message
 								code="master.page.edit.data" /></a></li>
 
-						<li><a href="box/list.do"><spring:message
-									code="master.page.boxes" /></a></li>
-						<li><a href="message/create.do"><spring:message
-									code="master.page.message.create" /></a></li>
-						<li><a href="j_spring_security_logout"><spring:message
-									code="master.page.logout" /> </a></li>
-					</ul></li>
-			</security:authorize>
+					<li><a href="box/list.do"><spring:message
+								code="master.page.boxes" /></a></li>
+					<li><a href="message/create.do"><spring:message
+								code="master.page.message.create" /></a></li>
+					<li><a href="j_spring_security_logout"><spring:message
+								code="master.page.logout" /> </a></li>
+				</ul></li>
+		</security:authorize>
 	</ul>
 </div>
 

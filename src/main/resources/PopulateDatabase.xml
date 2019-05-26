@@ -1191,18 +1191,21 @@
 		<property name="description" value="Comment1"></property>
 		<property name="attachments" value="comment,one"></property>
 		<property name="proclaim" ref="proclaim1"></property>
+		<property name="actor" ref="member1"></property>
 	</bean>
 
 	<bean id="comment2" class="domain.Comment">
 		<property name="description" value="Comment2"></property>
 		<property name="attachments" value="comment,two"></property>
 		<property name="proclaim" ref="proclaim2"></property>
+		<property name="actor" ref="student1"></property>
 	</bean>
 
 	<bean id="comment3" class="domain.Comment">
 		<property name="description" value="Comment3"></property>
 		<property name="attachments" value="comment,three"></property>
 		<property name="proclaim" ref="proclaim4"></property>
+		<property name="actor" ref="student1"></property>
 	</bean>
 
 

@@ -31,11 +31,6 @@ public class TickerServiceInter<K extends Ticketable, S extends JpaRepository<K,
 
 		Ticker aux = null;
 
-		if (without.getId() != 0)
-			auxFromDB = this.repository.findOne(without.getId());
-
-		Ticker aux = null;
-
 		boolean value = false;
 
 		do

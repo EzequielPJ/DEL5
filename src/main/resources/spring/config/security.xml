@@ -85,7 +85,9 @@
 		<!-- Collaborator -->
 		<security:intercept-url pattern="/comission/collaborator/**"
 			access="hasRole('COLLABORATOR')" />
-
+		<!-- Sponsor -->
+		<security:intercept-url pattern="/sponsorship/sponsor/**"
+			access="hasRole('SPONSOR')" />
 
 		<!-- is Authenticated -->
 		<security:intercept-url pattern="/profile/**"
