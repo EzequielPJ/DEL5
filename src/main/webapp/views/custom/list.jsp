@@ -28,44 +28,44 @@
 	</tr>
 
 	<tr>
-		<td><spring:message code="custom.positionPerCompany" /></td>
-		<td>${marcadorNumericoArray.get("MinMaxAVGDttvPositionPerCompany")[2]}</td>
-		<td>${marcadorNumericoArray.get("MinMaxAVGDttvPositionPerCompany")[0]}</td>
-		<td>${marcadorNumericoArray.get("MinMaxAVGDttvPositionPerCompany")[1]}</td>
-		<td>${marcadorNumericoArray.get("MinMaxAVGDttvPositionPerCompany")[3]}</td>
+		<td><spring:message code="custom.proclaimsByStudents" /></td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevProclaimsByStudents")[2]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevProclaimsByStudents")[0]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevProclaimsByStudents")[1]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevProclaimsByStudents")[3]}</td>
 	</tr>
 	<tr>
-		<td><spring:message code="custom.applicationPerRookie" /></td>
-		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfApplicationPerRookie")[2]}</td>
-		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfApplicationPerRookie")[0]}</td>
-		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfApplicationPerRookie")[1]}</td>
-		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfApplicationPerRookie")[3]}</td>
-	</tr>
-
-	<tr>
-		<td><spring:message code="custom.aboutSalaries" /></td>
-		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfSalary")[2]}</td>
-		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfSalary")[0]}</td>
-		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfSalary")[1]}</td>
-		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfSalary")[3]}</td>
+		<td><spring:message code="custom.proclaimsByMembers" /></td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevProclaimsByMembers")[2]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevProclaimsByMembers")[0]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevProclaimsByMembers")[1]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevProclaimsByMembers")[3]}</td>
 	</tr>
 
 	<tr>
-		<td><spring:message code="custom.curriculaPerRookie" /></td>
-		<td>${marcadorNumericoArray.get("MinMaxAvgSttdvOfCurriculaPerRookie")[2]}</td>
-		<td>${marcadorNumericoArray.get("MinMaxAvgSttdvOfCurriculaPerRookie")[0]}</td>
-		<td>${marcadorNumericoArray.get("MinMaxAvgSttdvOfCurriculaPerRookie")[1]}</td>
-		<td>${marcadorNumericoArray.get("MinMaxAvgSttdvOfCurriculaPerRookie")[3]}</td>
+		<td><spring:message code="custom.finderResults" /></td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevFinderResults")[2]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevFinderResults")[0]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevFinderResults")[1]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevFinderResults")[3]}</td>
+	</tr>
+
+	<tr>
+		<td><spring:message code="custom.collaboratorPerComissions" /></td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevCollaboratorPerComissions")[2]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevCollaboratorPerComissions")[0]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevCollaboratorPerComissions")[1]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevCollaboratorPerComissions")[3]}</td>
 	</tr>
 
 
 
 	<tr>
-		<td><spring:message code="custom.NumberOfResultFinder" /></td>
-		<td>${marcadorNumericoArray.get("NumberOfResultFinder")[2]}</td>
-		<td>${marcadorNumericoArray.get("NumberOfResultFinder")[0]}</td>
-		<td>${marcadorNumericoArray.get("NumberOfResultFinder")[1]}</td>
-		<td>${marcadorNumericoArray.get("NumberOfResultFinder")[3]}</td>
+		<td><spring:message code="custom.notesPerEvent" /></td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevNotesPerEvent")[2]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevNotesPerEvent")[0]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevNotesPerEvent")[1]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgStdevNotesPerEvent")[3]}</td>
 	</tr>
 </table>
 
@@ -73,26 +73,12 @@
 
 	<tr>
 		<th></th>
-		<th><spring:message code="custom.company" /></th>
+		<th><spring:message code="custom.events" /></th>
 	</tr>
 
 	<tr>
-		<td><spring:message code="custom.CompanyMorePositions" /></td>
-		<td>${CompanyRookies.get("CompanyMorePositions")}</td>
-	</tr>
-
-</table>
-
-<table border=1>
-
-	<tr>
-		<th></th>
-		<th><spring:message code="custom.rookie" /></th>
-	</tr>
-
-	<tr>
-		<td><spring:message code="custom.RookiesMoreApplication" /></td>
-		<td>${CompanyRookies.get("RookiesMoreApplication")}</td>
+		<td><spring:message code="custom.nearestEvents" /></td>
+		<td>${nearestEvents.get("nearestEvents")}</td>
 	</tr>
 
 </table>
@@ -101,32 +87,12 @@
 
 	<tr>
 		<th></th>
-		<th><spring:message code="custom.position" /></th>
+		<th><spring:message code="custom.ratio" /></th>
 	</tr>
 
 	<tr>
-		<td><spring:message code="custom.BestPosition" /></td>
-		<td>${BestWorstPositionSalary.get("BestPosition")}</td>
-	</tr>
-
-	<tr>
-		<td><spring:message code="custom.WorstPosition" /></td>
-		<td>${BestWorstPositionSalary.get("WorstPosition")}</td>
-	</tr>
-
-</table>
-
-
-<table border=1>
-
-	<tr>
-		<th></th>
-		<th><spring:message code="custom.finder" /></th>
-	</tr>
-
-	<tr>
-		<td><spring:message code="custom.EmptyVsNotEmpty" /></td>
-		<td>${marcadorNumerico.get("EmptyVsNotEmpty")}</td>
+		<td><spring:message code="custom.ratioMemberComission" /></td>
+		<td>${marcadorNumerico.get("ratioMemberComission")}</td>
 	</tr>
 
 

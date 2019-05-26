@@ -25,7 +25,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(indexes = {
-	@Index(columnList = "title, description, moment, attachments")
+	@Index(columnList = "title, description, moment, attachments, finalMode")
 })
 public class Proclaim extends Ticketable {
 

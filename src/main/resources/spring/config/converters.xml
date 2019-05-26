@@ -75,6 +75,9 @@
 		<!-- Student -->
 		<bean class="converters.StudentToStringConverter" />
 		<bean class="converters.StringToStudentConverter" />
+		<!-- Customisation -->
+		<bean class="converters.CustomizationToStringConverter" />
+		<bean class="converters.StringToCustomisationConverter" />
 	</util:list>
 
 </beans>

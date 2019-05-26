@@ -19,6 +19,7 @@ public class Comment extends DomainEntity {
 	private String		description;
 	private String		attachments;
 	private Proclaim	proclaim;
+	private Actor		actor;
 
 
 	@ManyToOne(optional = false)
@@ -46,6 +47,14 @@ public class Comment extends DomainEntity {
 
 	public void setAttachments(final String attachments) {
 		this.attachments = attachments;
+	}
+	@ManyToOne
+	public Actor getActor() {
+		return this.actor;
+	}
+
+	public void setActor(final Actor actor) {
+		this.actor = actor;
 	}
 
 }
