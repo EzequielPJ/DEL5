@@ -1072,15 +1072,7 @@
 		<property name="hoursFinder" value="24" />
 		<property name="resultFinder" value="10" />
 		<property name="creditCardMakes">
-			<list>
-				<value>
-					VISA
-					MCARD
-					AMEX
-					DINNERS
-					FLY
-				</value>
-			</list>
+			<value>VISA,MCARD,AMEX,DINNERS,FLY</value>
 		</property>
 	</bean>
 
@@ -1199,18 +1191,21 @@
 		<property name="description" value="Comment1"></property>
 		<property name="attachments" value="comment,one"></property>
 		<property name="proclaim" ref="proclaim1"></property>
+		<property name="actor" ref="member1"></property>
 	</bean>
 
 	<bean id="comment2" class="domain.Comment">
 		<property name="description" value="Comment2"></property>
 		<property name="attachments" value="comment,two"></property>
 		<property name="proclaim" ref="proclaim2"></property>
+		<property name="actor" ref="student1"></property>
 	</bean>
 
 	<bean id="comment3" class="domain.Comment">
 		<property name="description" value="Comment3"></property>
 		<property name="attachments" value="comment,three"></property>
 		<property name="proclaim" ref="proclaim4"></property>
+		<property name="actor" ref="student1"></property>
 	</bean>
 
 
@@ -1436,14 +1431,5 @@
 		<property name="miscellaneousReport">
 			<list></list>
 		</property>
-	</bean>
-
-	<bean id="swap1" class="domain.Swap">
-		<property name="phone" value="000000000"></property>
-		<property name="status" value="Pending"></property>
-		<property name="description" value="Demo swap"></property>
-		<property name="comission" ref="comission1"></property>
-		<property name="receiver" ref="collaborator1"></property>
-		<property name="sender" ref="collaborator2"></property>
 	</bean>
 </beans>

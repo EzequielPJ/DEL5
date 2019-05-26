@@ -29,48 +29,39 @@
 	<display:column titleKey="sponsorship.banner">
 		<img src="${row.banner}" height="50" width="75" />
 	</display:column>
-	
+
 	<display:column titleKey="sponsorship.target">
 		<a href="${row.target}">${row.target}</a>
 	</display:column>
-	
-	<display:column titleKey="sponsorship.position">
-		<jstl:out value="${row.position.title}" />
-		
+
+
+	<display:column>
+		<a href="sponsorship/sponsor/show.do?idSponsorship=${row.id}"><spring:message
+				code="sponsorship.showmore" /></a>
+
 	</display:column>
-	
-<%-- 	
+
+	<display:column>
+		<a href="sponsorship/sponsor/update.do?idSponsorship=${row.id}"><spring:message
+				code="sponsorship.edit" /></a>
+
+	</display:column>
+
 	<jstl:if test="${isActive}">
-	<display:column titleKey="sponsorship.delete">
-				<a href="sponsorship/sponsor/delete.do?id=${row.id}"><spring:message
-						code="sponsorship.delete" /></a>
-	
-	</display:column>
-	
-	<display:column titleKey="sponsorship.show">
-				<a href="sponsorship/sponsor/show.do?id=${row.id}"><spring:message
-						code="sponsorship.showmore" /></a>
-	
-	</display:column>
-	
-	<display:column titleKey="sponsorship.edit">
-				<a href="sponsorship/sponsor/update.do?id=${row.id}"><spring:message
-						code="sponsorship.edit" /></a>
-	
-	</display:column>
-		</jstl:if>
-		
-	<jstl:if test="${isNotActive}">
-			<display:column titleKey="sponsorship.reactivate">
-				<a href="sponsorship/sponsor/reactivate.do?id=${row.id}"><spring:message
-						code="sponsorship.reactivate" /></a>
-			</display:column>
+		<display:column>
+			<a href="sponsorship/sponsor/desactive.do?idSponsorship=${row.id}"><spring:message
+					code="sponsorship.desactive" /></a>
+
+		</display:column>
+
+
 	</jstl:if>
-	
-	<jstl:forEach items="${errors}" var="error">
-		<jstl:out value="${error}" />
-	</jstl:forEach>
-	<jstl:out value="${oops}" />
-	<jstl:out value="${message}" /> --%>
+
+	<jstl:if test="${isNotActive}">
+		<display:column>
+			<a href="sponsorship/sponsor/reactive.do?idSponsorship=${row.id}"><spring:message
+					code="sponsorship.reactive" /></a>
+		</display:column>
+	</jstl:if>
 
 </display:table>

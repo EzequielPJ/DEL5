@@ -82,10 +82,19 @@
 			access="hasRole('MEMBER')" />
 		<security:intercept-url pattern="/comission/member/**"
 			access="hasRole('MEMBER')" />
+		<security:intercept-url pattern="/event/member/**"
+			access="hasRole('MEMBER')" />
+			
 		<!-- Collaborator -->
 		<security:intercept-url pattern="/comission/collaborator/**"
 			access="hasRole('COLLABORATOR')" />
-
+		<security:intercept-url pattern="/event/collaborator/**"
+			access="hasRole('COLLABORATOR')" />
+		<security:intercept-url pattern="/swap/collaborator/**"
+			access="hasRole('COLLABORATOR')" />				
+		<!-- Sponsor -->
+		<security:intercept-url pattern="/sponsorship/sponsor/**"
+			access="hasRole('SPONSOR')" />
 
 		<!-- is Authenticated -->
 		<security:intercept-url pattern="/profile/**"
