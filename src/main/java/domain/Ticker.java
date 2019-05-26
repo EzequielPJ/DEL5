@@ -10,6 +10,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.validator.constraints.SafeHtml;
+
 @Entity
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -22,6 +24,7 @@ public class Ticker extends DomainEntity {
 
 
 	@Column(unique = true)
+	@SafeHtml
 	public String getTicker() {
 		return this.ticker;
 	}
