@@ -23,9 +23,11 @@ import security.LoginService;
 import services.CategoryService;
 import services.FinderService;
 import services.ProclaimService;
+import domain.Actor;
 import domain.Finder;
 import domain.Member;
 import domain.Proclaim;
+import domain.Student;
 
 @Controller
 @RequestMapping(value = {
@@ -65,7 +67,7 @@ public class ProclaimController extends BasicController {
 	@RequestMapping(value = "/unassigned", method = RequestMethod.GET)
 	public ModelAndView unassignedList() {
 		Assert.isTrue(this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER));
-		return super.listModelAndView("proclaims", "proclaim/list", this.service.findNoAssigned(), "proclaim/member/unassigned.do");
+		return super.listModelAndView("proclaims", "proclaim/list", this.service.findNoAssigned(), "proclaim/member/unassigned.do").addObject("startAssignation", true);
 	}
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
@@ -90,8 +92,11 @@ public class ProclaimController extends BasicController {
 			requestCancel = "/proclaim/member/list.do";
 		}
 
+		Assert.isTrue(this.checkAuthorities(p));
+
 		return super.edit(p, "proclaim/edit", requestURI, requestCancel).addAllObjects(this.model());
 	}
+
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView show(@RequestParam final int id) {
 
@@ -118,19 +123,33 @@ public class ProclaimController extends BasicController {
 		String requestURI = null;
 		String requestCancel = null;
 		String nameResolver = null;
-
+		ModelAndView result = null;
 		if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT)) {
 			requestURI = "proclaim/student/edit.do";
 			requestCancel = "/proclaim/student/list.do";
 			nameResolver = "redirect:/proclaim/student/list.do";
+			result = super.save(proclaim, binding, "proclaim.commit.error", "proclaim/edit", requestURI, requestCancel, nameResolver).addAllObjects(this.model());
 		}
 		if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
 			requestURI = "proclaim/member/edit.do";
 			requestCancel = "/proclaim/member/list.do";
 			nameResolver = "redirect:/proclaim/member/list.do";
+			result = super.save(proclaim, binding, "proclaim.commit.error", "proclaim/edit", requestURI, requestCancel, nameResolver).addAllObjects(this.model());
+
+			if (binding.hasErrors()) {
+				boolean checkEnglish;
+				checkEnglish = proclaim.getStatus().equals("REJECTED") || proclaim.getStatus().equals("ACCEPTED");
+
+				if (checkEnglish)
+					proclaim.setStatus("PENDING");
+				else
+					proclaim.setStatus("PENDIENTE");
+
+				proclaim.setFinalMode(true);
+			}
 		}
 
-		return super.save(proclaim, binding, "proclaim.commit.error", "proclaim/edit", requestURI, requestCancel, nameResolver).addAllObjects(this.model());
+		return result;
 	}
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(final Proclaim proclaim) {
@@ -147,7 +166,22 @@ public class ProclaimController extends BasicController {
 
 		return super.delete(proclaim, "proclaim.commit.error", "proclaim/edit", requestURI, requestCancel, nameResolver).addAllObjects(this.model());
 	}
+	@RequestMapping(value = "/assign", method = RequestMethod.GET)
+	public ModelAndView assign(final int id) {
+		ModelAndView result;
 
+		boolean res;
+		res = this.service.assign(id);
+
+		if (res)
+			result = this.custom(new ModelAndView("redirect:/proclaim/member/list.do"));
+		else {
+			result = this.custom(new ModelAndView("redirect:/proclaim/member/unnasigned.do"));
+			result.addObject("asignedYet", "proclaim.asignedYet");
+		}
+
+		return result;
+	}
 	@Override
 	public <T> ModelAndView saveAction(final T e, final BindingResult binding, final String nameResolver) {
 		Proclaim p;
@@ -254,10 +288,39 @@ public class ProclaimController extends BasicController {
 		Map<String, Object> map;
 		map = new HashMap<String, Object>();
 
+		Collection<String> statusCol;
+		statusCol = super.statusByLang();
+
 		map.put("categories", this.categoryService.findAll());
-		map.put("statusCol", super.statusByLang());
+
+		if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
+			boolean c = statusCol.remove("SUBMITTED");
+			if (!c)
+				c = statusCol.remove("ENVIADO");
+		}
+
+		map.put("statusCol", statusCol);
 
 		return map;
 	}
 
+	private boolean checkAuthorities(final Proclaim p) {
+
+		boolean res = false;
+
+		Actor a;
+		a = this.service.findByUserAccount(LoginService.getPrincipal().getId());
+
+		if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT)) {
+			Student s;
+			s = (Student) a;
+			res = p.getStudent().getId() == s.getId();
+		} else if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
+			Member s;
+			s = (Member) a;
+			res = p.getMembers().contains(s);
+		}
+
+		return res;
+	}
 }

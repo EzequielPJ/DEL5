@@ -118,6 +118,12 @@ public class FinderService extends AbstractService {
 		if (registered != null)
 			result.retainAll(before ? this.repository.findByRegisteredBeforeDate(registered) : this.repository.findByRegisteredAfterDate(registered));
 
+		if (result.isEmpty())
+			result = new ArrayList<Proclaim>(this.serviceProclaim.findNoAssigned());
+
 		return result;
+	}
+	public void flush() {
+		this.repository.flush();
 	}
 }

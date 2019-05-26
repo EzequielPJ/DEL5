@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/comment")
+@RequestMapping(value = {
+	"/comment/student", "/comment/member"
+})
 public class CommentController extends BasicController {
 
 	@Override

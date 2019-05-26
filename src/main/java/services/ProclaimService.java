@@ -9,6 +9,8 @@ import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -39,16 +41,19 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		return this.repository.findActorByUserAccount(id);
 	}
 
+	@Cacheable(value = "proclaims")
 	public Collection<Proclaim> findNoAssigned() {
-		return this.repository.findAllNoAssignedProclaim();
+		return this.repository.findAllProclaim();
 	}
 
+	@Cacheable(value = "proclaims")
 	public Collection<Proclaim> findAllByMember() {
 		Member m;
 		m = (Member) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId());
 		return this.repository.findAllByMember(m.getId());
 	}
 
+	@Cacheable(value = "proclaims")
 	public Collection<Proclaim> findAllByStudent() {
 
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
@@ -79,7 +84,9 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		return proclaim;
 	}
 
-	public void assign(final int id) {
+	public boolean assign(final int id) {
+
+		boolean res = false;
 
 		Proclaim proclaim;
 		proclaim = this.repository.findOne(id);
@@ -91,19 +98,34 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		members = proclaim.getMembers();
 
 		if (!members.contains(h)) {
+			res = true;
 			members.add(h);
 			proclaim.setMembers(members);
 		}
 
+		return res;
 	}
 
 	public Proclaim findOne(final int id) {
 		Proclaim result;
 		result = this.repository.findOne(id);
+
 		this.inFinal = result.isFinalMode();
+
+		if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
+			Member m;
+			m = (Member) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId());
+			Assert.isTrue(result.getMembers().contains(m));
+		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT)) {
+			Student m;
+			m = (Student) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId());
+			Assert.isTrue(result.getStudent().getId() == m.getId());
+		}
+
 		return result;
 	}
 
+	@CacheEvict(value = "proclaims", allEntries = true)
 	public Proclaim save(final Proclaim aux) {
 
 		Proclaim result;
@@ -121,10 +143,9 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 			} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT)) {
 				Student m;
 				m = (Student) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId());
+				Assert.isTrue(this.inFinal == false);
 				Assert.isTrue(aux.getStudent().getId() == m.getId());
 			}
-
-		Assert.isTrue(this.inFinal == false);
 
 		if (aux.isFinalMode()) {
 			if (aux.getStatus().equals("SUBMITTED"))
@@ -140,6 +161,7 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 	}
 
 	@Override
+	@CacheEvict(value = "proclaims", allEntries = true)
 	public void delete(final int id) {
 		Proclaim p;
 		p = this.repository.findOne(id);
@@ -169,25 +191,45 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 					result.setTitle(aux.getTitle());
 					result.setMoment(new Date());
 					result.setStudentCard(aux.getStudentCard());
-					this.inFinal = false;
 				}
 
-			if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER))
-				if (this.inFinal == true) {
-					result.setLaw(aux.getLaw());
-					result.setReason(aux.getReason());
-					result.setStatus(aux.getStatus());
-					result.setClosed(aux.isClosed());
-					this.inFinal = true;
-				}
+			if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
+				result.setLaw(aux.getLaw());
+				result.setReason(aux.getReason());
+				result.setStatus(aux.getStatus());
+				result.setClosed(aux.isClosed());
+			}
+		}
+
+		boolean check;
+
+		if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER) && !result.getStatus().equals("PENDING") && !result.getStatus().equals("PENDIENTE")) {
+			if (result.getStatus().equals("ACCEPTED") || result.getStatus().equals("ACEPTADO")) {
+				check = result.getLaw().isEmpty();
+				if (check)
+					binding.rejectValue("law", "proclaim.lawEmpty");
+			}
+			if (result.getStatus().equals("REJECTED") || result.getStatus().equals("RECHAZADO")) {
+				check = result.getReason().isEmpty();
+				if (check)
+					binding.rejectValue("reason", "proclaim.reasonEmpty");
+			}
 		}
 
 		this.validator.validate(result, binding);
 
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
+			if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT))
+				result.setFinalMode(false);
+
 			throw new ValidationException();
+
+		}
 
 		return result;
 	}
 
+	public void flush() {
+		this.repository.flush();
+	}
 }
