@@ -60,9 +60,6 @@
 			<li><a href="actor/createAdmin.do"><spring:message
 						code="master.page.actor.admin" /></a></li>
 
-			<li><a href="actor/createAdmin.do"><spring:message
-						code="master.page.actor.admin" /></a></li>
-
 		</security:authorize>
 
 		<security:authorize access="hasRole('MEMBER')">
@@ -148,8 +145,7 @@
 					<li><a href="sponsorship/sponsor/listDesactive.do"><spring:message
 								code="master.page.sponsorship.listD" /></a></li>
 				</ul></li>
-			<li><a class="fNiv" href="event/listEvents.do"><spring:message
-						code="master.page.listEvent" /></a>
+
 		</security:authorize>
 
 		<security:authorize access="isAnonymous()">
