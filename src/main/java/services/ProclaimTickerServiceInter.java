@@ -47,6 +47,6 @@ public class ProclaimTickerServiceInter {
 	}
 
 	public void deleteTicker(final Ticker ticker) {
-		this.serviceTicker.deleteTicker(ticker);
+		this.serviceTicker.deleteTicker(ticker.getId());
 	}
 }

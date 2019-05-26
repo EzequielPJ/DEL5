@@ -16,6 +16,7 @@ import org.springframework.validation.Validator;
 import repositories.EventRepository;
 import security.Authority;
 import security.LoginService;
+import security.UserAccount;
 import domain.Actor;
 import domain.Collaborator;
 import domain.Event;
@@ -33,6 +34,10 @@ public class EventService extends AbstractService {
 
 	public Collection<Event> findAllFinalMode() {
 		return this.eventRepository.findAllFinalMode();
+	}
+
+	public Collection<Event> findAllPending() {
+		return this.eventRepository.findAllPending();
 	}
 
 	public Event findOne(final int id) {
@@ -57,7 +62,7 @@ public class EventService extends AbstractService {
 		e.setDescription("");
 		e.setFinalMode(false);
 		e.setMoment(new Date());
-		e.setStatus("PENDING");
+		e.setStatus("pending");
 		e.setCollaborator(c);
 		return e;
 	}
@@ -80,7 +85,6 @@ public class EventService extends AbstractService {
 		}
 		return modify;
 	}
-
 	public void deleteEvent(final int idEvent) {
 		Actor a;
 		a = this.getActorByUserId(LoginService.getPrincipal().getId());
@@ -96,16 +100,28 @@ public class EventService extends AbstractService {
 
 	public Event reconstruct(final Event ev, final BindingResult binding) {
 		Event result;
+		UserAccount user;
+		user = LoginService.getPrincipal();
 		if (ev.getId() == 0) {
 			result = ev;
 			result.setCollaborator((Collaborator) this.getActorByUserId(LoginService.getPrincipal().getId()));
 			result.setMoment(new Date());
+			result.setStatus("pending");
 		} else {
 			result = this.eventRepository.findOne(ev.getId());
 			result.setTitle(ev.getTitle());
 			result.setDescription(ev.getDescription());
 			result.setFinalMode(ev.isFinalMode());
+
 		}
+
+		if (super.findAuthority(user.getAuthorities(), Authority.MEMBER)) {
+			if (ev.getStatus().equals("0"))
+				binding.rejectValue("status", "event.wrong.status");
+			result.setMoment(new Date());
+			result.setStatus(ev.getStatus());
+		}
+
 		this.validator.validate(result, binding);
 
 		if (binding.hasErrors())

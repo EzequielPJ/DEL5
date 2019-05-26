@@ -114,7 +114,7 @@ public class MessageService extends AbstractService {
 		if (spam == false)
 			spam = super.spamTags(saved.getTags());
 		this.received(saved, spam);
-		//		sender.setSpammer(sender.isSpammer() || super.checkSpammer(sender)); //TODO marcar usuarios como spammers
+		sender.setSuspicious(sender.isSuspicious() || super.checkSpammer(sender)); //TODO marcar usuarios como spammers
 
 		return saved;
 

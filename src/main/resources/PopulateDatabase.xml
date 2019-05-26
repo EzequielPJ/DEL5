@@ -1013,21 +1013,25 @@
 	<bean id="studentCard1" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1088"></property>
+		<property name="vat" value="12345678Z" />
 	</bean>
 
 	<bean id="studentCard2" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="7982"></property>
+		<property name="vat" value="12345698Z" />
 	</bean>
 
 	<bean id="studentCard3" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1030"></property>
+		<property name="vat" value="12345678Y" />
 	</bean>
 
 	<bean id="studentCard4" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1088"></property>
+		<property name="vat" value="22345678Z" />
 	</bean>
 
 	<bean id="ticker1" class="domain.Ticker">
@@ -1432,14 +1436,5 @@
 		<property name="miscellaneousReport">
 			<list></list>
 		</property>
-	</bean>
-
-	<bean id="swap1" class="domain.Swap">
-		<property name="phone" value="000000000"></property>
-		<property name="status" value="Pending"></property>
-		<property name="description" value="Demo swap"></property>
-		<property name="comission" ref="comission1"></property>
-		<property name="receiver" ref="collaborator1"></property>
-		<property name="sender" ref="collaborator2"></property>
 	</bean>
 </beans>
