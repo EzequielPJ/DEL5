@@ -67,14 +67,9 @@ public abstract class BasicController extends AbstractController {
 		} catch (final ValidationException valid) {
 			result = this.createAndEditModelAndView(e, nameView, requestURI, requestCancel);
 			result.addObject("view", false);
-			if (e instanceof ActorForm)
-				result.addObject("makes", super.creditCardMakes());
 		} catch (final Throwable oops) {
 			result = this.createAndEditModelAndView(e, error, nameView, requestURI, requestCancel);
 			result.addObject("view", false);
-			if (e instanceof ActorForm)
-				result.addObject("makes", super.creditCardMakes());
-			result.addObject("duplicate", true);
 		}
 
 		return result;

@@ -29,16 +29,30 @@ public class TickerServiceInter<K extends Ticketable, S extends JpaRepository<K,
 
 		K result = null;
 
-		Ticker aux;
+		K auxFromDB = null;
+
+		if (without.getId() != 0)
+			auxFromDB = this.repository.findOne(without.getId());
+
+		Ticker aux = null;
 
 		boolean value = false;
 
 		do
 			try {
-				aux = this.serviceTicker.saveTicker(without.getTicker());
-				without.setTicker(aux);
+
+				if (without.getId() != 0) {
+					boolean check;
+					check = auxFromDB.getTicker().getTicker().equals(without.getTicker().getTicker());
+					if (!check) {
+						aux = this.serviceTicker.saveTicker(this.serviceTicker.create());
+						without.setTicker(aux);
+					}
+				}
+
 				result = this.repository.save(without);
 				value = true;
+
 			} catch (final Throwable oops) {
 				value = false;
 				aux = this.serviceTicker.create();
@@ -49,7 +63,7 @@ public class TickerServiceInter<K extends Ticketable, S extends JpaRepository<K,
 		return result;
 	}
 
-	public void deleteTicker(final Ticker ticker) {
-		this.serviceTicker.deleteTicker(ticker);
+	public void delete(final int id) {
+		this.repository.delete(id);
 	}
 }

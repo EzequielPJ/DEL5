@@ -39,7 +39,7 @@
 		
 	</display:column>
 	
-<%-- 	
+ 	
 	<jstl:if test="${isActive}">
 	<display:column titleKey="sponsorship.delete">
 				<a href="sponsorship/sponsor/delete.do?id=${row.id}"><spring:message
@@ -66,11 +66,4 @@
 						code="sponsorship.reactivate" /></a>
 			</display:column>
 	</jstl:if>
-	
-	<jstl:forEach items="${errors}" var="error">
-		<jstl:out value="${error}" />
-	</jstl:forEach>
-	<jstl:out value="${oops}" />
-	<jstl:out value="${message}" /> --%>
-
 </display:table>

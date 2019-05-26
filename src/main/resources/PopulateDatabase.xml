@@ -1014,21 +1014,25 @@
 	<bean id="studentCard1" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1088"></property>
+		<property name="vat" value="12345678Z" />
 	</bean>
 
 	<bean id="studentCard2" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="7982"></property>
+		<property name="vat" value="12345698Z" />
 	</bean>
 
 	<bean id="studentCard3" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1030"></property>
+		<property name="vat" value="12345678Y" />
 	</bean>
 
 	<bean id="studentCard4" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1088"></property>
+		<property name="vat" value="22345678Z" />
 	</bean>
 
 	<bean id="ticker1" class="domain.Ticker">
@@ -1069,15 +1073,7 @@
 		<property name="hoursFinder" value="24" />
 		<property name="resultFinder" value="10" />
 		<property name="creditCardMakes">
-			<list>
-				<value>
-					VISA
-					MCARD
-					AMEX
-					DINNERS
-					FLY
-				</value>
-			</list>
+			<value>VISA,MCARD,AMEX,DINNERS,FLY</value>
 		</property>
 	</bean>
 

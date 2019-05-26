@@ -15,8 +15,8 @@ public class CustomForm {
 	private String	spamwordsSpanish;
 	private Integer	hoursFinder;
 	private Integer	resultFinder;
-	private Integer	phonePrefix;
-	private Double	vat;
+	private String	phonePrefix;
+	private String	creditCardMakes;
 
 
 	@NotBlank
@@ -82,20 +82,23 @@ public class CustomForm {
 		this.resultFinder = resultFinder;
 	}
 
-	public Integer getPhonePrefix() {
+	@NotBlank
+	@SafeHtml
+	public String getPhonePrefix() {
 		return this.phonePrefix;
 	}
 
-	public void setPhonePrefix(final Integer phonePrefix) {
+	public void setPhonePrefix(final String phonePrefix) {
 		this.phonePrefix = phonePrefix;
 	}
 
-	@Range(min = 10, max = 100)
-	public Double getVat() {
-		return this.vat;
+	@NotBlank
+	@SafeHtml
+	public String getCreditCardMakes() {
+		return this.creditCardMakes;
 	}
 
-	public void setVat(final Double vat) {
-		this.vat = vat;
+	public void setCreditCardMakes(final String creditCardMakes) {
+		this.creditCardMakes = creditCardMakes;
 	}
 }

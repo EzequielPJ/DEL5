@@ -47,14 +47,14 @@
 <form:form action="${requestURI}" modelAttribute="sponsorship">
 
 	<form:hidden path="id" />
-	<form:hidden path="parade"/>
+	<form:hidden path="event"/>
 
 	<acme:textbox code="sponsorship.urlBanner" path="urlBanner"	readonly="${view}" />
 	<acme:textbox code="sponsorship.linkTPage" path="linkTPage"	readonly="${view}" />
-	<form:label path="parade">
-		<spring:message code="sponsorship.parade"> </spring:message>
+	<form:label path="event">
+		<spring:message code="sponsorship.event"> </spring:message>
 	</form:label>
-	:<jstl:out value="${sponsorship.parade.ticker}"></jstl:out>
+	:<jstl:out value="${sponsorship.event.title}"></jstl:out>
 
 	<h4>
 		<spring:message code="sponsorship.creditCard"></spring:message>

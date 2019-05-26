@@ -1,7 +1,10 @@
 
 package repositories;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Sponsorship;
@@ -15,6 +18,6 @@ public interface SponsorshipRepository extends JpaRepository<Sponsorship, Intege
 	//	@Query("select c.vat from CustomisationSystem c")
 	//	Double getVat();
 
-	//	@Query("select s from Sponsorship s join s.provider p where p.id = ?1")
-	//	Collection<Sponsorship> getSponsorshipByProviderId(final int idProvider);
+	@Query("select ss from Sponsorship ss join s.sponsor s where s.id = ?1")
+	Collection<Sponsorship> getSponsorshipBySponsorId(final int idProvider);
 }

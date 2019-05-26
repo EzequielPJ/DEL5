@@ -72,6 +72,12 @@
 		<!-- Proclaim -->
 		<bean class="converters.ProclaimToStringConverter" />
 		<bean class="converters.StringToProclaimConverter" />
+		<!-- Student -->
+		<bean class="converters.StudentToStringConverter" />
+		<bean class="converters.StringToStudentConverter" />
+		<!-- Customisation -->
+		<bean class="converters.CustomizationToStringConverter" />
+		<bean class="converters.StringToCustomisationConverter" />
 	</util:list>
 
 </beans>
