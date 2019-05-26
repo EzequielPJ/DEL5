@@ -24,6 +24,10 @@ public class TickerService {
 	private TickerRepository	repository;
 
 
+	public Ticker findTickerByCode(final String s) {
+		return this.repository.findTickerByCode(s);
+	}
+
 	public Ticker create() {
 		Ticker ticker;
 		ticker = new Ticker();
@@ -45,5 +49,8 @@ public class TickerService {
 	}
 	public void deleteTicker(final int ticker) {
 		this.repository.delete(ticker);
+	}
+	public void flush() {
+		this.repository.flush();
 	}
 }

@@ -8,13 +8,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.Assert;
 
 import repositories.CategoryRepository;
-import security.LoginService;
 import utilities.AbstractTest;
 import domain.Proclaim;
-import domain.Student;
 import domain.StudentCard;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,43 +24,68 @@ public class ProclaimServiceTest extends AbstractTest {
 	@Autowired
 	private ProclaimService		service;
 
+	/**
+	 * CategoryRepository must be used for this test.
+	 * If service is used, an assert will interrupt the execution.
+	 * FindOne from Service is intended to be used only by administrators.
+	 */
+
 	@Autowired
-	private CategoryRepository	repository;
+	private CategoryRepository	repositoryCategory;
 
 
 	@Test
-	public void testTicker() {
-		Proclaim p;
-		p = this.service.create();
-
-		p.setTitle("prueba");
-		p.setCategory(this.repository.findOne(super.getEntityId("category1")));
-
-		p.setDescription("desc");
-
-		p.setFinalMode(false);
-
-		p.setLaw("law");
-		p.setStatus("SUBMITTED");
-
-		super.authenticate("student1");
-		p.setStudent((Student) this.service.findByUserAccount(LoginService.getPrincipal().getId()));
-
-		StudentCard d;
-		d = new StudentCard();
-
-		d.setCentre("centre");
-		d.setCode(1234);
-
-		p.setStudentCard(d);
-
-		p.getTicker().setTicker("190419-000000");
-
-		Proclaim saved;
-		saved = this.service.save(p);
-
-		System.out.println(saved.getTicker().getTicker());
-
-		Assert.isTrue(saved.getId() != 0);
+	public void driverCreation() {
+		final Object[][] objects = {
+			{	// Simple creation - Positive Case
+				"student1", "", super.getEntityId("category1"), null
+			}, {
+				// Simple creation with duplicate ticker on database - Negative Case
+				"student1", "190419-000000", super.getEntityId("category1"), null
+			}
+		};
+		for (int i = 0; i < objects.length; i++)
+			this.template((String) objects[i][0], (String) objects[i][1], (int) objects[i][2], (Class<?>) objects[i][3]);
 	}
+
+	protected void template(final String auth, final String ticker, final int category, final Class<?> expected) {
+		Class<?> caught = null;
+		try {
+
+			super.authenticate(auth);
+
+			Proclaim p;
+			p = this.service.create();
+
+			p.setTitle("prueba");
+			p.setCategory(this.repositoryCategory.findOne(category));
+
+			p.setDescription("desc");
+
+			p.setFinalMode(false);
+			p.setAttachments("attachment1");
+
+			StudentCard d;
+			d = new StudentCard();
+
+			d.setCentre("centre");
+			d.setCode(1234);
+			d.setVat("12345678Z");
+
+			p.setStudentCard(d);
+
+			if (!ticker.isEmpty())
+				p.getTicker().setTicker(ticker);
+
+			this.service.save(p);
+
+			this.service.flush();
+
+			super.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		super.checkExceptions(expected, caught);
+	}
+
 }

@@ -16,7 +16,9 @@ import org.springframework.validation.Validator;
 import repositories.ComissionRepository;
 import security.Authority;
 import security.LoginService;
+import security.UserAccount;
 import domain.Actor;
+import domain.Collaborator;
 import domain.Comission;
 import domain.Member;
 
@@ -35,8 +37,8 @@ public class ComissionService extends AbstractService {
 		return this.comissionRepository.findOne(idComission);
 	}
 
-	public Collection<Comission> findAll() {
-		return this.comissionRepository.findAll();
+	public Collection<Comission> findAllComissionFinalMode() {
+		return this.comissionRepository.findAllComissionFinalMode();
 	}
 
 	public Collection<Comission> getComissionsByMemberId(final int idMember) {
@@ -61,17 +63,17 @@ public class ComissionService extends AbstractService {
 		return com;
 	}
 
-	public Comission save(final Comission org) {
+	public Comission save(final Comission com) {
 		Actor a;
 		a = this.getActorByUserId(LoginService.getPrincipal().getId());
 
 		Comission modify;
 
-		if (org.getId() == 0)
-			modify = this.comissionRepository.save(org);
+		if (com.getId() == 0)
+			modify = this.comissionRepository.save(com);
 		else {
-			Assert.isTrue(org.getMember().getId() == a.getId(), "You don´t have access, you can only update your comissions");
-			modify = this.comissionRepository.save(org);
+			Assert.isTrue(com.getMember().getId() == a.getId(), "You donï¿½t have access, you can only update your comissions");
+			modify = this.comissionRepository.save(com);
 		}
 		return modify;
 	}
@@ -83,22 +85,22 @@ public class ComissionService extends AbstractService {
 		Comission org;
 		org = this.comissionRepository.findOne(idComission);
 
-		Assert.isTrue(org.getMember().getId() == a.getId(), "You don´t have access, you can only delete your comissions");
+		Assert.isTrue(org.getMember().getId() == a.getId(), "You donï¿½t have access, you can only delete your comissions");
 
 		this.comissionRepository.delete(idComission);
 	}
 
-	public Comission reconstruct(final Comission org, final BindingResult binding) {
+	public Comission reconstruct(final Comission com, final BindingResult binding) {
 		Comission result;
-		if (org.getId() == 0) {
-			result = org;
+		if (com.getId() == 0) {
+			result = com;
 			result.setMember((Member) this.getActorByUserId(LoginService.getPrincipal().getId()));
 			result.setMoment(new Date());
 		} else {
-			result = this.comissionRepository.findOne(org.getId());
-			result.setName(org.getName());
-			result.setDescription(org.getDescription());
-			result.setFinalMode(org.isFinalMode());
+			result = this.comissionRepository.findOne(com.getId());
+			result.setName(com.getName());
+			result.setDescription(com.getDescription());
+			result.setFinalMode(com.isFinalMode());
 		}
 		this.validator.validate(result, binding);
 
@@ -109,5 +111,16 @@ public class ComissionService extends AbstractService {
 	}
 	public void flush() {
 		this.comissionRepository.flush();
+	}
+
+	public void joinTo(final int idComission) {
+		UserAccount user;
+		user = LoginService.getPrincipal();
+		Collaborator c;
+		c = (Collaborator) this.getActorByUserId(user.getId());
+		Comission com;
+		com = this.findOne(idComission);
+		Assert.isTrue(c.getComission() == null, "You don't have to join another comission");
+		c.setComission(com);
 	}
 }

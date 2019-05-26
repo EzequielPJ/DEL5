@@ -800,7 +800,6 @@
 			</list>
 		</property>
 		<property name="suspicious" value="false" />
-		<property name="comission" ref="comission2"></property>
 		<property name="portfolio" ref="portfolio2"></property>
 	</bean>
 

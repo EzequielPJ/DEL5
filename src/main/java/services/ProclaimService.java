@@ -40,7 +40,7 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 	}
 
 	public Collection<Proclaim> findNoAssigned() {
-		return this.repository.findAllNoAssignedProclaim();
+		return this.repository.findAllProclaim();
 	}
 
 	public Collection<Proclaim> findAllByMember() {
@@ -220,5 +220,9 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		}
 
 		return result;
+	}
+
+	public void flush() {
+		this.repository.flush();
 	}
 }

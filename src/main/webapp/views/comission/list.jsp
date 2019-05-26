@@ -53,5 +53,13 @@
 	</jstl:if>
 	</display:column>
 	</security:authorize>
+	<security:authorize access="hasRole('COLLABORATOR')">
+		<display:column>
+		<jstl:if test="${cond}">
+		<a href="comission/collaborator/join.do?idComission=${row.id}"><spring:message
+				code="comission.joinTo" /></a>
+				</jstl:if>
+		</display:column>
+	</security:authorize>
 
 </display:table>
