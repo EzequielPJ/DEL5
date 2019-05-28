@@ -31,20 +31,21 @@
 	</security:authorize>
 
 	<acme:textbox code="proclaim.title" path="title"
-		readonly="${proclaim.finalMode or view}" />
+		readonly="${proclaim.finalMode eq 'true' or view}" />
 	<acme:textarea code="proclaim.description" path="description"
-		readonly="${proclaim.finalMode or view}" />
+		readonly="${proclaim.finalMode eq 'true' or view}" />
 	<acme:textarea code="proclaim.attachments" path="attachments"
-		readonly="${proclaim.finalMode or view}" />
+		readonly="${proclaim.finalMode eq 'true' or view}" />
 
 	<acme:textbox code="proclaim.studentCard.centre"
-		path="studentCard.centre" readonly="${proclaim.finalMode or view}" />
+		path="studentCard.centre"
+		readonly="${proclaim.finalMode eq 'true' or view}" />
 	<acme:textbox code="proclaim.studentCard.code" path="studentCard.code"
-		readonly="${proclaim.finalMode or view}" />
+		readonly="${proclaim.finalMode eq 'true' or view}" />
 	<acme:textbox code="proclaim.studentCard.vat" path="studentCard.vat"
-		readonly="${proclaim.finalMode or view}" />
+		readonly="${proclaim.finalMode eq 'true' or view}" />
 
-	<jstl:if test="${proclaim.finalMode eq 'false'}">
+	<jstl:if test="${proclaim.finalMode eq 'false' and view eq 'false'}">
 		<acme:select items="${categories}" itemLabel="name"
 			code="proclaim.category" path="category" />
 	</jstl:if>
@@ -56,18 +57,14 @@
 		</jstl:if>
 	</div>
 	<spring:message code="proclaim.finalMode" />
-	<form:checkbox path="finalMode" disabled="${proclaim.finalMode}" />
+	<form:checkbox path="finalMode"
+		disabled="${proclaim.finalMode or view eq 'true'}" />
 
-	<security:authorize access="hasRole('STUDENT')">
-		<jstl:if test="${proclaim.finalMode eq 'false'}">
-			<acme:submit name="save" code="proclaim.save" />
-		</jstl:if>
-	</security:authorize>
 	<security:authorize access="hasRole('MEMBER')">
 		<div>
 			<spring:message code="proclaim.status" />
 			<form:select path="status" onchange="check(this)" id="status1"
-				disabled="${proclaim.status != 'PENDING' or 'PENDIENTE'}">
+				disabled="${proclaim.status != 'PENDING' or 'PENDIENTE' or view eq 'true'}">
 				<jstl:forEach items="${statusCol}" var="i">
 					<form:option value="${i}" />
 				</jstl:forEach>
@@ -75,25 +72,35 @@
 		</div>
 		<div id="law1">
 			<acme:textarea code="proclaim.law" path="law"
-				readonly="${proclaim.status == 'ACCEPTED' or 'ACEPTADO'}" />
+				readonly="${proclaim.status == 'ACCEPTED' or 'ACEPTADO' or view eq 'true'}" />
 		</div>
 
 		<div id="reason1">
 			<acme:textarea code="proclaim.reason" path="reason"
-				readonly="${proclaim.status == 'REJECTED' or 'RECHAZADO'}" />
+				readonly="${proclaim.status == 'REJECTED' or 'RECHAZADO' or view eq 'true'}" />
 		</div>
-		<div>
-			<spring:message code="proclaim.closed" />
-			<form:checkbox path="closed" />
-		</div>
-
-		<acme:submit name="save" code="proclaim.save" />
-
+		<jstl:if test="${proclaim.status == 'ACCEPTED' or 'ACEPTADO'}">
+			<jstl:if test="${view eq 'false'}">
+				<div>
+					<spring:message code="proclaim.closed" />
+					<form:checkbox path="closed" />
+				</div>
+			</jstl:if>
+		</jstl:if>
+		<jstl:if test="${view eq 'false'}">
+			<acme:submit name="save" code="proclaim.save" />
+		</jstl:if>
 	</security:authorize>
 	<security:authorize access="hasRole('STUDENT')">
-		<jstl:if test="${proclaim.id != 0 and proclaim.finalMode eq 'false'}">
-			<acme:submit name="delete" code="proclaim.delete" />
+		<jstl:if test="${view eq 'false'}">
+			<jstl:if test="${!proclaim.finalMode}">
+				<acme:submit name="save" code="proclaim.save" />
+				<jstl:if test="${proclaim.id != 0}">
+					<acme:submit name="delete" code="proclaim.delete" />
+				</jstl:if>
+			</jstl:if>
 		</jstl:if>
+
 	</security:authorize>
 
 </form:form>

@@ -1,28 +1,33 @@
 
 package services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.stereotype.Service;
+
+import repositories.GenericRepository;
+
+import com.mifmif.common.regex.Generex;
 
 import domain.Ticker;
 import domain.Ticketable;
 
 @Service
-public class TickerServiceInter<K extends Ticketable, S extends JpaRepository<K, Integer>> extends AbstractService {
+public class TickerServiceInter<K extends Ticketable, S extends GenericRepository<K>> {
 
-	@Autowired
-	private TickerService	serviceTicker;
-
-	S						repository;
+	S	repository;
 
 
 	public void setRepository(final S repository) {
 		this.repository = repository;
 	}
 
-	public Ticker createTicker() {
-		return this.serviceTicker.create();
+	public Ticker create() {
+		Ticker ticker;
+		ticker = new Ticker();
+		ticker.setTicker(new SimpleDateFormat("yyyyMMdd").format(new Date()) + "-" + new Generex("[a-zA-Z0-9]{6}").random().toUpperCase());
+		return ticker;
 	}
 
 	public K withTicker(final K without) {
@@ -50,7 +55,7 @@ public class TickerServiceInter<K extends Ticketable, S extends JpaRepository<K,
 
 				if (without.getId() == 0) {
 					Ticker findByCode;
-					findByCode = this.serviceTicker.findTickerByCode(without.getTicker().getTicker());
+					findByCode = this.repository.findTickerByCode(without.getTicker().getTicker());
 
 					if (findByCode != null)
 						throw new IllegalArgumentException();
@@ -61,15 +66,11 @@ public class TickerServiceInter<K extends Ticketable, S extends JpaRepository<K,
 
 			} catch (final Throwable oops) {
 				value = false;
-				aux = this.serviceTicker.create();
+				aux = this.create();
 				without.setTicker(aux);
 			}
 		while (value == false);
 
 		return result;
-	}
-
-	public void delete(final int id) {
-		this.repository.delete(id);
 	}
 }

@@ -12,5 +12,4 @@ public interface TickerRepository extends JpaRepository<Ticker, Integer> {
 
 	@Query("select t from Ticker t where t.ticker = ?1")
 	Ticker findTickerByCode(String code);
-
 }

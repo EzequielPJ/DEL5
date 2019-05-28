@@ -72,7 +72,7 @@ public class ProclaimController extends BasicController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		Assert.isTrue(this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
-		return super.create(this.service.create(), "proclaim/edit", "proclaim/student/edit.do", "/proclaim/student/list.do").addAllObjects(this.model());
+		return super.create(this.service.create(), "proclaim/edit", "proclaim/student/edit.do", "/proclaim/student/list.do").addAllObjects(this.model()).addObject("view", false);
 	}
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int id) {
@@ -144,9 +144,8 @@ public class ProclaimController extends BasicController {
 					proclaim.setStatus("PENDING");
 				else
 					proclaim.setStatus("PENDIENTE");
-
-				proclaim.setFinalMode(true);
 			}
+			proclaim.setFinalMode(true);
 		}
 
 		return result;
@@ -282,6 +281,12 @@ public class ProclaimController extends BasicController {
 			res &= f.getCategory().equals(search.getCategory());
 		if (f.getRegisteredDate() != null)
 			res &= f.getRegisteredDate().equals(search.getRegisteredDate());
+		if ((f.getCategory() == null && search.getCategory() != null) || (f.getCategory() != null && search.getCategory() == null))
+			res = false;
+		if ((f.getRegisteredDate() == null && search.getRegisteredDate() != null) || (f.getRegisteredDate() != null && search.getRegisteredDate() == null))
+			res = false;
+		if ((f.getSingleKey() == null && search.getSingleKey() != null) || (f.getSingleKey() != null && search.getSingleKey() == null))
+			res = false;
 		return res;
 	}
 	public Map<String, ?> model() {

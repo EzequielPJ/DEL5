@@ -93,6 +93,7 @@ public class SwapController extends BasicController {
 		Assert.isTrue(this.swapService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR), "You must be a collaborator");
 		ModelAndView result = null;
 		result = super.save(swap, binding, "swap.commit.error", "swap/edit", "swap/collaborator/edit.do", "redirect:listMySwap.do", "redirect:listMySwap.do");
+		result.addObject("statusCol", Arrays.asList("accepted", "rejected"));
 		return result;
 	}
 
