@@ -17,8 +17,24 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="${requestURI}" modelAttribute="comment">
+<form:form action="${requestURI}" modelAttribute="comment" id="form">
 
 	<form:hidden path="id"/>
+	<form:hidden path="actor"/>
+	<form:hidden path="proclaim"/>
+	
+	<spring:message code="comment.proclaim"></spring:message>
+	<jstl:out value=" : ${comment.proclaim.title}"></jstl:out>
+
+	<acme:textbox code="comment.description" path="description"/>
+	
+	<acme:textbox code="comment.attachments" path="attachments"/>
+		
+		<spring:message code="comment.author" />
+		<jstl:out value=" : ${comment.actor.name}" />
+	
+		<acme:submit name="save" code="comment.save" />
 
 </form:form>
+
+<acme:cancel url="${requestCancel}" code="comment.cancel" />

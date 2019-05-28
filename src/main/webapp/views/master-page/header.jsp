@@ -88,8 +88,8 @@
 					<li><a href="proclaim/member/unassigned.do"><spring:message
 								code="master.page.student.unnasignedProclaims" /></a></li>
 				</ul></li>
-			<li><a class="fNiv" href="proclaim/member/finder.do"><spring:message
-						code="master.page.finder" /></a></li>
+			<li><a class="fNiv" href="comment/member/list.do"><spring:message
+						code="master.page.comments" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('STUDENT')">
@@ -102,6 +102,8 @@
 					<li><a href="proclaim/student/create.do"><spring:message
 								code="master.page.student.createProclaims" /></a></li>
 				</ul></li>
+				<li><a class="fNiv" href="comment/student/list.do"><spring:message
+						code="master.page.comments" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('COLLABORATOR')">

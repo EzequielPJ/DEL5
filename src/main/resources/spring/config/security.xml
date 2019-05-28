@@ -75,6 +75,8 @@
 
 		<security:intercept-url pattern="/proclaim/student/**"
 			access="hasRole('STUDENT')" />
+		<security:intercept-url pattern="/comment/student/**"
+			access="hasRole('STUDENT')" />
 
 		<!-- Member -->
 
@@ -84,7 +86,9 @@
 			access="hasRole('MEMBER')" />
 		<security:intercept-url pattern="/event/member/**"
 			access="hasRole('MEMBER')" />
-			
+		<security:intercept-url pattern="/comment/member/**"
+			access="hasRole('MEMBER')" />
+
 		<!-- Collaborator -->
 		<security:intercept-url pattern="/comission/collaborator/**"
 			access="hasRole('COLLABORATOR')" />

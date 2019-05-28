@@ -4,10 +4,13 @@ package services;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.CommentRepository;
 import security.Authority;
@@ -24,9 +27,37 @@ public class CommentService extends AbstractService {
 	@Autowired
 	private ProclaimService		procService;
 
+	@Autowired
+	private Validator			validator;
 
-	public Collection<Comment> findAllByActorId(final int actorId) {
-		return this.commRepository.findCommentByActor(actorId);
+
+	//	public Collection<Comment> findAllByActorId(final int actorId) {
+	//		return this.commRepository.findCommentByActor(actorId);
+	//	}
+
+	public Collection<Comment> getCommentsByProclaim(final int proclaimId) {
+		return this.commRepository.findCommentByProclaim(proclaimId);
+	}
+
+	public Collection<Comment> getCommentsByActorAndProclaim(final int idAccount, final int idProclaim) {
+		return this.commRepository.getCommentsByActorAndProclaim(idAccount, idProclaim);
+	}
+
+	public Collection<Comment> getCommentsByActor(final int accountId) {
+		return this.commRepository.findCommentByActor(accountId);
+	}
+
+	/*
+	 * public Collection<Comment> getCommentsByStudent(final int idStudent) {
+	 * return this.commRepository.getCommentsByStudent(idStudent);
+	 * }
+	 * 
+	 * public Collection<Comment> getCommentsByMember(final int idMember) {
+	 * return this.commRepository.getCommentsByMember(idMember);
+	 * }
+	 */
+	public Comment findOne(final int commentId) {
+		return this.commRepository.findOne(commentId);
 	}
 
 	public Comment create(final int proclaimId) {
@@ -42,11 +73,26 @@ public class CommentService extends AbstractService {
 	}
 
 	public Comment save(final Comment c) {
-		return null;
+		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER) || super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
+		Comment saved;
+		saved = this.commRepository.save(c);
+
+		return saved;
 
 	}
 
-	public void delete() {
+	public void delete(final int commentId) {
+		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER) || super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
+		this.commRepository.delete(this.commRepository.findOne(commentId));
+	}
+
+	public Comment reconstruct(final Comment c, final BindingResult binding) {
+		//Comment recontruct;
+		this.validator.validate(c, binding);
+
+		if (binding.hasErrors())
+			throw new ValidationException();
+		return c;
 	}
 
 }
