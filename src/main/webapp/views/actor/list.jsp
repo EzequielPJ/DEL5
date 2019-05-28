@@ -17,13 +17,18 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-
+<jstl:if test="${!comis}">
 <p>
-	<spring:message code="actor.action.list" />
+	<spring:message code="actor.joinToAComission" /><br>
+	<a href="comission/collaborator/list.do"><spring:message
+								code="actor.joinTo" /></a>
 </p>
-
+</jstl:if>
+<jstl:if test="${comis}">
 <display:table name="actors" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
+	
+	
 
 	<display:column titleKey="actor.name">
 		<jstl:out value="${row.name}" />
@@ -41,7 +46,7 @@
 		<jstl:out value="${row.phone}" />
 	</display:column>
 	<display:column titleKey="actor.adress">
-		<jstl:out value="${row.adress}" />
+		<jstl:out value="${row.address}" />
 	</display:column>
 	<display:column titleKey="actor.user">
 		<jstl:out value="${row.account.username}" />
@@ -49,6 +54,16 @@
 	<display:column titleKey="actor.enabled">
 		<jstl:out value="${row.account.enabled}" />
 	</display:column>
+	
+	<security:authorize access="hasRole('COLLABORATOR')">
+	<display:column titleKey="actor.comission">
+		<jstl:out value="${row.comission.name}" />
+	</display:column>
+	<display:column>
+				<a href="swap/collaborator/create.do?idCollaborator=${row.id}" class="btn"><spring:message
+						code="actor.swapToComission" /></a>
+		</display:column>
+	</security:authorize>
 
 	<security:authorize access="hasRole('ADMIN')">
 		<display:column>
@@ -66,3 +81,4 @@
 	</security:authorize>
 
 </display:table>
+</jstl:if>

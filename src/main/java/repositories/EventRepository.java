@@ -16,6 +16,9 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
 	@Query("select e from Event e where e.finalMode = 1 and e.status = 'accepted'")
 	Collection<Event> findAllFinalMode();
 
+	@Query("select e from Event e where e.status = 'pending'")
+	Collection<Event> findAllPending();
+
 	@Query("select a from Actor a where a.account.id = ?1")
 	Actor findActorByUserAccountId(int id);
 

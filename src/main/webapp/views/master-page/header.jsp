@@ -76,6 +76,13 @@
 								code="master.page.member.create" /></a></li>
 				</ul></li>
 			<li><a class="fNiv"><spring:message
+						code="master.page.event" /></a>
+					<ul>
+					<li class="arrow"></li>
+					<li><a href="event/member/list.do"><spring:message
+								code="master.page.member.listEvent" /></a></li>
+			</ul></li>
+			<li><a class="fNiv"><spring:message
 						code="master.page.proclaims" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -84,8 +91,8 @@
 					<li><a href="proclaim/member/unassigned.do"><spring:message
 								code="master.page.student.unnasignedProclaims" /></a></li>
 				</ul></li>
-			<li><a class="fNiv" href="proclaim/member/finder.do"><spring:message
-						code="master.page.finder" /></a></li>
+			<li><a class="fNiv" href="comment/member/list.do"><spring:message
+						code="master.page.comments" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('STUDENT')">
@@ -98,6 +105,8 @@
 					<li><a href="proclaim/student/create.do"><spring:message
 								code="master.page.student.createProclaims" /></a></li>
 				</ul></li>
+				<li><a class="fNiv" href="comment/student/list.do"><spring:message
+						code="master.page.comments" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('COLLABORATOR')">
@@ -106,7 +115,28 @@
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="comission/collaborator/list.do"><spring:message
-								code="master.page.collaborator.listComission" /></a></li>
+								code="master.page.collaborator.listComission" /></a></li>				
+				</ul></li>
+			<li><a class="fNiv"><spring:message
+						code="master.page.event" /></a>
+					<ul>
+					<li class="arrow"></li>
+					<li><a href="event/collaborator/list.do"><spring:message
+								code="master.page.collaborator.listEvent" /></a></li>
+					<li><a href="event/collaborator/create.do"><spring:message
+								code="master.page.event.create" /></a></li>
+				
+				</ul></li>
+			<li><a class="fNiv"><spring:message
+						code="master.page.swap" /></a>
+					<ul>
+					<li class="arrow"></li>
+					<li><a href="swap/collaborator/list.do"><spring:message
+								code="master.page.collaborator.listAllSwap" /></a></li>
+					<li><a href="swap/collaborator/listMySwap.do"><spring:message
+								code="master.page.collaborator.listMySwap" /></a></li>
+					<li><a href="swap/collaborator/listSwap.do"><spring:message
+								code="master.page.collaborator.listSwap" /></a></li>
 				</ul></li>
 		</security:authorize>
 
@@ -127,12 +157,10 @@
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message
 						code="master.page.login" /></a></li>
-			<li><a class="fNiv" href="about-us/terms.do"><spring:message
-						code="master.page.terms" /></a></li>
-
-			<li><a class="fNiv" href="event/listEvents.do"><spring:message
-						code="master.page.listEvent" /></a>
-			<li><a class="fNiv"><spring:message
+		<li><a class="fNiv" href="about-us/terms.do"><spring:message
+					code="master.page.terms" /></a></li>
+					
+		<li><a class="fNiv"><spring:message
 						code="master.page.actor.register" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -146,7 +174,10 @@
 								code="master.page.actor.sponsor" /></a></li>
 				</ul></li>
 		</security:authorize>
-
+		<!-- Public -->
+		<li><a class="fNiv" href="event/listEvents.do"><spring:message
+						code="master.page.listEvent" /></a>
+						
 		<security:authorize access="isAuthenticated()">
 			<li><a class="fNiv"> <spring:message
 						code="master.page.profile" /> (<security:authentication

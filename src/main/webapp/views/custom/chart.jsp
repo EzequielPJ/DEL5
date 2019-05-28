@@ -57,7 +57,7 @@
 		],
 		datasets : [
 			{
-				label : "Positions",
+				label : "Proclaims per Type",
 				data : [
 
 				]

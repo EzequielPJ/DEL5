@@ -58,11 +58,22 @@
 	<jstl:if test="${row.status == 'ACCEPTED' or row.status == 'ACEPTADO'}">
 
 		<display:column titleKey="proclaim.commentaries">
-			<a href=""><spring:message code="proclaim.commentaries" /></a>
+		<security:authorize access="hasRole('MEMBER')">
+			<a href="comment/member/list.do?id=${row.id}"><spring:message code="proclaim.commentaries" /></a>
+			</security:authorize>
+			<security:authorize access="hasRole('STUDENT')">
+			<a href="comment/student/list.do?id=${row.id}"><spring:message code="proclaim.commentaries" /></a>
+			</security:authorize>
 		</display:column>
 
 		<display:column titleKey="proclaim.createCommentary">
-			<a href=""><spring:message code="proclaim.createCommentary" /></a>
+			<security:authorize access="hasRole('MEMBER')">
+			<a href="comment/member/create.do?id=${row.id}"><spring:message code="proclaim.createCommentary" /></a>
+			</security:authorize>
+			<security:authorize access="hasRole('STUDENT')">
+			<a href="comment/student/create.do?id=${row.id}"><spring:message code="proclaim.createCommentary" /></a>
+			</security:authorize>
+		
 		</display:column>
 
 	</jstl:if>

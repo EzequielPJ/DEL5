@@ -24,7 +24,7 @@ public class NotesServiceTest extends AbstractTest {
 
 
 	/**
-	 * TODO: Por hacer. Hasta que no se arregle servicio no puede valorarse la cobertura del test.
+	 * 
 	 * 
 	 * TEST 1
 	 * 

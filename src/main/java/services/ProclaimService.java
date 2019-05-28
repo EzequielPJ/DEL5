@@ -9,6 +9,8 @@ import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -39,16 +41,19 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		return this.repository.findActorByUserAccount(id);
 	}
 
+	@Cacheable(value = "proclaims")
 	public Collection<Proclaim> findNoAssigned() {
 		return this.repository.findAllProclaim();
 	}
 
+	@Cacheable(value = "proclaims")
 	public Collection<Proclaim> findAllByMember() {
 		Member m;
 		m = (Member) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId());
 		return this.repository.findAllByMember(m.getId());
 	}
 
+	@Cacheable(value = "proclaims")
 	public Collection<Proclaim> findAllByStudent() {
 
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
@@ -120,6 +125,7 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		return result;
 	}
 
+	@CacheEvict(value = "proclaims", allEntries = true)
 	public Proclaim save(final Proclaim aux) {
 
 		Proclaim result;
@@ -155,6 +161,7 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 	}
 
 	@Override
+	@CacheEvict(value = "proclaims", allEntries = true)
 	public void delete(final int id) {
 		Proclaim p;
 		p = this.repository.findOne(id);
