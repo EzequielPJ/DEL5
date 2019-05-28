@@ -1,6 +1,10 @@
 <<<<<<< HEAD
 #./src/main/resources/Entities.map
+<<<<<<< HEAD
 #Tue May 28 19:26:02 CEST 2019
+=======
+#Mon May 27 21:00:00 CEST 2019
+>>>>>>> mari
 box39=692
 box38=691
 box37=690
@@ -98,6 +102,7 @@ comment2=727
 comment1=726
 sponsor2=714
 sponsor1=713
+<<<<<<< HEAD
 =======
 #./src/main/resources/Entities.map
 #Mon May 27 19:19:38 CEST 2019
@@ -199,3 +204,5 @@ comment1=726
 sponsor2=714
 sponsor1=713
 >>>>>>> aleks
+=======
+>>>>>>> mari

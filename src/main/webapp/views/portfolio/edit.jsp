@@ -20,5 +20,19 @@
 <form:form action="${requestURI}" modelAttribute="portfolio">
 
 	<form:hidden path="id"/>
-
+	<form:hidden path="studyReport"/>
+	
+	<form:hidden path="miscellaneousReport"/>
+	<form:hidden path="workReport"/>
+	<acme:textbox code="portfolio.title" path="title" readonly="${view}" />
+	<acme:textbox code="portfolio.fullName" path="fullName" readonly="true" />
+	<acme:textbox code="portfolio.moment" path="moment" readonly="true" />
+	<acme:textbox code="portfolio.address" path="address" readonly="true" />
+	<acme:textbox code="portfolio.phone" path="phone" readonly="true" />
+<jstl:if test="${!view}">
+		<input type="submit" name="save"
+			value="<spring:message code="portfolio.save" />" />
+	</jstl:if>
 </form:form>
+<acme:cancel code="actor.cancel" url="" />
+

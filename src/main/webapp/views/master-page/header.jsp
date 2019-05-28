@@ -90,6 +90,8 @@
 				</ul></li>
 			<li><a class="fNiv" href="comment/member/list.do"><spring:message
 						code="master.page.comments" /></a></li>
+			<li><a class="fNiv" href="proclaim/member/finder.do"><spring:message
+						code="master.page.finder" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('STUDENT')">
@@ -124,6 +126,8 @@
 								code="master.page.event.create" /></a></li>
 				
 				</ul></li>
+				<li><a href="portfolio/list.do"><spring:message
+								code="master.page.portfolio.list" /></a></li>
 			<li><a class="fNiv"><spring:message
 						code="master.page.swap" /></a>
 					<ul>
