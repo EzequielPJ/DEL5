@@ -17,6 +17,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+
 <jstl:if test="${!comis}">
 <p>
 	<spring:message code="actor.joinToAComission" /><br>

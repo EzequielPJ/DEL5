@@ -44,8 +44,10 @@ public class ProclaimServiceTest extends AbstractTest {
 				"student1", "190419-000000", super.getEntityId("category1"), null
 			}
 		};
-		for (int i = 0; i < objects.length; i++)
+		for (int i = 0; i < objects.length; i++) {
+			System.out.println(i);
 			this.template((String) objects[i][0], (String) objects[i][1], (int) objects[i][2], (Class<?>) objects[i][3]);
+		}
 	}
 
 	protected void template(final String auth, final String ticker, final int category, final Class<?> expected) {
