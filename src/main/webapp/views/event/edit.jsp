@@ -20,5 +20,42 @@
 <form:form action="${requestURI}" modelAttribute="event">
 
 	<form:hidden path="id"/>
-
+	<jstl:if test="${palShow}">
+	<spring:message code="event.score" />
+	</jstl:if>
+	<jstl:out value="${score}" />
+	<br>
+	<br> 
+	
+	<acme:textbox code="event.title" path="title"
+		readonly="${view or mem}" />
+	<acme:textarea code="event.description" path="description"
+		readonly="${view or mem}" />
+	<acme:textbox code="event.moment" path="moment"
+		readonly="true" />
+	<jstl:if test="${view}">
+			<spring:message code="event.status" />:
+			<jstl:out value="${event.status}" />
+		</jstl:if>
+		<br>
+	<security:authorize access="hasRole('MEMBER')">
+		<jstl:if test="${!view}">
+			<form:select path="status">
+				<form:option value="0" label="---" />
+				<form:options items="${statusCol}" />
+			</form:select>
+			<form:errors path="status" cssClass="error" />
+		</jstl:if>
+	</security:authorize>
+	<br>
+	<form:label path="finalMode">
+			<spring:message code="event.finalMode" />
+		</form:label>
+	<form:checkbox path="finalMode"
+			disabled="true" />
+	<jstl:if test="${!event.finalMode and !view}">
+				<acme:submit name="save" code="event.save" />
+			</jstl:if>
 </form:form>
+<br>
+<acme:cancel url="${requestCancel}" code="event.cancel" />

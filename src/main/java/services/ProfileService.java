@@ -50,12 +50,9 @@ public class ProfileService {
 	public Profile createProfile() {
 		Profile result;
 		result = new Profile();
-		Actor a;
-		a = this.profileRepository.findActorByUserAccountId(LoginService.getPrincipal().getId());
 		result.setNick("");
 		result.setLink("");
 		result.setSocialNetworkName("");
-		result.setActor(a);
 		return result;
 	}
 
@@ -63,6 +60,8 @@ public class ProfileService {
 
 		Actor a;
 		a = this.profileRepository.findActorByUserAccountId(LoginService.getPrincipal().getId());
+
+		p.setActor(a);
 
 		Profile modify;
 

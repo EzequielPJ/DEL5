@@ -18,4 +18,7 @@ public interface ComissionRepository extends JpaRepository<Comission, Integer> {
 
 	@Query("select c from Comission c where c.member.id = ?1")
 	Collection<Comission> getComissionsByMemberId(final int idMember);
+
+	@Query("select c from Comission c where c.finalMode = true")
+	Collection<Comission> findAllComissionFinalMode();
 }

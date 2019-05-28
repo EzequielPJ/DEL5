@@ -8,10 +8,12 @@ import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.NotesRepository;
+import security.Authority;
 import security.LoginService;
 import domain.Actor;
 import domain.Event;
@@ -60,6 +62,9 @@ public class NotesService extends AbstractService {
 	}
 
 	public Notes save(final Notes n) {
+		Assert.isTrue(
+			super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR) || super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)
+				|| super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT), "You must be an collaborator, member or student");
 		Notes modify;
 		modify = this.notesRepository.save(n);
 		return modify;

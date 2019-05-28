@@ -27,15 +27,17 @@
 		<acme:date code="finder.registeredDate" path="registeredDate"
 			id="datepicker1" />
 
+		<div>
+			<spring:message code="finder.before" />
+			<form:checkbox path="beforeOrNot" />
+		</div>
+
 		<acme:select code="finder.category" path="category" itemLabel="name"
 			items="${categories}" />
 
-		<div>
-			<spring:message code="finder.before" />
-			<form:checkbox path="before" />
-		</div>
+		<acme:submit name="search" code="finder.search" />
 	</security:authorize>
-	<acme:submit name="search" code="finder.search" />
+
 </form:form>
 
 <acme:cancel url="${requestCancel}" code="finder.cancel" />

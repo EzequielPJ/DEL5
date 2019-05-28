@@ -17,7 +17,7 @@
 <tiles-definitions>
 
 	<definition name="portfolio/list" extends="master.page">	
-		<put-attribute name="title" value="Portfolios" />
+		<put-attribute name="title" value="Portfolio" />
 		<put-attribute name="body" value="/views/portfolio/list.jsp" />
 	</definition>
 	

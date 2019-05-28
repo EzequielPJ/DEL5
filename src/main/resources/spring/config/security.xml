@@ -37,6 +37,8 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/event/listEvents.do"
 			access="permitAll" />
+		<security:intercept-url pattern="/event/showEvent.do"
+			access="permitAll" />
 		<security:intercept-url pattern="/notes/list.do"
 			access="permitAll" />
 		<security:intercept-url pattern="/notes/show.do"
@@ -56,40 +58,63 @@
 			access="isAuthenticated()" />
 
 		<!-- Administrator -->
-		
+
 		<security:intercept-url pattern="/customisation/administrator/**"
 			access="hasRole('ADMIN')" />
-			
+
 		<security:intercept-url pattern="/category/administrator/**"
 			access="hasRole('ADMIN')" />
 
 		<!-- Student -->
-			
+
 		<!-- Collaborator, Member, Student -->
 		<security:intercept-url pattern="/notes/create.do"
 			access="hasAnyRole('COLLABORATOR', 'MEMBER', 'STUDENT')" />
 		<security:intercept-url pattern="/notes/edit.do"
 			access="hasAnyRole('COLLABORATOR', 'MEMBER', 'STUDENT')" />
-		
+
 		<security:intercept-url pattern="/proclaim/student/**"
 			access="hasRole('STUDENT')" />
-		
+
 		<!-- Member -->
-		
+
 		<security:intercept-url pattern="/proclaim/member/**"
 			access="hasRole('MEMBER')" />
-			
-		<!-- Member -->
 		<security:intercept-url pattern="/comission/member/**"
 			access="hasRole('MEMBER')" />
+		<security:intercept-url pattern="/event/member/**"
+			access="hasRole('MEMBER')" />
+			
 		<!-- Collaborator -->
 		<security:intercept-url pattern="/comission/collaborator/**"
 			access="hasRole('COLLABORATOR')" />
-				
+		<security:intercept-url pattern="/event/collaborator/**"
+			access="hasRole('COLLABORATOR')" />
+		<security:intercept-url pattern="/swap/collaborator/**"
+			access="hasRole('COLLABORATOR')" />	
+		<security:intercept-url pattern="/portfolio/**"
+			access="hasRole('COLLABORATOR')" />		
+			<security:intercept-url pattern="/studyReport/**"
+			access="hasRole('COLLABORATOR')" />		
+			<security:intercept-url pattern="/studyreport/**"
+			access="hasRole('COLLABORATOR')" />	
+			<security:intercept-url pattern="/workreport/**"
+			access="hasRole('COLLABORATOR')" />	
+			<security:intercept-url pattern="/workReport/**"
+			access="hasRole('COLLABORATOR')" />	
+			<security:intercept-url pattern="/miscellaneousreport/**"
+			access="hasRole('COLLABORATOR')" />	
+			<security:intercept-url pattern="/miscellaneousReport/**"
+			access="hasRole('COLLABORATOR')" />			
+		<!-- Sponsor -->
+		<security:intercept-url pattern="/sponsorship/sponsor/**"
+			access="hasRole('SPONSOR')" />
+
 		<!-- is Authenticated -->
 		<security:intercept-url pattern="/profile/**"
 			access="isAuthenticated()" />
-
+		<security:intercept-url pattern="/profileApi/**"
+			access="isAuthenticated()" />
 		<security:intercept-url pattern="/**"
 			access="hasRole('NONE')" />
 

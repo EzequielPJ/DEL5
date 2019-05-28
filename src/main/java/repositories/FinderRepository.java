@@ -18,15 +18,15 @@ public interface FinderRepository extends JpaRepository<Finder, Integer> {
 	@Query("select a from Actor a where a.account.id = ?1")
 	Actor findActorByUserAccountId(int id);
 
-	@Query("select p from Proclaim p where p.finalMode = true and p.closed = false and p.members is empty and (p.title LIKE %?1% or p.description LIKE %?1%)")
+	@Query("select p from Proclaim p where p.finalMode = true and p.closed = false and (p.status = 'PENDING' or p.status = 'PENDIENTE') and (p.title LIKE %?1% or p.description LIKE %?1%)")
 	Collection<Proclaim> findBySingleKey(String singleKey);
 
-	@Query("select p from Proclaim p where p.finalMode = true and p.closed = false and p.members is empty and p.category.id = ?1")
+	@Query("select p from Proclaim p where p.finalMode = true and p.closed = false and (p.status = 'PENDING' or p.status = 'PENDIENTE') and p.category.id = ?1")
 	Collection<Proclaim> findByCategory(int id);
 
-	@Query("select p from Proclaim p where p.finalMode = true and p.closed = false and p.members is empty and p.moment >= ?1")
+	@Query("select p from Proclaim p where p.finalMode = true and p.closed = false and (p.status = 'PENDING' or p.status = 'PENDIENTE') and p.moment >= ?1")
 	Collection<Proclaim> findByRegisteredAfterDate(Date registeredAfter);
 
-	@Query("select p from Proclaim p where p.finalMode = true and p.closed = false and p.members is empty and p.moment <= ?1")
+	@Query("select p from Proclaim p where p.finalMode = true and p.closed = false and (p.status = 'PENDING' or p.status = 'PENDIENTE') and p.moment <= ?1")
 	Collection<Proclaim> findByRegisteredBeforeDate(Date registeredBefore);
 }

@@ -800,7 +800,6 @@
 			</list>
 		</property>
 		<property name="suspicious" value="false" />
-		<property name="comission" ref="comission2"></property>
 		<property name="portfolio" ref="portfolio2"></property>
 	</bean>
 
@@ -1014,21 +1013,25 @@
 	<bean id="studentCard1" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1088"></property>
+		<property name="vat" value="12345678Z" />
 	</bean>
 
 	<bean id="studentCard2" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="7982"></property>
+		<property name="vat" value="12345698Z" />
 	</bean>
 
 	<bean id="studentCard3" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1030"></property>
+		<property name="vat" value="12345678Y" />
 	</bean>
 
 	<bean id="studentCard4" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1088"></property>
+		<property name="vat" value="22345678Z" />
 	</bean>
 
 	<bean id="ticker1" class="domain.Ticker">
@@ -1069,15 +1072,7 @@
 		<property name="hoursFinder" value="24" />
 		<property name="resultFinder" value="10" />
 		<property name="creditCardMakes">
-			<list>
-				<value>
-					VISA
-					MCARD
-					AMEX
-					DINNERS
-					FLY
-				</value>
-			</list>
+			<value>VISA,MCARD,AMEX,DINNERS,FLY</value>
 		</property>
 	</bean>
 
@@ -1196,18 +1191,21 @@
 		<property name="description" value="Comment1"></property>
 		<property name="attachments" value="comment,one"></property>
 		<property name="proclaim" ref="proclaim1"></property>
+		<property name="actor" ref="member1"></property>
 	</bean>
 
 	<bean id="comment2" class="domain.Comment">
 		<property name="description" value="Comment2"></property>
 		<property name="attachments" value="comment,two"></property>
 		<property name="proclaim" ref="proclaim2"></property>
+		<property name="actor" ref="student1"></property>
 	</bean>
 
 	<bean id="comment3" class="domain.Comment">
 		<property name="description" value="Comment3"></property>
 		<property name="attachments" value="comment,three"></property>
 		<property name="proclaim" ref="proclaim4"></property>
+		<property name="actor" ref="student1"></property>
 	</bean>
 
 
@@ -1403,7 +1401,7 @@
 		</property>
 		<property name="fullName" value="Collaborator1" />
 		<property name="address" value="" />
-		<property name="photo" value="" />
+		<property name="phone" value="" />
 		<property name="workReport">
 			<list></list>
 		</property>
@@ -1423,7 +1421,7 @@
 		</property>
 		<property name="fullName" value="Collaborator2" />
 		<property name="address" value="" />
-		<property name="photo" value="" />
+		<property name="phone" value="" />
 		<property name="workReport">
 			<list></list>
 		</property>
@@ -1433,14 +1431,5 @@
 		<property name="miscellaneousReport">
 			<list></list>
 		</property>
-	</bean>
-
-	<bean id="swap1" class="domain.Swap">
-		<property name="phone" value="000000000"></property>
-		<property name="status" value="Pending"></property>
-		<property name="description" value="Demo swap"></property>
-		<property name="comission" ref="comission1"></property>
-		<property name="receiver" ref="collaborator1"></property>
-		<property name="sender" ref="collaborator2"></property>
 	</bean>
 </beans>

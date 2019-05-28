@@ -1,7 +1,6 @@
 
 package domain;
 
-import java.util.Collection;
 import java.util.Map;
 
 import javax.persistence.Access;
@@ -28,8 +27,8 @@ public class CustomisationSystem extends DomainEntity {
 	private Map<String, String>	spamwords;
 	private Integer				hoursFinder;
 	private Integer				resultFinder;
-	private Integer				phonePrefix;
-	private Collection<String>	creditCardMakes;
+	private String				phonePrefix;
+	private String				creditCardMakes;
 
 
 	@NotBlank
@@ -86,20 +85,23 @@ public class CustomisationSystem extends DomainEntity {
 		this.resultFinder = resultFinder;
 	}
 
-	public Integer getPhonePrefix() {
+	@NotBlank
+	@SafeHtml
+	public String getPhonePrefix() {
 		return this.phonePrefix;
 	}
 
-	public void setPhonePrefix(final Integer phonePrefix) {
+	public void setPhonePrefix(final String phonePrefix) {
 		this.phonePrefix = phonePrefix;
 	}
 
-	@ElementCollection
-	public Collection<String> getCreditCardMakes() {
+	@NotBlank
+	@SafeHtml
+	public String getCreditCardMakes() {
 		return this.creditCardMakes;
 	}
 
-	public void setCreditCardMakes(final Collection<String> creditCardMakes) {
+	public void setCreditCardMakes(final String creditCardMakes) {
 		this.creditCardMakes = creditCardMakes;
 	}
 
