@@ -1400,7 +1400,7 @@
 		</property>
 		<property name="fullName" value="Collaborator1" />
 		<property name="address" value="" />
-		<property name="photo" value="" />
+		<property name="phone" value="" />
 		<property name="workReport">
 			<list></list>
 		</property>
@@ -1420,7 +1420,7 @@
 		</property>
 		<property name="fullName" value="Collaborator2" />
 		<property name="address" value="" />
-		<property name="photo" value="" />
+		<property name="phone" value="" />
 		<property name="workReport">
 			<list></list>
 		</property>

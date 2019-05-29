@@ -78,6 +78,15 @@
 		<!-- Customisation -->
 		<bean class="converters.CustomizationToStringConverter" />
 		<bean class="converters.StringToCustomisationConverter" />
+		<!-- StudyReport -->
+		<bean class="converters.StudyReportToStringConverter" />
+		<bean class="converters.StringToStudyReportConverter" />
+		<!-- WorkReport -->
+		<bean class="converters.WorkReportToStringConverter" />
+		<bean class="converters.StringToWorkReportConverter" />
+		<!-- MiscellaneousReport -->
+		<bean class="converters.MiscellaneousReportToStringConverter" />
+		<bean class="converters.StringToMiscellaneousReportConverter" />
 	</util:list>
 
 </beans>

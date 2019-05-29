@@ -72,13 +72,12 @@
 					<li><a href="comission/member/create.do"><spring:message
 								code="master.page.member.create" /></a></li>
 				</ul></li>
-			<li><a class="fNiv"><spring:message
-						code="master.page.event" /></a>
-					<ul>
+			<li><a class="fNiv"><spring:message code="master.page.event" /></a>
+				<ul>
 					<li class="arrow"></li>
 					<li><a href="event/member/list.do"><spring:message
 								code="master.page.member.listEvent" /></a></li>
-			</ul></li>
+				</ul></li>
 			<li><a class="fNiv"><spring:message
 						code="master.page.proclaims" /></a>
 				<ul>
@@ -88,6 +87,8 @@
 					<li><a href="proclaim/member/unassigned.do"><spring:message
 								code="master.page.student.unnasignedProclaims" /></a></li>
 				</ul></li>
+			<li><a class="fNiv" href="comment/member/list.do"><spring:message
+						code="master.page.comments" /></a></li>
 			<li><a class="fNiv" href="proclaim/member/finder.do"><spring:message
 						code="master.page.finder" /></a></li>
 		</security:authorize>
@@ -102,6 +103,8 @@
 					<li><a href="proclaim/student/create.do"><spring:message
 								code="master.page.student.createProclaims" /></a></li>
 				</ul></li>
+			<li><a class="fNiv" href="comment/student/list.do"><spring:message
+						code="master.page.comments" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('COLLABORATOR')">
@@ -110,21 +113,21 @@
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="comission/collaborator/list.do"><spring:message
-								code="master.page.collaborator.listComission" /></a></li>				
+								code="master.page.collaborator.listComission" /></a></li>
 				</ul></li>
-			<li><a class="fNiv"><spring:message
-						code="master.page.event" /></a>
-					<ul>
+			<li><a class="fNiv"><spring:message code="master.page.event" /></a>
+				<ul>
 					<li class="arrow"></li>
 					<li><a href="event/collaborator/list.do"><spring:message
 								code="master.page.collaborator.listEvent" /></a></li>
 					<li><a href="event/collaborator/create.do"><spring:message
 								code="master.page.event.create" /></a></li>
-				
+
 				</ul></li>
-			<li><a class="fNiv"><spring:message
-						code="master.page.swap" /></a>
-					<ul>
+			<li><a class="fNiv" href="portfolio/list.do"><spring:message
+						code="master.page.portfolio.list" /></a></li>
+			<li><a class="fNiv"><spring:message code="master.page.swap" /></a>
+				<ul>
 					<li class="arrow"></li>
 					<li><a href="swap/collaborator/list.do"><spring:message
 								code="master.page.collaborator.listAllSwap" /></a></li>
@@ -151,10 +154,10 @@
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message
 						code="master.page.login" /></a></li>
-		<li><a class="fNiv" href="about-us/terms.do"><spring:message
-					code="master.page.terms" /></a></li>
-					
-		<li><a class="fNiv"><spring:message
+			<li><a class="fNiv" href="about-us/terms.do"><spring:message
+						code="master.page.terms" /></a></li>
+
+			<li><a class="fNiv"><spring:message
 						code="master.page.actor.register" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -170,28 +173,27 @@
 		</security:authorize>
 		<!-- Public -->
 		<li><a class="fNiv" href="event/listEvents.do"><spring:message
-						code="master.page.listEvent" /></a>
-						
-		<security:authorize access="isAuthenticated()">
-			<li><a class="fNiv"> <spring:message
-						code="master.page.profile" /> (<security:authentication
-						property="principal.username" />)
-			</a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="profile/list.do"><spring:message
-								code="master.page.profile.list" /></a></li>
-					<li><a href="actor/personal.do"><spring:message
-								code="master.page.edit.data" /></a></li>
+					code="master.page.listEvent" /></a> <security:authorize
+				access="isAuthenticated()">
+				<li><a class="fNiv"> <spring:message
+							code="master.page.profile" /> (<security:authentication
+							property="principal.username" />)
+				</a>
+					<ul>
+						<li class="arrow"></li>
+						<li><a href="profile/list.do"><spring:message
+									code="master.page.profile.list" /></a></li>
+						<li><a href="actor/personal.do"><spring:message
+									code="master.page.edit.data" /></a></li>
 
-					<li><a href="box/list.do"><spring:message
-								code="master.page.boxes" /></a></li>
-					<li><a href="message/create.do"><spring:message
-								code="master.page.message.create" /></a></li>
-					<li><a href="j_spring_security_logout"><spring:message
-								code="master.page.logout" /> </a></li>
-				</ul></li>
-		</security:authorize>
+						<li><a href="box/list.do"><spring:message
+									code="master.page.boxes" /></a></li>
+						<li><a href="message/create.do"><spring:message
+									code="master.page.message.create" /></a></li>
+						<li><a href="j_spring_security_logout"><spring:message
+									code="master.page.logout" /> </a></li>
+					</ul></li>
+			</security:authorize>
 	</ul>
 </div>
 
