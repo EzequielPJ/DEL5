@@ -20,5 +20,35 @@
 
 <display:table name="swaps" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
+	
+	<display:column titleKey="swap.status">
+		<jstl:out value="${row.status}" />
+	</display:column>
+	<display:column titleKey="swap.description">
+		<jstl:out value="${row.description}" />
+	</display:column>
+	<jstl:if test="${!pend}">
+	<display:column titleKey="swap.comission">
+		<jstl:out value="${row.receiver.comission.name}" />
+	</display:column>
+		<display:column titleKey="swap.receiver">
+		<jstl:out value="${row.receiver.name}" />
+	</display:column>
+	</jstl:if>
+	<jstl:if test="${pend}">
+	<display:column titleKey="swap.comission">
+		<jstl:out value="${row.comission.name}" />
+	</display:column>
+		<display:column titleKey="swap.receiver">
+		<jstl:out value="${row.sender.name}" />
+	</display:column>
+	<display:column>
+		<a href="swap/collaborator/update.do?idSwap=${row.id}"><spring:message
+				code="swap.update" /></a>
+	</display:column>
+	</jstl:if>
+	
+	
+
 
 </display:table>

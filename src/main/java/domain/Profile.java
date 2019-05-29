@@ -12,6 +12,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -51,6 +53,7 @@ public class Profile extends DomainEntity {
 		this.link = link;
 	}
 
+	@JsonIgnore
 	@ManyToOne
 	public Actor getActor() {
 		return this.actor;

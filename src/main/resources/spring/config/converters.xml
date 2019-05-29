@@ -57,9 +57,9 @@
 		<!-- Notes -->
 		<bean class="converters.NotesToStringConverter" />
 		<bean class="converters.StringToNotesConverter" />
-		<!-- Organization -->
-		<bean class="converters.OrganizationToStringConverter" />
-		<bean class="converters.StringToOrganizationConverter" />
+		<!-- Comission -->
+		<bean class="converters.ComissionToStringConverter" />
+		<bean class="converters.StringToComissionConverter" />
 		<!-- Portfolio -->
 		<bean class="converters.PortfolioToStringConverter" />
 		<bean class="converters.StringToPortfolioConverter" />
@@ -75,6 +75,18 @@
 		<!-- Student -->
 		<bean class="converters.StudentToStringConverter" />
 		<bean class="converters.StringToStudentConverter" />
+		<!-- Customisation -->
+		<bean class="converters.CustomizationToStringConverter" />
+		<bean class="converters.StringToCustomisationConverter" />
+		<!-- StudyReport -->
+		<bean class="converters.StudyReportToStringConverter" />
+		<bean class="converters.StringToStudyReportConverter" />
+		<!-- WorkReport -->
+		<bean class="converters.WorkReportToStringConverter" />
+		<bean class="converters.StringToWorkReportConverter" />
+		<!-- MiscellaneousReport -->
+		<bean class="converters.MiscellaneousReportToStringConverter" />
+		<bean class="converters.StringToMiscellaneousReportConverter" />
 	</util:list>
 
 </beans>

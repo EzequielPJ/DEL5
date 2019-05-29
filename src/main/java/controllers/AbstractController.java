@@ -58,7 +58,7 @@ public class AbstractController {
 	}
 
 	public boolean checkPhone(String phone) {
-	    	boolean res;
+		boolean res;
 		res = false;
 
 		phone = phone.replace(("+" + System.getProperty("phonePrefix")).trim(), " ").trim();
@@ -112,8 +112,8 @@ public class AbstractController {
 		Map<String, Set<String>> result;
 		result = new HashMap<String, Set<String>>();
 
-		result.put("en", new HashSet<>(Arrays.asList("SUBMITTED", "ACCEPTED", "REJECTED")));
-		result.put("es", new HashSet<>(Arrays.asList("ENVIADO", "ACEPTADO", "RECHAZADO")));
+		result.put("en", new HashSet<>(Arrays.asList("PENDING", "SUBMITTED", "ACCEPTED", "REJECTED")));
+		result.put("es", new HashSet<>(Arrays.asList("PENDIENTE", "ENVIADO", "ACEPTADO", "RECHAZADO")));
 
 		return result.get(this.getLanguageSystem());
 	}

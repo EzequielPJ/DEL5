@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!-- 
- * tiles_es.xml
+ * tiles.xml
  *
  * Copyright (C) 2019 Universidad de Sevilla
  * 
@@ -13,17 +13,17 @@
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
-      
+       
 <tiles-definitions>
 
-	<definition name="organization/list" extends="master.page">	
-		<put-attribute name="title" value="Organizaciones" />
-		<put-attribute name="body" value="/views/organization/list.jsp" />
+	<definition name="comission/list" extends="master.page">	
+		<put-attribute name="title" value="Comissions" />
+		<put-attribute name="body" value="/views/comission/list.jsp" />
 	</definition>
 	
-	<definition name="organization/edit" extends="master.page">	
-		<put-attribute name="title" value="Crear organización" />
-		<put-attribute name="body" value="/views/organization/edit.jsp" />
+	<definition name="comission/edit" extends="master.page">	
+		<put-attribute name="title" value="Edit comission" />
+		<put-attribute name="body" value="/views/comission/edit.jsp" />
 	</definition>
 	
 </tiles-definitions>

@@ -20,5 +20,17 @@
 <form:form action="${requestURI}" modelAttribute="workReport">
 
 	<form:hidden path="id"/>
-
+	<acme:textbox code="workreport.title" path="title" readonly="${view}" />
+	
+	<acme:textbox code="workreport.moment" path="moment" readonly="true" />
+	<acme:date code="workreport.startDate" path="startDate" id="startDate"  readonly="${view}" />
+	<acme:date code="workreport.endDate" path="endDate" id="endDate" readonly="${view}" />
+	<acme:textbox code="workreport.businessName" path="businessName" readonly="${view}" />
+	<acme:textbox code="studyreport.text" path="text" readonly="${view}" />
+	
+<jstl:if test="${!view}">
+		<input type="submit" name="save"
+			value="<spring:message code="wr.save" />" />
+	</jstl:if>
 </form:form>
+<acme:cancel code="cancel" url="${requestCancel}" />

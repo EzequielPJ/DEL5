@@ -55,22 +55,28 @@ public class CustomisationSystemController extends BasicController {
 		return result;
 	}
 
-	/*
-	 * @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	 * public ModelAndView dashboard() {
-	 * ModelAndView result;
-	 * Assert.isTrue(this.serviceCustom.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN), "You don't have permission to do this.");
-	 * result = this.custom(new ModelAndView("custom/list"));
-	 * 
-	 * result.addObject("marcadorNumerico", this.serviceCustom.marcadorNumerico());
-	 * result.addObject("marcadorNumericoArray", this.serviceCustom.marcadorNumericoArray());
-	 * result.addObject("CompanyRookies", this.serviceCustom.CompanyRookies());
-	 * result.addObject("BestWorstPositionSalary", this.serviceCustom.BestWorstPositionSalary());
-	 * 
-	 * return result;
-	 * 
-	 * }
-	 *///Delete method is not neccesary
+	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+	public ModelAndView dashboard() {
+		ModelAndView result;
+		Assert.isTrue(this.serviceCustom.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
+		result = this.custom(new ModelAndView("custom/list"));
+
+		result.addObject("marcadorNumerico", this.serviceCustom.marcadorNumerico());
+		result.addObject("marcadorNumericoArray", this.serviceCustom.marcadorNumericoArray());
+		result.addObject("nearestEvents", this.serviceCustom.nearestEvents());
+		return result;
+	}
+
+	@RequestMapping(value = "/histogram", method = RequestMethod.GET)
+	public ModelAndView histogram() {
+		ModelAndView result;
+
+		Assert.isTrue(this.serviceCustom.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
+		result = this.custom(new ModelAndView("custom/chart"));
+		result.addObject("histogram", this.serviceCustom.histogram());
+		return result;
+	}
+	///Delete method is not neccesary
 	@Override
 	public <T> ModelAndView deleteAction(final T e, final String nameResolver) {
 		// TODO Auto-generated method stub

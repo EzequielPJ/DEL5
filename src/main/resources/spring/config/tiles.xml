@@ -27,7 +27,7 @@
 		<value>/views/event/tiles.xml</value>
 		<value>/views/miscellaneousReport/tiles.xml</value>
 		<value>/views/notes/tiles.xml</value>
-		<value>/views/organization/tiles.xml</value>
+		<value>/views/comission/tiles.xml</value>
 		<value>/views/portfolio/tiles.xml</value>
 		<value>/views/studyReport/tiles.xml</value>
 		<value>/views/workReport/tiles.xml</value>

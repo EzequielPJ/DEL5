@@ -19,6 +19,22 @@
 
 <form:form action="${requestURI}" modelAttribute="miscellaneousReport">
 
-	<form:hidden path="id"/>
 
+	<form:hidden path="id"/>
+	<acme:textbox code="miscelaneousrecord.title" path="title" readonly="${view}" />
+	
+	<acme:textbox code="miscelaneousrecord.moment" path="moment" readonly="true" />
+	
+	<acme:textbox code="miscelaneousrecord.text" path="text" readonly="${view}"/>
+	
+	<acme:textbox code="miscelaneousrecord.attachments" path="attachments"  readonly="${view}" />
+	
+	
+	
+	
+<jstl:if test="${!view}">
+		<input type="submit" name="save"
+			value="<spring:message code="wr.save" />" />
+	</jstl:if>
 </form:form>
+<acme:cancel code="cancel" url="${requestCancel}" />

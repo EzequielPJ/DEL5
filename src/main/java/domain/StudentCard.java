@@ -4,8 +4,8 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -16,7 +16,18 @@ public class StudentCard {
 
 	private String	centre;
 	private int		code;
+	private String	vat;
 
+
+	@SafeHtml
+	@NotBlank
+	public String getVat() {
+		return this.vat;
+	}
+
+	public void setVat(final String vat) {
+		this.vat = vat;
+	}
 
 	@SafeHtml
 	@NotBlank
@@ -27,8 +38,8 @@ public class StudentCard {
 	public void setCentre(final String centre) {
 		this.centre = centre;
 	}
-	@Min(value = 4)
-	@Max(value = 4)
+	@DecimalMin("4")
+	@DecimalMax("4")
 	public int getCode() {
 		return this.code;
 	}

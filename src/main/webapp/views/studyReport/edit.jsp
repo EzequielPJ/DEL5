@@ -17,8 +17,23 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+
 <form:form action="${requestURI}" modelAttribute="studyReport">
 
 	<form:hidden path="id"/>
-
+	<acme:textbox code="studyreport.title" path="title" readonly="${view}" />
+	<acme:textbox code="studyreport.course" path="course" readonly="${view}" />
+	<acme:textbox code="studyreport.moment" path="moment" readonly="true" />
+	
+	<acme:textbox code="studyreport.percentajeCredits" path="percentajeCredits" readonly="${view}"/>
+	<acme:date code="studyreport.startDate" path="startDate" id="startDate"  readonly="${view}" />
+	<acme:date code="studyreport.endDate" path="endDate" id="endDate" readonly="${view}" />
+	
+	<acme:textbox code="studyreport.average" path="average" readonly="${view}" />
+	
+<jstl:if test="${!view}">
+		<input type="submit" name="save"
+			value="<spring:message code="sr.save" />" />
+	</jstl:if>
 </form:form>
+<acme:cancel code="cancel" url="${requestCancel}" />

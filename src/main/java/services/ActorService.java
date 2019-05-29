@@ -3,7 +3,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
@@ -16,6 +15,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.AdministratorRepository;
+import repositories.CollaboratorRepository;
+import repositories.MemberRepository;
+import repositories.SponsorRepository;
+import repositories.StudentRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
@@ -23,7 +26,12 @@ import security.UserAccountRepository;
 import domain.Actor;
 import domain.Administrator;
 import domain.Box;
-import domain.CreditCard;
+import domain.Collaborator;
+import domain.Finder;
+import domain.Member;
+import domain.Proclaim;
+import domain.Sponsor;
+import domain.Student;
 import forms.ActorForm;
 
 @Service
@@ -40,15 +48,19 @@ public class ActorService extends AbstractService {
 	private Validator				validator;
 	@Autowired
 	private BoxService				boxService;
+	@Autowired
+	private MemberRepository		memberRepository;
+	@Autowired
+	private StudentRepository		studentRepository;
+	@Autowired
+	private CollaboratorRepository	collaboratorRepository;
+	@Autowired
+	private SponsorRepository		sponsorRepository;
 
 
 	public Collection<Actor> getActorSpammer() {
 		return this.adminRepository.getActorsSpammer();
 	}
-
-	//	public CreditCard getCreditcardByActor(final int id) {
-	//		return this.adminRepository.getCreditcardByActor(id);
-	//	}
 
 	public Collection<Actor> getActorEmabled() {
 		return this.adminRepository.getActorsEnabled();
@@ -58,32 +70,29 @@ public class ActorService extends AbstractService {
 		return this.adminRepository.findFirstAdmin().get(0);
 	}
 
+	public Collection<Integer> getActorsIdSpammer() {
+		return this.adminRepository.getActorsIdSpammer();
+	}
+
+	public Collection<Integer> getActorsIdEnabled() {
+		return this.adminRepository.getActorsIdEnabled();
+	}
+
 	public Actor findByUserAccount(final int id) {
 
 		Actor res = null;
 
 		if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN))
 			res = this.adminRepository.findAdminByUserAccountId(id);
-		//		else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ROOKIE))
-		//			res = this.rookieRepository.findRookieByUserAccount(id);
-		//		else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COMPANY))
-		//			res = this.companyRepository.findCompanyByUserAccount(id);
-		//		else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.PROVIDER))
-		//			res = this.providerRepository.findProviderByUserAccount(id);
-		//		else
-		//			res = this.auditorRepository.findAuditorByUserAccount(id);
+		else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER))
+			res = this.memberRepository.findMemberByUserAccount(id);
+		else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT))
+			res = this.studentRepository.findStudentByUserAccount(id);
+		else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR))
+			res = this.collaboratorRepository.findCollaboratorByUserAccount(id);
+		else
+			res = this.sponsorRepository.findSponsorByUserAccount(id);
 		return res;
-	}
-	public CreditCard createCreditCard() {
-		CreditCard creditCard;
-		creditCard = new CreditCard();
-		creditCard.setHolder("");
-		creditCard.setMake("");
-		creditCard.setNumber("");
-		creditCard.setExpiration(new Date());
-		creditCard.setCvv(0);
-
-		return creditCard;
 	}
 
 	private String hashPassword(final String old) {
@@ -93,9 +102,9 @@ public class ActorService extends AbstractService {
 		passEncoded = encoder.encodePassword(old, null);
 
 		return passEncoded;
+
 	}
 	public <T extends Actor> void setBasicProperties(final T actor, final String auth) {
-		//		actor.setProfiles(new ArrayList<Profile>());
 		actor.setAddress("");
 		actor.setBoxes(new ArrayList<Box>());
 		actor.setEmail("");
@@ -116,29 +125,27 @@ public class ActorService extends AbstractService {
 			administrator = new Administrator();
 			this.setBasicProperties(administrator, auth);
 			actor = administrator;
-			//		} else if (auth.equals(Authority.ROOKIE)) {
-			//			Rookie rookie;
-			//			rookie = new Rookie();s
-			//			this.setBasicProperties(rookie, auth);
-			//			actor = rookie;
-			//		} else if (auth.equals(Authority.COMPANY)) {
-			//			Company company;
-			//			company = new Company();
-			//			this.setBasicProperties(company, auth);
-			//			company.setCommercialName("");
-			//			actor = company;
-			//		} else if (auth.equals(Authority.PROVIDER)) {
-			//			Provider provider;
-			//			provider = new Provider();
-			//			this.setBasicProperties(provider, auth);
-			//			provider.setMake("");
-			//			actor = provider;
+		} else if (auth.equals(Authority.MEMBER)) {
+			Member member;
+			member = new Member();
+			this.setBasicProperties(member, auth);
+			actor = member;
+		} else if (auth.equals(Authority.STUDENT)) {
+			Student student;
+			student = new Student();
+			this.setBasicProperties(student, auth);
+			actor = student;
+		} else if (auth.equals(Authority.COLLABORATOR)) {
+			Collaborator collaborator;
+			collaborator = new Collaborator();
+			this.setBasicProperties(collaborator, auth);
+			actor = collaborator;
 
-			//		} else {
-			//			Auditor auditor;
-			//			auditor = new Auditor();
-			//			this.setBasicProperties(auditor, auth);
-			//			actor = auditor;
+		} else {
+			Sponsor sponsor;
+			sponsor = new Sponsor();
+			this.setBasicProperties(sponsor, auth);
+			actor = sponsor;
 		}
 		return actor;
 
@@ -168,7 +175,7 @@ public class ActorService extends AbstractService {
 		actor.setBoxes(boxes);
 	}
 
-	public Actor save(final Administrator admin/* , final Rookie rookie, final Company company, final Provider provider, final Auditor auditor */) {
+	public Actor save(final Administrator admin, final Member member, final Student student, final Collaborator collaborator, final Sponsor sponsor) {
 		Actor saved = null;
 
 		if (admin != null) {
@@ -183,51 +190,51 @@ public class ActorService extends AbstractService {
 			}
 
 			saved = this.adminRepository.save(admin);
-			//		} else if (rookie != null) {
-			//			if (rookie.getId() != 0)
-			//				Assert.isTrue(LoginService.getPrincipal().getId() == rookie.getAccount().getId());
-			//
-			//			if (rookie.getId() == 0) {
-			//				UserAccount user;
-			//				user = this.userRepository.save(rookie.getAccount());
-			//				rookie.setAccount(user);
-			//			}
-			//
-			//			saved = this.rookieRepository.save(rookie);
-			//		} else if (company != null) {
-			//			if (company.getId() != 0)
-			//				Assert.isTrue(LoginService.getPrincipal().getId() == company.getAccount().getId());
-			//
-			//			if (company.getId() == 0) {
-			//				UserAccount user;
-			//				user = this.userRepository.save(company.getAccount());
-			//				company.setAccount(user);
-			//			}
-			//
-			//			saved = this.companyRepository.save(company);
-			//
-			//		} else if (provider != null) {
-			//			if (provider.getId() != 0)
-			//				Assert.isTrue(LoginService.getPrincipal().getId() == provider.getAccount().getId());
-			//
-			//			if (provider.getId() == 0) {
-			//				UserAccount user;
-			//				user = this.userRepository.save(provider.getAccount());
-			//				provider.setAccount(user);
-			//			}
-			//
-			//			saved = this.providerRepository.save(provider);
-			//		} else if (auditor != null) {
-			//			if (auditor.getId() != 0)
-			//				Assert.isTrue(LoginService.getPrincipal().getId() == auditor.getAccount().getId());
-			//
-			//			if (auditor.getId() == 0) {
-			//				UserAccount user;
-			//				user = this.userRepository.save(auditor.getAccount());
-			//				auditor.setAccount(user);
-			//			}
-			//
-			//			saved = this.auditorRepository.save(auditor);
+		} else if (member != null) {
+			if (member.getId() != 0)
+				Assert.isTrue(LoginService.getPrincipal().getId() == member.getAccount().getId());
+
+			if (member.getId() == 0) {
+				UserAccount user;
+				user = this.userRepository.save(member.getAccount());
+				member.setAccount(user);
+			}
+
+			saved = this.memberRepository.save(member);
+		} else if (student != null) {
+			if (student.getId() != 0)
+				Assert.isTrue(LoginService.getPrincipal().getId() == student.getAccount().getId());
+
+			if (student.getId() == 0) {
+				UserAccount user;
+				user = this.userRepository.save(student.getAccount());
+				student.setAccount(user);
+			}
+
+			saved = this.studentRepository.save(student);
+
+		} else if (collaborator != null) {
+			if (collaborator.getId() != 0)
+				Assert.isTrue(LoginService.getPrincipal().getId() == collaborator.getAccount().getId());
+
+			if (collaborator.getId() == 0) {
+				UserAccount user;
+				user = this.userRepository.save(collaborator.getAccount());
+				collaborator.setAccount(user);
+			}
+
+			saved = this.collaboratorRepository.save(collaborator);
+		} else if (sponsor != null) {
+			if (sponsor.getId() != 0)
+				Assert.isTrue(LoginService.getPrincipal().getId() == sponsor.getAccount().getId());
+
+			if (sponsor.getId() == 0) {
+				UserAccount user;
+				user = this.userRepository.save(sponsor.getAccount());
+				sponsor.setAccount(user);
+			}
+
+			saved = this.sponsorRepository.save(sponsor);
 		}
 
 		return saved;
@@ -277,13 +284,7 @@ public class ActorService extends AbstractService {
 			form.setSurname("");
 			form.setPhoto("");
 			form.setName("");
-			form.setVat("");
-			form.setCreditCard(this.createCreditCard());
 
-			//			if (auth.equals(Authority.COMPANY))
-			//				form.setCommercialName("");
-			//			if (auth.equals(Authority.PROVIDER))
-			//				form.setMake("");
 		} else {
 			form.setId(a.getId());
 			form.setAdress(a.getAddress());
@@ -295,20 +296,12 @@ public class ActorService extends AbstractService {
 			form.setAccount(this.userAccountAdapted(a.getAccount().getUsername(), "", auth));
 			form.setPhoto(a.getPhoto());
 			form.setName(a.getName());
-			//			if (auth.equals(Authority.COMPANY)) {
-			//				final Company c = (Company) a;
-			//				form.setCommercialName(c.getCommercialName());
-			//			}
-			//			if (auth.equals(Authority.PROVIDER)) {
-			//				final Provider p = (Provider) a;
-			//				form.setMake(p.getMake());
-			//
-			//			}
 			form.setTerms(true);
 		}
 
 		return form;
 	}
+
 	public Administrator reconstructAdministrator(final ActorForm actor, final BindingResult binding) {
 		Administrator result = null;
 
@@ -329,103 +322,103 @@ public class ActorService extends AbstractService {
 
 		return result;
 	}
+	//RECONSTRUCT
 
-	//	public Company reconstructCompany(final ActorForm actor, final BindingResult binding) {
-	//		Company result = null;
-	//
-	//		if (actor.getId() == 0) {
-	//			result = (Company) this.createActor(Authority.COMPANY);
-	//			this.setToActor(result, actor);
-	//			result.setCommercialName(actor.getCommercialName());
-	//			this.validator.validate(result, binding);
-	//			if (!binding.hasErrors())
-	//				this.setBoxes(result);
-	//		} else {
-	//			result = this.companyRepository.findOne(actor.getId());
-	//			this.setToActor(result, actor);
-	//			this.validator.validate(result, binding);
-	//		}
-	//
-	//		if (binding.hasErrors())
-	//			throw new ValidationException();
-	//
-	//		return result;
-	//	}
-	//	public Rookie reconstructRookie(final ActorForm actor, final BindingResult binding) {
-	//		Rookie result = null;
-	//
-	//		if (actor.getId() == 0) {
-	//			result = (Rookie) this.createActor(Authority.ROOKIE);
-	//			this.setToActor(result, actor);
-	//			this.validator.validate(result, binding);
-	//			if (!binding.hasErrors()) {
-	//				this.setBoxes(result);
-	//				Finder finder;
-	//				finder = this.finderService.save(this.finderService.create(), new ArrayList<Position>());
-	//				result.setFinder(finder);
-	//
-	//			}
-	//
-	//		} else {
-	//			result = this.rookieRepository.findOne(actor.getId());
-	//			this.setToActor(result, actor);
-	//			this.validator.validate(result, binding);
-	//		}
-	//		if (binding.hasErrors())
-	//			throw new ValidationException();
-	//
-	//		return result;
-	//	}
-	//	public Provider reconstructProvider(final ActorForm actor, final BindingResult binding) {
-	//		Provider result = null;
-	//
-	//		if (actor.getId() == 0) {
-	//			result = (Provider) this.createActor(Authority.PROVIDER);
-	//			this.setToActor(result, actor);
-	//			result.setMake(actor.getMake());
-	//			this.validator.validate(result, binding);
-	//			if (!binding.hasErrors())
-	//				this.setBoxes(result);
-	//		} else {
-	//			result = this.providerRepository.findOne(actor.getId());
-	//			this.setToActor(result, actor);
-	//			this.validator.validate(result, binding);
-	//		}
-	//
-	//		if (binding.hasErrors())
-	//
-	//			throw new ValidationException();
-	//		return result;
-	//	}
-	//
-	//	public Auditor reconstructAuditor(final ActorForm actor, final BindingResult binding) {
-	//		Auditor result = null;
-	//
-	//		if (actor.getId() == 0) {
-	//			result = (Auditor) this.createActor(Authority.AUDITOR);
-	//			this.setToActor(result, actor);
-	//			this.validator.validate(result, binding);
-	//			if (!binding.hasErrors())
-	//				this.setBoxes(result);
-	//		} else {
-	//			result = this.auditorRepository.findOne(actor.getId());
-	//			this.setToActor(result, actor);
-	//			this.validator.validate(result, binding);
-	//		}
-	//
-	//		if (binding.hasErrors())
-	//
-	//			throw new ValidationException();
-	//		return result;
-	//	}
+	public Member reconstructMember(final ActorForm actor, final BindingResult binding) {
+		Member result = null;
 
-	public void delete(final int actorId) { //FIXME ESTE ES EL METODO ANTIGUO, HAY QUE CAMBIARLO POR EL ULTIMO DE ROOKIES
+		if (actor.getId() == 0) {
+			result = (Member) this.createActor(Authority.MEMBER);
+			this.setToActor(result, actor);
+			this.validator.validate(result, binding);
+			if (!binding.hasErrors())
+				this.setBoxes(result);
+			Finder finder;
+			finder = this.finderService.save(this.finderService.create(), new ArrayList<Proclaim>());
+
+			result.setFinder(finder);
+
+		} else {
+			result = this.memberRepository.findOne(actor.getId());
+			this.setToActor(result, actor);
+			this.validator.validate(result, binding);
+		}
+		if (binding.hasErrors())
+			throw new ValidationException();
+
+		return result;
+	}
+
+	public Student reconstructStudent(final ActorForm actor, final BindingResult binding) {
+		Student result = null;
+
+		if (actor.getId() == 0) {
+			result = (Student) this.createActor(Authority.STUDENT);
+			this.setToActor(result, actor);
+			this.validator.validate(result, binding);
+			if (!binding.hasErrors())
+				this.setBoxes(result);
+		} else {
+			result = this.studentRepository.findOne(actor.getId());
+			this.setToActor(result, actor);
+			this.validator.validate(result, binding);
+		}
+
+		if (binding.hasErrors())
+			throw new ValidationException();
+
+		return result;
+	}
+
+	public Collaborator reconstructCollaborator(final ActorForm actor, final BindingResult binding) {
+		Collaborator result = null;
+
+		if (actor.getId() == 0) {
+			result = (Collaborator) this.createActor(Authority.COLLABORATOR);
+			this.setToActor(result, actor);
+			this.validator.validate(result, binding);
+			if (!binding.hasErrors())
+				this.setBoxes(result);
+		} else {
+			result = this.collaboratorRepository.findOne(actor.getId());
+			this.setToActor(result, actor);
+			this.validator.validate(result, binding);
+		}
+
+		if (binding.hasErrors())
+			throw new ValidationException();
+
+		return result;
+	}
+
+	public Sponsor reconstructSponsor(final ActorForm actor, final BindingResult binding) {
+		Sponsor result = null;
+
+		if (actor.getId() == 0) {
+			result = (Sponsor) this.createActor(Authority.SPONSOR);
+			this.setToActor(result, actor);
+			this.validator.validate(result, binding);
+			if (!binding.hasErrors())
+				this.setBoxes(result);
+		} else {
+			result = this.sponsorRepository.findOne(actor.getId());
+			this.setToActor(result, actor);
+			this.validator.validate(result, binding);
+		}
+
+		if (binding.hasErrors())
+			throw new ValidationException();
+
+		return result;
+	}
+
+	public void delete(final int actorId) {
 		Assert.notNull(LoginService.getPrincipal().getUsername());
 		Administrator admin;
-		//		final Rookie rookie;
-		//		final Company company;
-		//		final Provider provider;
-		//		final Auditor auditor;
+		final Member member;
+		final Student student;
+		final Collaborator collaborator;
+		final Sponsor sponsor;
 		if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN)) {
 			admin = this.adminRepository.findAdminByUserAccountId(actorId);
 			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
@@ -437,73 +430,69 @@ public class ActorService extends AbstractService {
 			admin.setEmail("anonymous@email.anon");
 			admin.setPhoto("http://anon.anon");
 			this.adminRepository.save(admin);
+
+		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT)) {
+			student = this.studentRepository.findStudentByUserAccount(actorId);
+			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
+			student.getAccount().setEnabled(false);
+			student.setName("anonymous");
+			student.setPhone("anonymous");
+			student.setSurname("anonymous");
+			student.setPhone("000000000");
+			student.setEmail("anonymous@email.anon");
+			student.setPhoto("http://anon.anon");
+			this.studentRepository.save(student);
+		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
+			member = this.memberRepository.findMemberByUserAccount(actorId);
+			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
+			member.getAccount().setEnabled(false);
+			member.setName("anonymous");
+			member.setPhone("000000000");
+			member.setSurname("anonymous");
+			member.setPhone("anonymous");
+			member.setEmail("anonymous@email.anon");
+
+			member.setFinder(null);
+
+			member.setPhoto("http://anon.anon");
+			this.memberRepository.save(member);
+		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR)) {
+			collaborator = this.collaboratorRepository.findCollaboratorByUserAccount(actorId);
+			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
+			collaborator.getAccount().setEnabled(false);
+			collaborator.setName("anonymous");
+			collaborator.setPhone("anonymous");
+			collaborator.setSurname("anonymous");
+			collaborator.setPhone("000000000");
+			collaborator.setEmail("anonymous@email.anon");
+			collaborator.setPhoto("http://anon.anon");
+			this.collaboratorRepository.save(collaborator);
+		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.SPONSOR)) {
+			sponsor = this.sponsorRepository.findSponsorByUserAccount(actorId);
+			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
+			sponsor.getAccount().setEnabled(false);
+			sponsor.setName("anonymous");
+			sponsor.setPhone("anonymous");
+			sponsor.setSurname("anonymous");
+			sponsor.setPhone("000000000");
+			sponsor.setEmail("anonymous@email.anon");
+			sponsor.setPhoto("http://anon.anon");
+			this.sponsorRepository.save(sponsor);
 		}
-		//		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COMPANY)) {
-		//			company = this.companyRepository.findCompanyByUserAccount(actorId);
-		//			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
-		//			company.getAccount().setEnabled(false);
-		//			company.setName("anonymous");
-		//			company.setPhone("anonymous");
-		//			company.setSurname("anonymous");
-		//			company.setPhone("000000000");
-		//			company.setEmail("anonymous@email.anon");
-		//			company.setCommercialName("anonymous");
-		//			company.setVat("anonymous");
-		//			company.setPhoto("http://anon.anon");
-		//			this.companyRepository.save(company);
-		//		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ROOKIE)) {
-		//			rookie = this.rookieRepository.findRookieByUserAccount(actorId);
-		//			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
-		//			rookie.getAccount().setEnabled(false);
-		//			rookie.setName("anonymous");
-		//			rookie.setPhone("000000000");
-		//			rookie.setSurname("anonymous");
-		//			rookie.setPhone("anonymous");
-		//			rookie.setEmail("anonymous@email.anon");
-		//			rookie.setFinder(null);
-		//			rookie.setVat("anonymous");
-		//			rookie.setPhoto("http://anon.anon");
-		//			this.rookieRepository.save(rookie);
-		//		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.PROVIDER)) {
-		//			provider = this.providerRepository.findProviderByUserAccount(actorId);
-		//			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
-		//			provider.getAccount().setEnabled(false);
-		//			provider.setName("anonymous");
-		//			provider.setPhone("anonymous");
-		//			provider.setSurname("anonymous");
-		//			provider.setPhone("000000000");
-		//			provider.setEmail("anonymous@email.anon");
-		//			provider.setMake("anonymous");
-		//			provider.setVat("anonymous");
-		//			provider.setPhoto("http://anon.anon");
-		//			this.providerRepository.save(provider);
-		//		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.AUDITOR)) {
-		//			auditor = this.auditorRepository.findAuditorByUserAccount(actorId);
-		//			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
-		//			auditor.getAccount().setEnabled(false);
-		//			auditor.setName("anonymous");
-		//			auditor.setPhone("anonymous");
-		//			auditor.setSurname("anonymous");
-		//			auditor.setPhone("000000000");
-		//			auditor.setEmail("anonymous@email.anon");
-		//			auditor.setVat("anonymous");
-		//			auditor.setPhoto("http://anon.anon");
-		//			this.auditorRepository.save(auditor);
-		//		}
 	}
 	public void flushAdministrator() {
 		this.adminRepository.flush();
 	}
-	//	public void flushRookie() {
-	//		this.rookieRepository.flush();
-	//	}
-	//	public void flushCompany() {
-	//		this.companyRepository.flush();
-	//	}
-	//	public void flushProvider() {
-	//		this.providerRepository.flush();
-	//	}
-	//	public void flushAuditor() {
-	//		this.auditorRepository.flush();
-	//	}
+	public void flushMember() {
+		this.memberRepository.flush();
+	}
+	public void flushStudent() {
+		this.studentRepository.flush();
+	}
+	public void flushCollaborator() {
+		this.collaboratorRepository.flush();
+	}
+	public void flushSponsor() {
+		this.sponsorRepository.flush();
+	}
 }

@@ -16,8 +16,30 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<script type="text/JavaScript">
 
-<form:form action="${requestURI}" modelAttribute="notes">
+$(document).ready(
+    function() {
+      $("#form").submit(
+function checkStuff()
+{
+   var check1=confirm("Are you sure you want to save it?");
+   if (check1)
+   {
+      var check2=confirm("Are you 100% sure?");
+      if (check2)
+      {
+         return true;
+      }
+      else return false;
+   }
+   else return false;
+}
+    );
+    });
+
+</script>
+<form:form action="${requestURI}" modelAttribute="notes" id="form">
 
 	<form:hidden path="id"/>
 	<form:hidden path="event"/>
