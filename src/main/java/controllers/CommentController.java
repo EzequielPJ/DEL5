@@ -95,15 +95,18 @@ public class CommentController extends BasicController {
 	public ModelAndView saveEntity(final Comment comment, final BindingResult binding) {
 		ModelAndView result;
 		try {
-			Assert.isTrue(comment.getActor().getAccount().getId() == LoginService.getPrincipal().getId());
+			if (comment.getId() != 0) {
+				final Comment c = this.commService.findOne(comment.getId());
+				Assert.isTrue(c.getActor().getAccount().getId() == LoginService.getPrincipal().getId());
+			}
 			//		Assert.isTrue(
 			//			this.notesService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR) || this.notesService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)
 			//				|| this.notesService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT), "You must be an collaborator, member or student");
 			if (this.commService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT))
-				result = super.save(comment, binding, "comment.commit.error", "comment/edit", "comment/student/edit.do", "comment/student/list.do", "redirect:../comment/student/list.do?=" + comment.getProclaim().getId());
+				result = super.save(comment, binding, "comment.commit.error", "comment/edit", "comment/student/edit.do", "comment/student/list.do", "redirect:/comment/student/list.do?=" + comment.getProclaim().getId());
 			else
 				// if (this.commService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER))
-				result = super.save(comment, binding, "comment.commit.error", "comment/edit", "comment/member/edit.do", "comment/member/list.do", "redirect:../member/list.do?=" + comment.getProclaim().getId());
+				result = super.save(comment, binding, "comment.commit.error", "comment/edit", "comment/member/edit.do", "comment/member/list.do", "redirect:/comment/member/list.do?=" + comment.getProclaim().getId());
 			//		else
 			//			result = new ModelAndView("403");
 
@@ -113,7 +116,6 @@ public class CommentController extends BasicController {
 		}
 		return result;
 	}
-
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int id) {
 		ModelAndView result;
@@ -134,11 +136,11 @@ public class CommentController extends BasicController {
 		ModelAndView result;
 		if (this.commService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT)) {
 			res = this.commService.getCommentsByActor(LoginService.getPrincipal().getId()).contains(this.commService.findOne(id));
-			result = res ? super.delete(this.commService.findOne(id), "comment.commit.error", "comment/edit", "comment/student/edit.do", "comment/student/list.do?id=" + this.commService.findOne(id).getProclaim().getId(),
-				"redirect:/comment/member/list.do?id=" + this.commService.findOne(id).getProclaim().getId()) : this.custom(new ModelAndView("403"));
+			result = res ? super.delete(this.commService.findOne(id), "comment.commit.error", "comment/edit", "comment/student/edit.do", "/comment/student/list.do?id=" + this.commService.findOne(id).getProclaim().getId(),
+				"redirect:/comment/student/list.do?id=" + this.commService.findOne(id).getProclaim().getId()) : this.custom(new ModelAndView("403"));
 		} else {
 			res = this.commService.getCommentsByActor(LoginService.getPrincipal().getId()).contains(this.commService.findOne(id));
-			result = res ? super.delete(this.commService.findOne(id), "comment.commit.error", "comment/edit", "comment/member/edit.do", "comment/member/list.do?id=" + this.commService.findOne(id).getProclaim().getId(),
+			result = res ? super.delete(this.commService.findOne(id), "comment.commit.error", "comment/edit", "comment/member/edit.do", "/comment/member/list.do?id=" + this.commService.findOne(id).getProclaim().getId(),
 				"redirect:/comment/member/list.do?id=" + this.commService.findOne(id).getProclaim().getId()) : this.custom(new ModelAndView("403"));
 		}
 		return result;

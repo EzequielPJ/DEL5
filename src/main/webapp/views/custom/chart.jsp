@@ -57,7 +57,7 @@
 		],
 		datasets : [
 			{
-				label : "Proclaims per Type",
+				label : "Proclaims per category | Quejas por categoria",
 				data : [
 
 				]

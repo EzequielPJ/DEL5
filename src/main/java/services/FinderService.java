@@ -86,10 +86,14 @@ public class FinderService extends AbstractService {
 		Member h;
 		h = (Member) this.repository.findActorByUserAccountId(LoginService.getPrincipal().getId());
 		result = h.getFinder();
+		if (finder.getCategory().getId() == 0)
+			result.setCategory(null);
+		else
+			result.setCategory(finder.getCategory());
 		result.setSingleKey(finder.getSingleKey());
-		result.setCategory(finder.getCategory());
 		result.setRegisteredDate(finder.getRegisteredDate());
 		result.setBeforeOrNot(finder.isBeforeOrNot());
+
 		this.validator.validate(result, binding);
 
 		if (binding.hasErrors())
@@ -108,7 +112,7 @@ public class FinderService extends AbstractService {
 
 		result = new ArrayList<Proclaim>(this.serviceProclaim.findNoAssigned());
 
-		if (s != "" || s != null)
+		if (!(s.equals("")))
 			result.retainAll(this.repository.findBySingleKey(s));
 
 		if (category != null)

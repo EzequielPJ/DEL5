@@ -70,6 +70,14 @@ public class ActorService extends AbstractService {
 		return this.adminRepository.findFirstAdmin().get(0);
 	}
 
+	public Collection<Integer> getActorsIdSpammer() {
+		return this.adminRepository.getActorsIdSpammer();
+	}
+
+	public Collection<Integer> getActorsIdEnabled() {
+		return this.adminRepository.getActorsIdEnabled();
+	}
+
 	public Actor findByUserAccount(final int id) {
 
 		Actor res = null;
@@ -404,7 +412,7 @@ public class ActorService extends AbstractService {
 		return result;
 	}
 
-	public void delete(final int actorId) { //FIXME ESTE ES EL METODO ANTIGUO, HAY QUE CAMBIARLO POR EL ULTIMO DE MemberS
+	public void delete(final int actorId) {
 		Assert.notNull(LoginService.getPrincipal().getUsername());
 		Administrator admin;
 		final Member member;

@@ -45,8 +45,10 @@ public class ComissionController extends BasicController {
 			result = super.listModelAndView("comissions", "comission/list", this.comissionService.findAllComissionFinalMode(), "comission/list.do");
 			if (c.getComission() == null)
 				result.addObject("cond", true);
-			else
+			else {
 				result.addObject("cond", false);
+				result.addObject("comis", c.getComission().getName());
+			}
 		}
 		return result;
 	}

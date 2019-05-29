@@ -18,6 +18,10 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
+<security:authorize access="hasRole('COLLABORATOR')">
+<h3>My comission: <jstl:out value="${comis}" /> </h3>
+</security:authorize>
+
 <display:table name="comissions" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
 	

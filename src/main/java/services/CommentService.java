@@ -15,7 +15,10 @@ import org.springframework.validation.Validator;
 import repositories.CommentRepository;
 import security.Authority;
 import security.LoginService;
+import domain.Actor;
 import domain.Comment;
+import domain.Member;
+import domain.Student;
 
 @Service
 @Transactional
@@ -64,7 +67,6 @@ public class CommentService extends AbstractService {
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER) || super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
 		Comment c;
 		c = new Comment();
-		c.setActor(this.procService.findByUserAccount(LoginService.getPrincipal().getId()));
 		c.setAttachments("");
 		c.setDescription("");
 		c.setProclaim(this.procService.findOne(proclaimId));
@@ -76,23 +78,43 @@ public class CommentService extends AbstractService {
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER) || super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
 		Comment saved;
 		saved = this.commRepository.save(c);
-
 		return saved;
 
 	}
 
 	public void delete(final int commentId) {
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER) || super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
-		this.commRepository.delete(this.commRepository.findOne(commentId));
+		this.commRepository.delete(commentId);
 	}
 
 	public Comment reconstruct(final Comment c, final BindingResult binding) {
-		//Comment recontruct;
-		this.validator.validate(c, binding);
+		Comment result;
+
+		if (c.getId() == 0) {
+			result = c;
+			Actor a;
+			a = this.procService.findByUserAccount(LoginService.getPrincipal().getId());
+			if (a instanceof Member) {
+				Member m;
+				m = (Member) a;
+				result.setActor(m);
+			}
+			if (a instanceof Student) {
+				Student m;
+				m = (Student) a;
+				result.setActor(m);
+			}
+
+		} else {
+			result = this.commRepository.findOne(c.getId());
+			result.setDescription(c.getDescription());
+			result.setAttachments(c.getAttachments());
+		}
+
+		this.validator.validate(result, binding);
 
 		if (binding.hasErrors())
 			throw new ValidationException();
-		return c;
+		return result;
 	}
-
 }
