@@ -105,8 +105,6 @@ public class ProclaimService extends AbstractService {
 
 		boolean res = false;
 
-		boolean res = false;
-
 		Proclaim proclaim;
 		proclaim = this.repository.findOne(id);
 

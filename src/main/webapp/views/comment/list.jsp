@@ -20,37 +20,41 @@
 
 <display:table name="comments" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
-	
+
 	<display:column titleKey="comment.description">
 		<jstl:out value="${row.description}" />
 	</display:column>
 
-<display:column titleKey="comment.attachments">
+	<display:column titleKey="comment.attachments">
 		<jstl:out value="${row.attachments}" />
 	</display:column>
 
-<display:column titleKey="comment.author">
+	<display:column titleKey="comment.author">
 		<jstl:out value="${row.actor.name}" />
 	</display:column>
-	
+
 	<display:column titleKey="update">
-	<security:authorize access="hasRole('MEMBER')">
-		<a href="comment/member/update.do?id=${row.id}"><spring:message code="comment.update"></spring:message></a>
+		<security:authorize access="hasRole('MEMBER')">
+			<a href="comment/member/update.do?id=${row.id}"><spring:message
+					code="comment.update"></spring:message></a>
 		</security:authorize>
 		<security:authorize access="hasRole('STUDENT')">
-		<a href="comment/student/update.do?id=${row.id}"><spring:message code="comment.update"></spring:message></a>
+			<a href="comment/student/update.do?id=${row.id}"><spring:message
+					code="comment.update"></spring:message></a>
 		</security:authorize>
-	
+
 	</display:column>
-	
+
 	<display:column titleKey="delete">
 		<security:authorize access="hasRole('MEMBER')">
-		<a href="comment/member/delete.do?id=${row.id}"><spring:message code="comment.delete"></spring:message></a>
+			<a href="comment/member/delete.do?id=${row.id}"><spring:message
+					code="comment.delete"></spring:message></a>
 		</security:authorize>
 		<security:authorize access="hasRole('STUDENT')">
-		<a href="comment/student/delete.do?id=${row.id}"><spring:message code="comment.delete"></spring:message></a>
+			<a href="comment/student/delete.do?id=${row.id}"><spring:message
+					code="comment.delete"></spring:message></a>
 		</security:authorize>
-	
+
 	</display:column>
-	
+
 </display:table>

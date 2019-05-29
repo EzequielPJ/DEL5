@@ -35,7 +35,7 @@ public class StudyReportController extends BasicController {
 	public ModelAndView create() {
 		Assert.isTrue(this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR));
 
-		return super.create(this.service.create(), "studyReport/edit", "studyReport/edit.do", "portfolio/list.do");
+		return super.create(this.service.create(), "studyReport/edit", "studyReport/edit.do", "/portfolio/list.do");
 
 	}
 
@@ -56,7 +56,7 @@ public class StudyReportController extends BasicController {
 		Assert.isTrue(col.contains(s), "You don't have permission to do this");
 
 		ModelAndView result;
-		result = super.edit(s, "studyReport/edit", "studyReport/edit.do", "portfolio/list.do");
+		result = super.edit(s, "studyReport/edit", "studyReport/edit.do", "/portfolio/list.do");
 
 		return result;
 	}
@@ -65,9 +65,9 @@ public class StudyReportController extends BasicController {
 	public ModelAndView saveEntity(final StudyReport studyReport, final BindingResult binding) {
 		ModelAndView result = null;
 		if (this.service.checkDates(studyReport.getStartDate(), studyReport.getEndDate()))
-			result = super.save(studyReport, binding, "study.commit.error", "studyReport/edit", "studyReport/edit.do", "portfolio/list.do", "redirect:/portfolio/list.do");
+			result = super.save(studyReport, binding, "study.commit.error", "studyReport/edit", "studyReport/edit.do", "/portfolio/list.do", "redirect:/portfolio/list.do");
 		else
-			return this.createAndEditModelAndView(studyReport, "bad.dates", "studyReport/edit", "studyReport/edit.do", "redirect:/portfolio/list.do");
+			return this.createAndEditModelAndView(studyReport, "bad.dates", "studyReport/edit", "studyReport/edit.do", "/portfolio/list.do");
 		return result;
 	}
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
@@ -75,7 +75,7 @@ public class StudyReportController extends BasicController {
 		ModelAndView result = null;
 		StudyReport s;
 		s = this.service.findOne(id);
-		result = super.show(s, "studyReport/edit", "studyReport/edit.do", "portfolio/list.do");
+		result = super.show(s, "studyReport/edit", "studyReport/edit.do", "/portfolio/list.do");
 
 		result.addObject("view", true);
 
@@ -96,7 +96,7 @@ public class StudyReportController extends BasicController {
 		Assert.isTrue(col.contains(studyreport), "You don't have permission to do this");
 		ModelAndView result;
 
-		result = super.delete(this.service.findOne(id), "study.commit.error", "studyReport/edit", "studyReport/edit.do", "portfolio/list.do", "redirect:/portfolio/list.do");
+		result = super.delete(this.service.findOne(id), "study.commit.error", "studyReport/edit", "studyReport/edit.do", "/portfolio/list.do", "redirect:/portfolio/list.do");
 
 		return result;
 	}

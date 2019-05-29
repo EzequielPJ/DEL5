@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import repositories.TickerRepository;
-
-import com.mifmif.common.regex.Generex;
-
 import domain.Ticker;
 
 @Service
@@ -32,9 +29,6 @@ public class TickerService {
 
 	public void deleteTicker(final int ticker) {
 		this.repository.delete(ticker);
-	}
-	public void flush() {
-		this.repository.flush();
 	}
 	public void flush() {
 		this.repository.flush();

@@ -125,14 +125,17 @@ public class MiscellaneousReportService extends AbstractService {
 		Collaborator c;
 		c = (Collaborator) this.servicePortfolio.findActorByUserAccountId(LoginService.getPrincipal().getId());
 
-		Assert.isTrue(p.equals(c.getPortfolio()));
+		Assert.isTrue(p.getId() == c.getPortfolio().getId());
 
 		Collection<MiscellaneousReport> col;
 		col = p.getMiscellaneousReport();
 
-		col.remove(deleteTo);
+		if (col.contains(deleteTo)) {
+			col.remove(deleteTo);
+			p.setMiscellaneousReport(col);
+			this.repository.delete(id);
+		}
 
-		p.setMiscellaneousReport(col);
 	}
 
 	public void deleteAllMiscellaneousReport(final Portfolio p) {

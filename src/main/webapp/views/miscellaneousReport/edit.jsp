@@ -37,4 +37,4 @@
 			value="<spring:message code="wr.save" />" />
 	</jstl:if>
 </form:form>
-<acme:cancel code="cancel" url="portfolio/list.do" />
+<acme:cancel code="cancel" url="${requestCancel}" />
