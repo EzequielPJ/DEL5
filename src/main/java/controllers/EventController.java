@@ -18,6 +18,7 @@ import security.LoginService;
 import security.UserAccount;
 import services.EventService;
 import services.NotesService;
+import services.SponsorshipService;
 import domain.Collaborator;
 import domain.Event;
 
@@ -28,10 +29,13 @@ import domain.Event;
 public class EventController extends BasicController {
 
 	@Autowired
-	private EventService	eventService;
+	private EventService		eventService;
 
 	@Autowired
-	private NotesService	notesService;
+	private NotesService		notesService;
+
+	@Autowired
+	private SponsorshipService	sponsorshipService;
 
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -55,9 +59,15 @@ public class EventController extends BasicController {
 		result = super.listModelAndView("events", "event/list", this.eventService.findAllFinalMode(), "event/listEvents.do");
 		result.addObject("general", true);
 		result.addObject("pub", false);
+		UserAccount user;
+		user = LoginService.getPrincipal();
+		if (this.eventService.findAuthority(user.getAuthorities(), Authority.SPONSOR)) {
+			Collection<Event> col;
+			col = this.sponsorshipService.findEventWithSponsorshipId(this.eventService.getActorByUserId(user.getId()).getId());
+			result.addObject("spo", col);
+		}
 		return result;
 	}
-
 	@RequestMapping(value = "/showEvent", method = RequestMethod.GET)
 	public ModelAndView showEvent(@RequestParam final int idEvent) {
 		ModelAndView result;

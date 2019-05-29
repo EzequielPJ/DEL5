@@ -50,6 +50,7 @@ public class ProclaimController extends BasicController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		Collection<Proclaim> proclaims = null;
+		ModelAndView result;
 
 		String requestURI = null;
 
@@ -62,12 +63,22 @@ public class ProclaimController extends BasicController {
 			requestURI = "proclaim/member/list.do";
 		}
 
-		return super.listModelAndView("proclaims", "proclaim/list", proclaims, requestURI);
+		result = super.listModelAndView("proclaims", "proclaim/list", proclaims, requestURI);
+
+		if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER))
+			result.addObject("boton", true);
+
+		return result;
 	}
 	@RequestMapping(value = "/unassigned", method = RequestMethod.GET)
 	public ModelAndView unassignedList() {
 		Assert.isTrue(this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER));
-		return super.listModelAndView("proclaims", "proclaim/list", this.service.findNoAssigned(), "proclaim/member/unassigned.do").addObject("startAssignation", true);
+		ModelAndView result;
+		result = super.listModelAndView("proclaims", "proclaim/list", this.service.findNoAssigned(), "proclaim/member/unassigned.do").addObject("startAssignation", true);
+		Collection<Proclaim> col;
+		col = this.service.findProclaimAssigned(this.service.findByUserAccount(LoginService.getPrincipal().getId()).getId());
+		result.addObject("ass", col);
+		return result;
 	}
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {

@@ -24,4 +24,7 @@ public interface ProclaimRepository extends GenericRepository<Proclaim> {
 	@Query("select p from Proclaim p where p.student.id = ?1")
 	Collection<Proclaim> findAllByStudent(int id);
 
+	@Query("select p from Proclaim p join p.members a where a.id = ?1")
+	Collection<Proclaim> findProclaimAssigned(int id);
+
 }

@@ -45,6 +45,10 @@ public class SponsorshipService extends AbstractService {
 		return this.sponsorshipRepository.findOne(id);
 	}
 
+	public Collection<Event> findEventWithSponsorshipId(final int id) {
+		return this.sponsorshipRepository.findEventWithSponsorshipId(id);
+	}
+
 	public Collection<Sponsorship> getSponsorshipActiveBySponsorId(final int idSponsor) {
 		return this.sponsorshipRepository.getSponsorshipActiveBySponsorId(idSponsor);
 	}

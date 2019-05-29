@@ -44,6 +44,10 @@ public class ProclaimService extends AbstractService {
 		return this.repository.findActorByUserAccount(id);
 	}
 
+	public Collection<Proclaim> findProclaimAssigned(final int id) {
+		return this.repository.findProclaimAssigned(id);
+	}
+
 	@Cacheable(value = "proclaims")
 	public Collection<Proclaim> findNoAssigned() {
 		return this.repository.findAllProclaim();
