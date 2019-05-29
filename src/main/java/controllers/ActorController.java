@@ -3,6 +3,7 @@ package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ public class ActorController extends BasicController {
 		ModelAndView result;
 		result = super.listModelAndView("actors", "actor/list", this.actorService.getActorSpammer(), "actor/list.do");
 		result.addObject("ban", true);
+		result.addObject("comis", true);
 		return result;
 	}
 
@@ -46,12 +48,14 @@ public class ActorController extends BasicController {
 		ModelAndView result;
 		result = super.listModelAndView("actors", "actor/list", this.actorService.getActorEmabled(), "actor/list.do");
 		result.addObject("ban", false);
+		result.addObject("comis", true);
 		return result;
 	}
 
 	@RequestMapping(value = "/ban", method = RequestMethod.GET)
 	public ModelAndView banActor(@RequestParam final int id) {
 		ModelAndView result;
+		Assert.isTrue(this.actorService.getActorsIdSpammer().contains(id), "You only can ban spammers actor");
 		this.customService.banActor(id);
 		result = new ModelAndView("redirect:listSpammers.do");
 		result.addObject("ban", true);
@@ -61,6 +65,7 @@ public class ActorController extends BasicController {
 	@RequestMapping(value = "/unban", method = RequestMethod.GET)
 	public ModelAndView unBanActor(@RequestParam final int id) {
 		ModelAndView result;
+		Assert.isTrue(this.actorService.getActorsIdEnabled().contains(id), "You only can unban ban actor");
 		this.customService.unBanActor(id);
 		result = new ModelAndView("redirect:listBan.do");
 		result.addObject("ban", false);

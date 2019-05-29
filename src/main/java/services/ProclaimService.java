@@ -23,18 +23,21 @@ import domain.Actor;
 import domain.Member;
 import domain.Proclaim;
 import domain.Student;
+import domain.StudentCard;
 
 @Service
 @Transactional
-public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimRepository> {
+public class ProclaimService extends AbstractService {
 
 	@Autowired
-	private ProclaimRepository	repository;
+	private ProclaimRepository									repository;
 
 	@Autowired
-	private Validator			validator;
+	private Validator											validator;
 
-	private boolean				inFinal;
+	private boolean												inFinal;
+
+	private TickerServiceInter<Proclaim, ProclaimRepository>	interm;
 
 
 	public Actor findByUserAccount(final int id) {
@@ -65,6 +68,10 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 
 	public Proclaim create() {
 
+		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
+
+		this.interm = new TickerServiceInter<>();
+
 		Proclaim proclaim;
 		proclaim = new Proclaim();
 
@@ -76,14 +83,24 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		proclaim.setMoment(new Date());
 		proclaim.setReason("");
 		proclaim.setTitle("");
-		proclaim.setTicker(super.createTicker());
+
 		proclaim.setMembers(new ArrayList<Member>());
 		proclaim.setAttachments("");
 		proclaim.setStatus("SUBMITTED");
 
+		StudentCard studentCard;
+		studentCard = new StudentCard();
+		studentCard.setCentre("");
+		studentCard.setCode(0000);
+		studentCard.setVat("");
+
+		proclaim.setStudentCard(studentCard);
+
+		this.interm.setRepository(this.repository);
+		proclaim.setTicker(this.interm.create());
+
 		return proclaim;
 	}
-
 	public boolean assign(final int id) {
 
 		boolean res = false;
@@ -128,6 +145,8 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 	@CacheEvict(value = "proclaims", allEntries = true)
 	public Proclaim save(final Proclaim aux) {
 
+		this.interm = new TickerServiceInter<>();
+
 		Proclaim result;
 
 		if (aux.getId() == 0) {
@@ -154,13 +173,13 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 				aux.setStatus("PENDIENTE");
 		}
 
-		super.setRepository(this.repository);
-		result = super.withTicker(aux);
+		this.interm.setRepository(this.repository);
+
+		result = this.interm.withTicker(aux);
 
 		return result;
 	}
 
-	@Override
 	@CacheEvict(value = "proclaims", allEntries = true)
 	public void delete(final int id) {
 		Proclaim p;
@@ -169,9 +188,7 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		Assert.isTrue(p.isFinalMode() == false);
 		Assert.isTrue(p.getStudent().getId() == ((Student) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId())).getId());
 
-		super.setRepository(this.repository);
-
-		super.delete(p.getId());
+		this.repository.delete(p.getId());
 
 	}
 
@@ -193,12 +210,18 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 					result.setStudentCard(aux.getStudentCard());
 				}
 
-			if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
-				result.setLaw(aux.getLaw());
-				result.setReason(aux.getReason());
-				result.setStatus(aux.getStatus());
-				result.setClosed(aux.isClosed());
-			}
+			if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER))
+				if (aux.isClosed() == false) {
+					result.setStatus(aux.getStatus());
+
+					if (result.getStatus().equals("ACCEPTED") || result.getStatus().equals("ACEPTADO"))
+						result.setLaw(aux.getLaw());
+					if (result.getStatus().equals("REJECTED") || result.getStatus().equals("RECHAZADO"))
+						result.setReason(aux.getReason());
+
+					result.setClosed(false);
+				} else if (aux.isClosed() != result.isClosed())
+					result.setClosed(aux.isClosed());
 		}
 
 		boolean check;
@@ -218,9 +241,26 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 
 		this.validator.validate(result, binding);
 
+		if (result.getCategory().getId() == 0 || result.getCategory() == null)
+			binding.rejectValue("category", "category.wrong");
+
+		StudentCard studentCard;
+		studentCard = result.getStudentCard();
+
+		if (studentCard.getCentre().equals("") || studentCard.getCentre().equals(" "))
+			binding.rejectValue("studentCard.centre", "centre.wrong");
+
+		if (String.valueOf(studentCard.getCode()).isEmpty() || String.valueOf(studentCard.getCode()).length() != 4)
+			binding.rejectValue("studentCard.code", "code.wrong");
+
+		if (studentCard.getCentre().equals("") || studentCard.getCentre().equals(" "))
+			binding.rejectValue("studentCard.vat", "vat.wrong");
+
 		if (binding.hasErrors()) {
 			if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT))
 				result.setFinalMode(false);
+			else
+				result.setFinalMode(true);
 
 			throw new ValidationException();
 

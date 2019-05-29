@@ -49,7 +49,12 @@ public class PortfolioController extends BasicController {
 	public ModelAndView create() {
 		Assert.isTrue(this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR));
 
-		return super.create(this.service.create(), "portfolio/edit", "portfolio/edit.do", "portfolio/list.do");
+		Collaborator c;
+		c = (Collaborator) this.service.findActorByUserAccountId(LoginService.getPrincipal().getId());
+
+		Assert.isTrue(c.getPortfolio() == null || c.getPortfolio().getId() == 0);
+
+		return super.create(this.service.create(), "portfolio/edit", "portfolio/edit.do", "/portfolio/list.do");
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
@@ -61,7 +66,7 @@ public class PortfolioController extends BasicController {
 		c = (Collaborator) this.service.findActorByUserAccountId(LoginService.getPrincipal().getId());
 
 		Assert.isTrue(p.getId() == c.getPortfolio().getId(), "You don't have permission to do this");
-		final ModelAndView result = super.edit(p, "portfolio/edit", "portfolio/edit.do?id=" + id, "portfolio/list.do");
+		final ModelAndView result = super.edit(p, "portfolio/edit", "portfolio/edit.do?id=" + id, "/portfolio/list.do");
 
 		result.addObject("view", false);
 		return result;
@@ -76,7 +81,7 @@ public class PortfolioController extends BasicController {
 		if (p.getId() != 0)
 			Assert.isTrue(p.getId() == c.getPortfolio().getId(), "You don't have permission to do this");
 
-		result = super.save(p, binding, "portfolio.commit.error", "portfolio/edit", "portfolio/edit.do", "portfolio/list.do", "redirect:list.do");
+		result = super.save(p, binding, "portfolio.commit.error", "portfolio/edit", "portfolio/edit.do", "/portfolio/list.do", "redirect:list.do");
 		return result;
 	}
 

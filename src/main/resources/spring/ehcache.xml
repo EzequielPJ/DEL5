@@ -5,13 +5,11 @@
 
     <!-- objects are evicted from the cache every 60 seconds -->
     <cache name="cust"
-           timeToLiveSeconds="3600"
-           maxElementsInMemory="100"
-           eternal="false"
+           maxElementsInMemory="10"
+           eternal="true"
            overflowToDisk="false"
-           maxElementsOnDisk="10000000"
+           maxElementsOnDisk="1"
            diskPersistent="false"
-           diskExpiryThreadIntervalSeconds="1"
            memoryStoreEvictionPolicy="LRU"/>
     
     <cache name="proclaims"

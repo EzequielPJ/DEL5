@@ -29,4 +29,7 @@ public interface SwapRepository extends JpaRepository<Swap, Integer> {
 	@Query("select s from Swap s where s.receiver.id = ?1 and s.status = 'pending'")
 	List<Swap> getSwapsPendingByCollaboratorId(final int idCollaborator);
 
+	@Query("select s from Swap s where (s.sender.id = ?1 or s.receiver.id = ?1 or s.sender.id = ?2 or s.receiver.id = ?2) and s.status = 'pending' and s.id <> ?3")
+	List<Swap> getSwapPendingToChange(final int idActor1, final int idActor2, final int idSwap);
+
 }

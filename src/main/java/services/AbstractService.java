@@ -22,7 +22,7 @@ public class AbstractService {
 	}
 
 	public Collection<String> limpiaString(final String s) {
-		return Arrays.asList(s.replaceAll("[^a-zA-Z0-9$]", "#").split("##|#"));
+		return Arrays.asList(s.replaceAll("[^a-zA-Z0-9$]", "#").trim().split("##|#"));
 	}
 	public Collection<Box> initBoxes() {
 
@@ -60,8 +60,14 @@ public class AbstractService {
 		Map<String, Boolean> result;
 		result = new HashMap<>();
 
-		for (final String word : System.getProperty("spamwords").split(","))
+		for (String word : System.getProperty("spamwords").split(",")) {
+
+			if (word.startsWith(" "))
+				word = word.substring(1, word.length());
+
 			result.put(word, contentMessage.contains(word.toLowerCase()));
+
+		}
 
 		for (final Boolean b : result.values())
 			if (b) {
@@ -87,16 +93,15 @@ public class AbstractService {
 		return res;
 	}
 	private boolean isSpammer(final Collection<MessageEntity> cm) {
-		final boolean res = false;
+		boolean res = false;
 		if (cm.size() != 0)
-			//			int i = 0;
 			for (final MessageEntity message : cm) {
-				final boolean spam = this.spamWord(this.limpiaString(message.getSubject())) && this.spamWord(this.limpiaString(message.getBody()));
-				if (spam)
-					//					i++;
+				final boolean spam = this.spamWord(this.limpiaString(message.getSubject())) || this.spamWord(this.limpiaString(message.getBody()));
+				if (spam) {
+					res = true;
 					break;
+				}
 			}
-		//			res = (i / cm.size()) >= 0.1;
 		return res;
 	}
 	public boolean checkSpammer(final Actor a) {

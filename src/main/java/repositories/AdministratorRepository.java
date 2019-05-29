@@ -26,6 +26,9 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	@Query("select a from Actor a where a.account.enabled = false")
 	Collection<Actor> getActorsEnabled();
 
-	//	@Query("select a.creditCard from Actor a where a.id = ?1")
-	//	CreditCard getCreditcardByActor(int id);
+	@Query("select a.id from Actor a where a.suspicious = true")
+	Collection<Integer> getActorsIdSpammer();
+
+	@Query("select a.id from Actor a where a.account.enabled = false")
+	Collection<Integer> getActorsIdEnabled();
 }

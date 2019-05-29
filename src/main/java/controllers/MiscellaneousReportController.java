@@ -19,7 +19,6 @@ import services.PortfolioService;
 import domain.Collaborator;
 import domain.MiscellaneousReport;
 import domain.Portfolio;
-import domain.StudyReport;
 
 @Controller
 @RequestMapping("/miscellaneousReport")
@@ -36,7 +35,7 @@ public class MiscellaneousReportController extends BasicController {
 	public ModelAndView create() {
 		Assert.isTrue(this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR));
 
-		return super.create(this.service.create(), "miscellaneousReport/edit", "miscellaneousReport/edit.do", "portfolio/list.do");
+		return super.create(this.service.create(), "miscellaneousReport/edit", "miscellaneousReport/edit.do", "/portfolio/list.do");
 
 	}
 
@@ -57,7 +56,7 @@ public class MiscellaneousReportController extends BasicController {
 		Assert.isTrue(col.contains(miscellaneousReport), "You don't have permission to do this");
 
 		ModelAndView result;
-		result = super.edit(miscellaneousReport, "miscellaneousReport/edit", "miscellaneousReport/edit.do", "portfolio/list.do");
+		result = super.edit(miscellaneousReport, "miscellaneousReport/edit", "miscellaneousReport/edit.do", "/portfolio/list.do");
 
 		return result;
 	}
@@ -65,7 +64,7 @@ public class MiscellaneousReportController extends BasicController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveEntity(final MiscellaneousReport miscellaneousReport, final BindingResult binding) {
 		ModelAndView result = null;
-		result = super.save(miscellaneousReport, binding, "miscellaneous.commit.error", "miscellaneousReport/edit", "miscellaneousReport/edit.do", "portfolio/list.do", "redirect:/portfolio/list.do");
+		result = super.save(miscellaneousReport, binding, "miscellaneous.commit.error", "miscellaneousReport/edit", "miscellaneousReport/edit.do", "/portfolio/list.do", "redirect:/portfolio/list.do");
 		return result;
 	}
 
@@ -74,7 +73,7 @@ public class MiscellaneousReportController extends BasicController {
 		ModelAndView result = null;
 		MiscellaneousReport m;
 		m = this.service.findOne(id);
-		result = super.show(m, "miscellaneousReport/edit", "miscellaneousReport/edit.do", "portfolio/list.do");
+		result = super.show(m, "miscellaneousReport/edit", "miscellaneousReport/edit.do", "/portfolio/list.do");
 
 		result.addObject("view", true);
 
@@ -95,7 +94,7 @@ public class MiscellaneousReportController extends BasicController {
 		Assert.isTrue(col.contains(miscellaneousReport), "You don't have permission to do this");
 		ModelAndView result;
 
-		result = super.delete(this.service.findOne(id), "miscellaneous.commit.error", "miscellaneousReport/edit", "miscellaneousReport/edit.do", "portfolio/list.do", "redirect:/portfolio/list.do");
+		result = super.delete(this.service.findOne(id), "miscellaneous.commit.error", "miscellaneousReport/edit", "miscellaneousReport/edit.do", "/portfolio/list.do", "redirect:/portfolio/list.do");
 
 		return result;
 	}
@@ -120,8 +119,8 @@ public class MiscellaneousReportController extends BasicController {
 
 	@Override
 	public <T> ModelAndView deleteAction(final T e, final String nameResolver) {
-		StudyReport stu;
-		stu = (StudyReport) e;
+		MiscellaneousReport stu;
+		stu = (MiscellaneousReport) e;
 		this.service.delete(stu.getId());
 		return new ModelAndView(nameResolver);
 	}

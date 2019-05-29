@@ -35,7 +35,7 @@ public class WorkReportController extends BasicController {
 	public ModelAndView create() {
 		Assert.isTrue(this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR));
 
-		return super.create(this.service.create(), "workReport/edit", "workReport/edit.do", "portfolio/list.do");
+		return super.create(this.service.create(), "workReport/edit", "workReport/edit.do", "/portfolio/list.do");
 
 	}
 
@@ -56,7 +56,7 @@ public class WorkReportController extends BasicController {
 		Assert.isTrue(col.contains(workreport), "You don't have permission to do this");
 
 		ModelAndView result;
-		result = super.edit(workreport, "workReport/edit", "workReport/edit.do", "portfolio/list.do");
+		result = super.edit(workreport, "workReport/edit", "workReport/edit.do", "/portfolio/list.do");
 
 		return result;
 	}
@@ -65,9 +65,9 @@ public class WorkReportController extends BasicController {
 	public ModelAndView saveEntity(final WorkReport workReport, final BindingResult binding) {
 		ModelAndView result = null;
 		if (this.service.checkDates(workReport.getStartDate(), workReport.getEndDate()))
-			result = super.save(workReport, binding, "study.commit.error", "workReport/edit", "workReport/edit.do", "portfolio/list.do", "redirect:/portfolio/list.do");
+			result = super.save(workReport, binding, "study.commit.error", "workReport/edit", "workReport/edit.do", "/portfolio/list.do", "redirect:/portfolio/list.do");
 		else
-			return this.createAndEditModelAndView(workReport, "bad.dates", "workReport/edit", "workReport/edit.do", "redirect:/portfolio/list.do");
+			return this.createAndEditModelAndView(workReport, "bad.dates", "workReport/edit", "workReport/edit.do", "/portfolio/list.do");
 		return result;
 	}
 
@@ -76,7 +76,7 @@ public class WorkReportController extends BasicController {
 		ModelAndView result = null;
 		WorkReport s;
 		s = this.service.findOne(id);
-		result = super.show(s, "workReport/edit", "workReport/edit.do", "portfolio/list.do");
+		result = super.show(s, "workReport/edit", "workReport/edit.do", "/portfolio/list.do");
 
 		result.addObject("view", true);
 
@@ -97,7 +97,7 @@ public class WorkReportController extends BasicController {
 		Assert.isTrue(col.contains(workReport), "You don't have permission to do this");
 		ModelAndView result;
 
-		result = super.delete(this.service.findOne(id), "workReport.commit.error", "studyReport/edit", "workReport/edit.do", "portfolio/list.do", "redirect:/portfolio/list.do");
+		result = super.delete(this.service.findOne(id), "workReport.commit.error", "studyReport/edit", "workReport/edit.do", "/portfolio/list.do", "redirect:/portfolio/list.do");
 
 		return result;
 	}

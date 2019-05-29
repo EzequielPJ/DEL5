@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.validation.ValidationException;
@@ -43,6 +44,10 @@ public class SwapService extends AbstractService {
 		return this.swapRepo.findAll();
 	}
 
+	public List<Swap> getSwapPendingToChange(final int idActor1, final int idActor2, final int idSwap) {
+		return this.swapRepo.getSwapPendingToChange(idActor1, idActor2, idSwap);
+	}
+
 	public List<Collaborator> findAllCollaboratorByComission(final int idCollaborator, final int idComission) {
 		return this.swapRepo.findAllCollaboratorByComission(idCollaborator, idComission);
 	}
@@ -75,6 +80,7 @@ public class SwapService extends AbstractService {
 		s.setPhone("");
 		s.setSender(c);
 		s.setReceiver(this.findOneCollaborator(idCollaborator));
+		Assert.isTrue(s.getSender().getComission() != s.getReceiver().getComission(), "You can not change to the same comission");
 		return s;
 	}
 
@@ -92,6 +98,7 @@ public class SwapService extends AbstractService {
 			Assert.isTrue((s.getReceiver().getId() == a.getId()), "You don't have permission to do this");
 			modify = this.swapRepo.save(s);
 			if (modify.getStatus().equals("accepted")) {
+
 				Comission sendComission;
 				sendComission = modify.getSender().getComission();
 				Comission recevComission;
@@ -102,6 +109,12 @@ public class SwapService extends AbstractService {
 				sende = modify.getSender();
 				recev.setComission(sendComission);
 				sende.setComission(recevComission);
+
+				Collection<Swap> col;
+				col = this.swapRepo.getSwapPendingToChange(sende.getId(), recev.getId(), modify.getId());
+				col.remove(s);
+				for (final Swap swap : col)
+					swap.setStatus("rejected");
 			}
 		}
 		return modify;

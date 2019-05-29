@@ -75,6 +75,8 @@
 
 		<security:intercept-url pattern="/proclaim/student/**"
 			access="hasRole('STUDENT')" />
+		<security:intercept-url pattern="/comment/student/**"
+			access="hasRole('STUDENT')" />
 
 		<!-- Member -->
 
@@ -84,28 +86,24 @@
 			access="hasRole('MEMBER')" />
 		<security:intercept-url pattern="/event/member/**"
 			access="hasRole('MEMBER')" />
-			
+		<security:intercept-url pattern="/comment/member/**"
+			access="hasRole('MEMBER')" />
+
 		<!-- Collaborator -->
 		<security:intercept-url pattern="/comission/collaborator/**"
 			access="hasRole('COLLABORATOR')" />
 		<security:intercept-url pattern="/event/collaborator/**"
 			access="hasRole('COLLABORATOR')" />
 		<security:intercept-url pattern="/swap/collaborator/**"
-			access="hasRole('COLLABORATOR')" />	
+			access="hasRole('COLLABORATOR')" />
 		<security:intercept-url pattern="/portfolio/**"
-			access="hasRole('COLLABORATOR')" />		
-			<security:intercept-url pattern="/studyReport/**"
-			access="hasRole('COLLABORATOR')" />		
-			<security:intercept-url pattern="/studyreport/**"
-			access="hasRole('COLLABORATOR')" />	
-			<security:intercept-url pattern="/workreport/**"
-			access="hasRole('COLLABORATOR')" />	
-			<security:intercept-url pattern="/workReport/**"
-			access="hasRole('COLLABORATOR')" />	
-			<security:intercept-url pattern="/miscellaneousreport/**"
-			access="hasRole('COLLABORATOR')" />	
-			<security:intercept-url pattern="/miscellaneousReport/**"
-			access="hasRole('COLLABORATOR')" />			
+			access="hasRole('COLLABORATOR')" />
+		<security:intercept-url pattern="/studyReport/**"
+			access="hasRole('COLLABORATOR')" />
+		<security:intercept-url pattern="/workReport/**"
+			access="hasRole('COLLABORATOR')" />
+		<security:intercept-url pattern="/miscellaneousreport/**"
+			access="hasRole('COLLABORATOR')" />
 		<!-- Sponsor -->
 		<security:intercept-url pattern="/sponsorship/sponsor/**"
 			access="hasRole('SPONSOR')" />
