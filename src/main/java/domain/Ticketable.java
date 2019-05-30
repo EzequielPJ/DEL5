@@ -3,8 +3,8 @@ package domain;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
@@ -17,7 +17,7 @@ public abstract class Ticketable extends DomainEntity {
 	private Ticker	ticker;
 
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	public Ticker getTicker() {
 		return this.ticker;
 	}

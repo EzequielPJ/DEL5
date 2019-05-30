@@ -77,7 +77,13 @@ public class WorkReportService extends AbstractService {
 		Portfolio p;
 		p = this.servicePortfolio.findOne(IdPortfolio);
 
-		Assert.isTrue(p.equals(c.getPortfolio()));
+		Assert.isTrue(p.getId() == c.getPortfolio().getId());
+
+		if (saveTo.getId() != 0) {
+			Portfolio aux;
+			aux = this.repository.findPortfolioByWorkReportId(saveTo.getId());
+			Assert.isTrue(aux.getId() == p.getId());
+		}
 
 		WorkReport result;
 

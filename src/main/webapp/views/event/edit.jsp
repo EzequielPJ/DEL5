@@ -48,11 +48,7 @@
 		</jstl:if>
 	</security:authorize>
 	<br>
-	<form:label path="finalMode">
-			<spring:message code="event.finalMode" />
-		</form:label>
-	<form:checkbox path="finalMode"
-			disabled="true" />
+
 	<jstl:if test="${!event.finalMode and !view}">
 				<acme:submit name="save" code="event.save" />
 			</jstl:if>

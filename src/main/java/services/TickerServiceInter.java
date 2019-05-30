@@ -4,6 +4,7 @@ package services;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import repositories.GenericRepository;
@@ -14,14 +15,11 @@ import domain.Ticker;
 import domain.Ticketable;
 
 @Service
-public class TickerServiceInter<K extends Ticketable, S extends GenericRepository<K>> {
+public class TickerServiceInter {
 
-	S	repository;
+	@Autowired
+	private TickerService	service;
 
-
-	public void setRepository(final S repository) {
-		this.repository = repository;
-	}
 
 	public Ticker create() {
 		Ticker ticker;
@@ -30,7 +28,7 @@ public class TickerServiceInter<K extends Ticketable, S extends GenericRepositor
 		return ticker;
 	}
 
-	public K withTicker(final K without) {
+	public <K extends Ticketable> K withTicker(final K without, final GenericRepository repository) {
 
 		K result = null;
 
@@ -44,7 +42,7 @@ public class TickerServiceInter<K extends Ticketable, S extends GenericRepositor
 				if (without.getId() != 0) {
 
 					K auxFromDB;
-					auxFromDB = this.repository.findOne(without.getId());
+					auxFromDB = (K) repository.findOne(without.getId());
 
 					boolean check;
 					check = auxFromDB.getTicker().getTicker().equals(without.getTicker().getTicker());
@@ -55,15 +53,18 @@ public class TickerServiceInter<K extends Ticketable, S extends GenericRepositor
 
 				if (without.getId() == 0) {
 					Ticker findByCode;
-					findByCode = this.repository.findTickerByCode(without.getTicker().getTicker());
+					findByCode = repository.findTickerByCode(without.getTicker().getTicker());
 
 					if (findByCode != null)
 						throw new IllegalArgumentException();
+					else {
+						findByCode = this.service.saveTicker(without.getTicker());
+						without.setTicker(findByCode);
+					}
 				}
 
-				result = this.repository.save(without);
+				result = (K) repository.save(without);
 				value = true;
-
 			} catch (final Throwable oops) {
 				value = false;
 				aux = this.create();
@@ -72,5 +73,8 @@ public class TickerServiceInter<K extends Ticketable, S extends GenericRepositor
 		while (value == false);
 
 		return result;
+	}
+	public void deleteTicker(final int id) {
+		this.service.deleteTicker(id);
 	}
 }

@@ -30,18 +30,23 @@ import domain.StudentCard;
 public class ProclaimService extends AbstractService {
 
 	@Autowired
-	private ProclaimRepository									repository;
+	private ProclaimRepository	repository;
 
 	@Autowired
-	private Validator											validator;
+	private Validator			validator;
 
-	private boolean												inFinal;
+	private boolean				inFinal;
 
-	private TickerServiceInter<Proclaim, ProclaimRepository>	interm;
+	@Autowired
+	private TickerServiceInter	interm;
 
 
 	public Actor findByUserAccount(final int id) {
 		return this.repository.findActorByUserAccount(id);
+	}
+
+	public Collection<Proclaim> findProclaimAssigned(final int id) {
+		return this.repository.findProclaimAssigned(id);
 	}
 
 	@Cacheable(value = "proclaims")
@@ -70,8 +75,6 @@ public class ProclaimService extends AbstractService {
 
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
 
-		this.interm = new TickerServiceInter<>();
-
 		Proclaim proclaim;
 		proclaim = new Proclaim();
 
@@ -96,7 +99,6 @@ public class ProclaimService extends AbstractService {
 
 		proclaim.setStudentCard(studentCard);
 
-		this.interm.setRepository(this.repository);
 		proclaim.setTicker(this.interm.create());
 
 		return proclaim;
@@ -113,6 +115,8 @@ public class ProclaimService extends AbstractService {
 
 		Collection<Member> members;
 		members = proclaim.getMembers();
+
+		Assert.isTrue(!members.contains(h), Authority.MEMBER);
 
 		if (!members.contains(h)) {
 			res = true;
@@ -145,8 +149,6 @@ public class ProclaimService extends AbstractService {
 	@CacheEvict(value = "proclaims", allEntries = true)
 	public Proclaim save(final Proclaim aux) {
 
-		this.interm = new TickerServiceInter<>();
-
 		Proclaim result;
 
 		if (aux.getId() == 0) {
@@ -173,9 +175,7 @@ public class ProclaimService extends AbstractService {
 				aux.setStatus("PENDIENTE");
 		}
 
-		this.interm.setRepository(this.repository);
-
-		result = this.interm.withTicker(aux);
+		result = this.interm.withTicker(aux, this.repository);
 
 		return result;
 	}
@@ -189,7 +189,6 @@ public class ProclaimService extends AbstractService {
 		Assert.isTrue(p.getStudent().getId() == ((Student) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId())).getId());
 
 		this.repository.delete(p.getId());
-
 	}
 
 	public Proclaim reconstruct(final Proclaim aux, final BindingResult binding) {

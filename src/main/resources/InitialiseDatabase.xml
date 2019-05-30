@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
- * PopulateDatabase.xml
- *
- * Copyright (C) 2019 Universidad de Sevilla
- * 
- * The use of this project is hereby constrained to the conditions of the 
- * TDG Licence, a copy of which you may download from 
- * http://www.tdg-seville.info/License.html
- -->
+<!-- * PopulateDatabase.xml * * Copyright (C) 2019 Universidad de Sevilla 
+	* * The use of this project is hereby constrained to the conditions of the 
+	* TDG Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -19,7 +13,7 @@
 	<bean id="dateFormat" class="java.text.SimpleDateFormat">
 		<constructor-arg value="yyyy/MM/dd" />
 	</bean>
-	
+
 	<!-- User accounts -->
 
 	<bean id="userAccount1" class="security.UserAccount">
@@ -34,28 +28,28 @@
 		</property>
 		<property name="enabled" value="true" />
 	</bean>
-	
-	
+
+
 	<bean id="profile1" class="domain.Profile">
 		<property name="nick" value="DP1010" />
 		<property name="socialNetworkName" value="LinkedIn" />
 		<property name="link" value="https://www.linkedin/DP1010" />
+		<property name="actor" ref="administrator1" />
 	</bean>
 	<bean id="profile2" class="domain.Profile">
 		<property name="nick" value="DP1011" />
 		<property name="socialNetworkName" value="Tuenti" />
 		<property name="link" value="https://www.tuenti/DP1011" />
+		<property name="actor" ref="administrator1" />
+
 	</bean>
 
 	<bean id="customisationsys1" class="domain.CustomisationSystem">
-		<property name="systemName" value="Acme-Rookies" />
-		<property name="banner" value="https://i.imgur.com/RyOrQZ7.jpg" />
-		<property name="vat" value="0.21" />
-		<property name="flat_rate" value="0.20" />
+		<property name="systemName" value="DEL5-Student Representation" />
+		<property name="banner" value="https://i.imgur.com/eDCGHR9.png" />
 		<property name="message"
-			value="Welcome to Acme-Rookies! We're IT rookies' favourite job marketplace!.  ¡Bienvenidos a Acme-Rookies! ¡Somos el mercado de trabajo favorito de los profesionales de las TICs!"/>
+			value="Welcome to DEL5! The best website for student rights defense. ¡Bienvenidos a DEL5! El mejor lugar para la defensa de los derechos de los estudiantes" />
 		<property name="spamwords">
-
 			<map>
 				<entry key="en">
 					<value>sex, cialis, one millon, you´ve been selected, Nigeria
@@ -65,14 +59,15 @@
 					<value>sexo, un millon, ha sido seleccionado, viagra</value>
 				</entry>
 			</map>
-
 		</property>
-
 		<property name="phonePrefix" value="34" />
 		<property name="hoursFinder" value="24" />
 		<property name="resultFinder" value="10" />
+		<property name="creditCardMakes">
+			<value>VISA,MCARD,AMEX,DINNERS,FLY</value>
+		</property>
 	</bean>
-	
+
 	<bean id="creditcard1" class="domain.CreditCard">
 		<property name="holder" value="John Doe" />
 		<property name="make" value="VISA" />
@@ -84,24 +79,14 @@
 		</property>
 		<property name="cvv" value="134" />
 	</bean>
-	
+
 	<bean id="administrator1" class="domain.Administrator">
 		<property name="name" value="Admin1" />
 		<property name="surname" value="Admin1" />
 		<property name="photo" value="" />
 		<property name="email" value="admin&lt;admin@gmail.com&gt;" />
 		<property name="phone" value="955582516" />
-		<property name="adress" value="" />
-		<property name="vat" value="0.21" />
-		<property name="creditCard">
-			<ref bean="creditcard1" />
-		</property>
-		<property name="profiles">
-			<list>
-				<ref bean="profile1" />
-				<ref bean="profile2" />
-			</list>
-		</property>
+		<property name="address" value="" />
 		<property name="account">
 			<ref bean="userAccount1" />
 		</property>
@@ -114,9 +99,9 @@
 				<ref bean="box5" />
 			</list>
 		</property>
-		<property name="spammer" value="false" />
+		<property name="suspicious" value="false" />
 	</bean>
-	
+
 	<bean id="box1" class="domain.Box">
 		<property name="name" value="In Box" />
 		<property name="fromSystem" value="true" />
@@ -177,5 +162,5 @@
 			</list>
 		</property>
 	</bean>
-	
+
 </beans>

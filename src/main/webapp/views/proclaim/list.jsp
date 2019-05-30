@@ -7,6 +7,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <display:table name="proclaims" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
@@ -21,8 +22,10 @@
 					code="proclaim.show" /></a>
 		</security:authorize>
 		<security:authorize access="hasRole('MEMBER')">
+		<jstl:if test="${boton}">
 			<a href="proclaim/member/show.do?id=${row.id}"><spring:message
 					code="proclaim.show" /></a>
+		</jstl:if>
 		</security:authorize>
 	</display:column>
 
@@ -41,16 +44,20 @@
 			</jstl:if>
 		</security:authorize>
 		<security:authorize access="hasRole('MEMBER')">
+		<jstl:if test="${boton}">
 			<a href="proclaim/member/edit.do?id=${row.id}"><spring:message
 					code="proclaim.edit" /></a>
+		</jstl:if>		
 		</security:authorize>
 	</display:column>
 	<jstl:if test="${startAssignation}">
 		<display:column titleKey="proclaim.assign">
+		<jstl:if test="${!fn:contains(ass,row)}">
 			<security:authorize access="hasRole('MEMBER')">
 				<a href="proclaim/member/assign.do?id=${row.id}"><spring:message
 						code="proclaim.assign" /></a>
 			</security:authorize>
+		</jstl:if>
 		</display:column>
 	</jstl:if>
 

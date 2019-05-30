@@ -15,7 +15,7 @@ import domain.Ticker;
 public class TickerService {
 
 	@Autowired
-	TickerRepository	repository;
+	private TickerRepository	repository;
 
 
 	public Ticker saveTicker(final Ticker saveTo) {
