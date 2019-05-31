@@ -44,9 +44,9 @@ public class ProfileServiceTest extends AbstractTest {
 	public void driver() {
 		final Object[][] objects = {
 			{
-				"company1", 0, null
+				"student1", 0, null
 			}, {
-				"company2", super.getEntityId("profile2"), IllegalArgumentException.class
+				"member1", super.getEntityId("profile2"), IllegalArgumentException.class
 			}
 		};
 

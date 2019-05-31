@@ -60,8 +60,12 @@ public class CustomisationSystemService extends AbstractService {
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
 		CustomisationSystem aux;
 		aux = this.fromCustomObjetFormToDomain(custom);
-		aux.setId(this.findUnique().getId());
-		aux.setVersion(this.findUnique().getVersion());
+
+		CustomisationSystem fromDB;
+		fromDB = this.findUnique();
+
+		aux.setId(fromDB.getId());
+		aux.setVersion(fromDB.getVersion());
 		return this.repository.save(aux);
 	}
 	public void banActor(final int id) {

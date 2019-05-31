@@ -59,12 +59,14 @@ public class EventController extends BasicController {
 		result = super.listModelAndView("events", "event/list", this.eventService.findAllFinalMode(), "event/listEvents.do");
 		result.addObject("general", true);
 		result.addObject("pub", false);
-		UserAccount user;
-		user = LoginService.getPrincipal();
-		if (this.eventService.findAuthority(user.getAuthorities(), Authority.SPONSOR)) {
-			Collection<Event> col;
-			col = this.sponsorshipService.findEventWithSponsorshipId(this.eventService.getActorByUserId(user.getId()).getId());
-			result.addObject("spo", col);
+		try {
+			if (this.eventService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.SPONSOR)) {
+				Collection<Event> col;
+				col = this.sponsorshipService.findEventWithSponsorshipId(this.eventService.getActorByUserId(LoginService.getPrincipal().getId()).getId());
+				result.addObject("spo", col);
+			}
+		} catch (final Throwable opps) {
+
 		}
 		return result;
 	}

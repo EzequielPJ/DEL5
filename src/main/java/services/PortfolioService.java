@@ -100,10 +100,11 @@ public class PortfolioService extends AbstractService {
 		Collaborator c;
 		c = (Collaborator) this.portrepository.findActorByUserAccountId(LoginService.getPrincipal().getId());
 
-		if (p.getId() == 0)
+		if (p.getId() == 0) {
+			Assert.isTrue(c.getPortfolio() == null || c.getPortfolio().getId() == 0);
 			c.setPortfolio(p);
-		else
-			Assert.isTrue(c.getPortfolio().equals(p), "You don't have permission to do this");
+		} else
+			Assert.isTrue(c.getPortfolio().getId() == p.getId(), "You don't have permission to do this");
 
 		saved = this.portrepository.save(p);
 		c.setPortfolio(saved);

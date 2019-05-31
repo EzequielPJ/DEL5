@@ -78,6 +78,12 @@ public class MiscellaneousReportService extends AbstractService {
 
 		Assert.isTrue(p.equals(c.getPortfolio()));
 
+		if (saveTo.getId() != 0) {
+			Portfolio aux;
+			aux = this.repository.findPortfolioByMiscellaneousReportId(saveTo.getId());
+			Assert.isTrue(aux.getId() == p.getId());
+		}
+
 		MiscellaneousReport result;
 
 		result = this.repository.save(saveTo);

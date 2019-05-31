@@ -129,7 +129,7 @@ public class ActorService extends AbstractService {
 		return res;
 	}
 
-	private String hashPassword(final String old) {
+	public String hashPassword(final String old) {
 		Md5PasswordEncoder encoder;
 		encoder = new Md5PasswordEncoder();
 		String passEncoded;

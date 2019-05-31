@@ -27,9 +27,9 @@ public class BoxServiceTest extends AbstractTest {
 	/*
 	 * Requirement tested: An actor who is authenticated must be able to:
 	 * Update a box that is not system box.
-	 * Total instructions: 277
+	 * Total instructions: 302
 	 * Covered instructions: 53
-	 * Analysis of sentence coverage of boxService: 19.1%
+	 * Analysis of sentence coverage of boxService: 17.5%
 	 * Analysis of data coverage: 100%
 	 * Attribute: name | Bad value: null | Normal value: Yes | Coverage: 100% |
 	 */
@@ -37,24 +37,24 @@ public class BoxServiceTest extends AbstractTest {
 	public void ActorTest() {
 		final Object testingData[][] = {
 			{
-				//Positive test: Update a box
-				"company1", "pruebaBox", "box31", null
+				//Positive test: Create a box
+				"collaborator2", "pruebaBox", null
 			}, {
 				//Negative test: The business rule that has been violated: Box name can not be null
-				"company1", "", "box31", ConstraintViolationException.class
+				"collaborator2", "", ConstraintViolationException.class
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.template((String) testingData[i][0], (String) testingData[i][1], super.getEntityId((String) testingData[i][2]), (Class<?>) testingData[i][3]);
+			this.template((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
-	protected void template(final String username, final String name, final int idBox, final Class<?> expected) {
+	protected void template(final String username, final String name, final Class<?> expected) {
 		Class<?> caught;
 
 		caught = null;
 		try {
 			this.authenticate(username);
-			//Update a box
+			//create a box
 			Box b;
 			b = this.boxService.createBox();
 			b.setName(name);

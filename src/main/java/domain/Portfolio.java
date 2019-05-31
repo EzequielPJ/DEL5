@@ -27,7 +27,6 @@ public class Portfolio extends DomainEntity {
 	private String							fullName;
 	private String							address;
 	private String							phone;
-	////
 	private Collection<WorkReport>			workReport;
 	private Collection<StudyReport>			studyReport;
 	private Collection<MiscellaneousReport>	miscellaneousReport;
