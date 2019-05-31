@@ -102,11 +102,11 @@
 		</jstl:if>
 
 	</security:authorize>
-	<security:authorize access="hasRole('STUDENT')">
+<%-- 	<security:authorize access="hasRole('STUDENT')">
 		<jstl:if test="${proclaim.id != 0 and proclaim.finalMode eq 'false'}">
 			<acme:submit name="delete" code="proclaim.delete" />
 		</jstl:if>
-	</security:authorize>
+	</security:authorize> --%>
 
 </form:form>
 <acme:cancel url="${requestCancel}" code="proclaim.cancel" />

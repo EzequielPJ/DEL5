@@ -31,9 +31,6 @@
 
 	<acme:textbox code="comment.attachments" path="attachments" />
 
-	<spring:message code="comment.author" />
-	<jstl:out value=" : ${comment.actor}" />
-
 	<acme:submit name="save" code="comment.save" />
 
 </form:form>

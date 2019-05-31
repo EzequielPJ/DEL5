@@ -119,6 +119,10 @@ public class SwapService extends AbstractService {
 		}
 		return modify;
 	}
+
+	public void save(final Collection<Swap> col) {
+		this.swapRepo.save(col);
+	}
 	public Swap reconstruct(final Swap sw, final BindingResult binding) {
 		Swap result;
 		UserAccount user;

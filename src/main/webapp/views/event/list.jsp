@@ -17,6 +17,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <display:table name="events" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
@@ -100,10 +101,13 @@
 		</jstl:if>
 	</jstl:if>
 	<security:authorize access="hasRole('SPONSOR')">
+	
 		<display:column titleKey="sponsor.createSponsorships">
 			<jstl:if test="${general}">
+			<jstl:if test="${!fn:contains(spo,row)}">
 				<a href="sponsorship/sponsor/create.do?idEvent=${row.id}"><spring:message
 						code="sponsor.createSponsorships" /></a>
+			</jstl:if>
 			</jstl:if>
 		</display:column>
 	</security:authorize>

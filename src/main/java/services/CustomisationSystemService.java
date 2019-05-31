@@ -12,6 +12,7 @@ import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,7 @@ import forms.CustomForm;
 
 @Service
 @Transactional
+@EnableCaching
 public class CustomisationSystemService extends AbstractService {
 
 	@Autowired
@@ -44,7 +46,7 @@ public class CustomisationSystemService extends AbstractService {
 
 	@Cacheable(value = "cust")
 	public CustomisationSystem findUnique() {
-		System.out.println("Entro en el findUnique: " + this.i);
+		System.out.println("Entro en findUnique: " + this.i);
 		this.i++;
 		return this.repository.findAll().get(0);
 	}

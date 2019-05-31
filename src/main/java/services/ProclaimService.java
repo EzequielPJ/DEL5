@@ -9,8 +9,9 @@ import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,7 @@ import domain.StudentCard;
 
 @Service
 @Transactional
+@EnableCaching
 public class ProclaimService extends AbstractService {
 
 	@Autowired
@@ -42,6 +44,10 @@ public class ProclaimService extends AbstractService {
 
 	public Actor findByUserAccount(final int id) {
 		return this.repository.findActorByUserAccount(id);
+	}
+
+	public Collection<Proclaim> findProclaimAssigned(final int id) {
+		return this.repository.findProclaimAssigned(id);
 	}
 
 	@Cacheable(value = "proclaims")
@@ -122,7 +128,7 @@ public class ProclaimService extends AbstractService {
 
 		return res;
 	}
-
+	@Cacheable(value = "proclaims")
 	public Proclaim findOne(final int id) {
 		Proclaim result;
 		result = this.repository.findOne(id);
@@ -142,11 +148,9 @@ public class ProclaimService extends AbstractService {
 		return result;
 	}
 
-	@CacheEvict(value = "proclaims", allEntries = true)
+	@CachePut(value = "proclaims", key = "#aux.id")
 	public Proclaim save(final Proclaim aux) {
-
 		this.interm = new TickerServiceInter<>();
-
 		Proclaim result;
 
 		if (aux.getId() == 0) {
@@ -180,7 +184,7 @@ public class ProclaimService extends AbstractService {
 		return result;
 	}
 
-	@CacheEvict(value = "proclaims", allEntries = true)
+	@CachePut(value = "proclaims", key = "#aux.id")
 	public void delete(final int id) {
 		Proclaim p;
 		p = this.repository.findOne(id);
@@ -190,6 +194,10 @@ public class ProclaimService extends AbstractService {
 
 		this.repository.delete(p.getId());
 
+	}
+
+	public void save(final Collection<Proclaim> col) {
+		this.repository.save(col);
 	}
 
 	public Proclaim reconstruct(final Proclaim aux, final BindingResult binding) {
@@ -269,6 +277,9 @@ public class ProclaimService extends AbstractService {
 		return result;
 	}
 
+	public void delete(final Collection<Proclaim> col) {
+		this.repository.delete(col);
+	}
 	public void flush() {
 		this.repository.flush();
 	}
