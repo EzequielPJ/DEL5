@@ -8,6 +8,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
@@ -55,6 +57,7 @@ public class Profile extends DomainEntity {
 
 	@JsonIgnore
 	@ManyToOne
+	@NotFound(action = NotFoundAction.IGNORE)
 	public Actor getActor() {
 		return this.actor;
 	}

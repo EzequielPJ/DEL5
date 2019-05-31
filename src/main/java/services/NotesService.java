@@ -33,6 +33,10 @@ public class NotesService extends AbstractService {
 	private Validator		validator;
 
 
+	public Collection<Notes> getNotesByActor(final int id) {
+		return this.notesRepository.getNotesByActor(id);
+	}
+
 	public Collection<Notes> getNotesByEvent(final int id) {
 		return this.notesRepository.getNotesByEvent(id);
 	}

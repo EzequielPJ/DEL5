@@ -26,4 +26,6 @@ public interface NotesRepository extends JpaRepository<Notes, Integer> {
 	@Query("select avg(n.note) from Notes n where n.event.id = ?1")
 	Double getAVGNotesByEvent(int id);
 
+	@Query("select n from Notes n where n.actor.id = ?1")
+	Collection<Notes> getNotesByActor(int id);
 }
