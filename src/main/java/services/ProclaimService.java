@@ -9,8 +9,9 @@ import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,7 @@ import domain.StudentCard;
 
 @Service
 @Transactional
+@EnableCaching
 public class ProclaimService extends AbstractService {
 
 	@Autowired
@@ -146,7 +148,7 @@ public class ProclaimService extends AbstractService {
 		return result;
 	}
 
-	@CacheEvict(value = "proclaims", allEntries = true)
+	@CachePut(value = "proclaims", key = "#aux.id", condition = "#aux.id != 0")
 	public Proclaim save(final Proclaim aux) {
 
 		Proclaim result;
@@ -180,7 +182,7 @@ public class ProclaimService extends AbstractService {
 		return result;
 	}
 
-	@CacheEvict(value = "proclaims", allEntries = true)
+	@CachePut(value = "proclaims", key = "#aux.id")
 	public void delete(final int id) {
 		Proclaim p;
 		p = this.repository.findOne(id);
