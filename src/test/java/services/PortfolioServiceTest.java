@@ -50,18 +50,18 @@ public class PortfolioServiceTest extends AbstractTest {
 	 * Total Instructions: 228
 	 * Instructions Covered: 126
 	 * 
-	 * Data Coverage. %
+	 * Data Coverage. 40.7%
 	 * 
 	 * Atributte Bad Value Good Value
 	 * ==============================================================
-	 * title | - | Yes
-	 * moment | - | Yes
-	 * fullName | - | Yes
-	 * address | - | Yes
-	 * phone
-	 * workReport
-	 * studyReport
-	 * miscellaneousReport
+	 * title | - | Yes | 50%
+	 * moment | - | Yes | 50%
+	 * fullName | - | Yes | 50 %
+	 * address | - | Yes | 50%
+	 * phone | - | Yes | 50%
+	 * workReport | - | Yes | 25%
+	 * studyReport | - | Yes | 25%
+	 * miscellaneousReport | - | Yes | 25%
 	 * 
 	 */
 	@Test
@@ -115,16 +115,16 @@ public class PortfolioServiceTest extends AbstractTest {
 	 * Total Instructions: 102
 	 * Instructions Covered: 266
 	 * 
-	 * Data Coverage. %
+	 * Data Coverage. 50%
 	 * 
 	 * Atributte Bad Value Good Value
 	 * ==============================================================
-	 * title | - | Yes
-	 * moment | - | Yes
-	 * startDate | - | Yes
-	 * endDate | - | Yes
-	 * businessName
-	 * text
+	 * title | - | Yes | 50%
+	 * moment | - | Yes | 50%
+	 * startDate | - | Yes | 50%
+	 * endDate | - | Yes | 50%
+	 * businessName | - | Yes | 50%
+	 * text | - | Yes | 50%
 	 * 
 	 */
 
@@ -189,17 +189,17 @@ public class PortfolioServiceTest extends AbstractTest {
 	 * Total Instructions: 107
 	 * Instructions Covered: 256
 	 * 
-	 * Data Coverage. %
+	 * Data Coverage. 43.8%
 	 * 
 	 * Atributte Bad Value Good Value
 	 * ==============================================================
-	 * title | - | Yes
-	 * moment | - | Yes
-	 * startDate | - | Yes
-	 * endDate | - | Yes
-	 * course
-	 * average
-	 * percentajeCredits
+	 * title | - | Yes | 50%
+	 * moment | - | Yes | 50%
+	 * startDate | - | Yes | 50%
+	 * endDate | - | Yes | 50%
+	 * course | - | Yes | 50%
+	 * average | - | Yes | 25%
+	 * percentajeCredits | - | Yes | 25%
 	 * 
 	 */
 
@@ -262,14 +262,14 @@ public class PortfolioServiceTest extends AbstractTest {
 	 * Total Instructions: 90
 	 * Instructions Covered: 225
 	 * 
-	 * Data Coverage. %
+	 * Data Coverage. 50%
 	 * 
 	 * Atributte Bad Value Good Value
 	 * ==============================================================
-	 * title | - | Yes
-	 * moment | - | Yes
-	 * text | - | Yes
-	 * attachments | - | Yes
+	 * title | - | Yes | 50%
+	 * moment | - | Yes | 50%
+	 * text | - | Yes | 50%
+	 * attachments | - | Yes | 50%
 	 * 
 	 */
 
