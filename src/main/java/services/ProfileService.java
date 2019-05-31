@@ -108,6 +108,10 @@ public class ProfileService {
 
 		return result;
 	}
+
+	public void delete(final Collection<Profile> col) {
+		this.profileRepository.delete(col);
+	}
 	public void flush() {
 		this.profileRepository.flush();
 	}

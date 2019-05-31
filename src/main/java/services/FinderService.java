@@ -129,4 +129,8 @@ public class FinderService extends AbstractService {
 	public void flush() {
 		this.repository.flush();
 	}
+
+	public void delete(final Finder f) {
+		this.repository.delete(f);
+	}
 }

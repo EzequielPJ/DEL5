@@ -42,6 +42,7 @@ public class Authority implements GrantedAuthority {
 	public static final String	STUDENT			= "STUDENT";
 	public static final String	COLLABORATOR	= "COLLABORATOR";
 	public static final String	SPONSOR			= "SPONSOR";
+	public static final String	ANONYMOUS		= "ANONYMOUS";
 
 	// Attributes -------------------------------------------------------------
 
@@ -49,7 +50,7 @@ public class Authority implements GrantedAuthority {
 
 
 	@NotBlank
-	@Pattern(regexp = "^" + Authority.ADMIN + "|" + Authority.MEMBER + "|" + Authority.STUDENT + "|" + Authority.COLLABORATOR + "|" + Authority.SPONSOR + "$")
+	@Pattern(regexp = "^" + Authority.ADMIN + "|" + Authority.MEMBER + "|" + Authority.STUDENT + "|" + Authority.COLLABORATOR + "|" + Authority.SPONSOR + "|" + Authority.ANONYMOUS + "$")
 	@Override
 	public String getAuthority() {
 		return this.authority;
@@ -83,6 +84,10 @@ public class Authority implements GrantedAuthority {
 
 		authority = new Authority();
 		authority.setAuthority(Authority.SPONSOR);
+		result.add(authority);
+
+		authority = new Authority();
+		authority.setAuthority(Authority.ANONYMOUS);
 		result.add(authority);
 
 		return result;

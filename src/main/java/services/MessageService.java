@@ -62,6 +62,10 @@ public class MessageService extends AbstractService {
 		return this.messageRepository.getMessagesOutBox(id);
 	}
 
+	public Collection<MessageEntity> getMessagesByActor(final int accountId) {
+		return this.messageRepository.getMessagesByActor(accountId);
+	}
+
 	//Create
 	public MessageEntity createMessage(final Actor a) {
 		MessageEntity message;

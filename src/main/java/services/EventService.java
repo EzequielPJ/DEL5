@@ -85,6 +85,10 @@ public class EventService extends AbstractService {
 		}
 		return modify;
 	}
+
+	public void save(final Collection<Event> col) {
+		this.eventRepository.save(col);
+	}
 	public void deleteEvent(final int idEvent) {
 		Actor a;
 		a = this.getActorByUserId(LoginService.getPrincipal().getId());

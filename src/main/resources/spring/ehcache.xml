@@ -3,23 +3,18 @@
          updateCheck="false">
     <diskStore path="java.io.tmpdir"/>
 
-    <!-- objects are evicted from the cache every 60 seconds -->
     <cache name="cust"
            maxElementsInMemory="10"
            eternal="true"
            overflowToDisk="false"
-           maxElementsOnDisk="1"
-           diskPersistent="false"
            memoryStoreEvictionPolicy="LRU"/>
-    
+   
     <cache name="proclaims"
-           timeToLiveSeconds="3600"
+           timeToLiveSeconds="40"
            maxElementsInMemory="100"
-           eternal="false"
            overflowToDisk="false"
-           maxElementsOnDisk="10000000"
+           maxElementsOnDisk="1000"
            diskPersistent="false"
-           diskExpiryThreadIntervalSeconds="1"
+           timeToIdleSeconds="1"
            memoryStoreEvictionPolicy="LRU"/>
-
 </ehcache>

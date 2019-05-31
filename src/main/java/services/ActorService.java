@@ -1,8 +1,10 @@
 
 package services;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
@@ -27,11 +29,20 @@ import domain.Actor;
 import domain.Administrator;
 import domain.Box;
 import domain.Collaborator;
+import domain.Comission;
+import domain.CreditCard;
+import domain.Event;
 import domain.Finder;
 import domain.Member;
+import domain.MessageEntity;
+import domain.Portfolio;
 import domain.Proclaim;
 import domain.Sponsor;
+import domain.Sponsorship;
 import domain.Student;
+import domain.StudentCard;
+import domain.Swap;
+import domain.Ticker;
 import forms.ActorForm;
 
 @Service
@@ -39,23 +50,46 @@ import forms.ActorForm;
 public class ActorService extends AbstractService {
 
 	@Autowired
-	private AdministratorRepository	adminRepository;
+	private AdministratorRepository		adminRepository;
 	@Autowired
-	private FinderService			finderService;
+	private FinderService				finderService;
 	@Autowired
-	private UserAccountRepository	userRepository;
+	private UserAccountRepository		userRepository;
 	@Autowired
-	private Validator				validator;
+	private Validator					validator;
 	@Autowired
-	private BoxService				boxService;
+	private BoxService					boxService;
 	@Autowired
-	private MemberRepository		memberRepository;
+	private MemberRepository			memberRepository;
 	@Autowired
-	private StudentRepository		studentRepository;
+	private StudentRepository			studentRepository;
 	@Autowired
-	private CollaboratorRepository	collaboratorRepository;
+	private CollaboratorRepository		collaboratorRepository;
 	@Autowired
-	private SponsorRepository		sponsorRepository;
+	private SponsorRepository			sponsorRepository;
+	@Autowired
+	private SponsorshipService			sponsorshipService;
+	@Autowired
+	private StudyReportService			studyReportService;
+	@Autowired
+	private WorkReportService			workReportService;
+	@Autowired
+	private MiscellaneousReportService	miscReportService;
+
+	@Autowired
+	private ProfileService				profileService;
+	@Autowired
+	private MessageService				messService;
+	@Autowired
+	private PortfolioService			portService;
+	@Autowired
+	private ProclaimService				proclaimService;
+	@Autowired
+	private SwapService					swapService;
+	@Autowired
+	private ComissionService			commService;
+	@Autowired
+	private EventService				eventService;
 
 
 	public Collection<Actor> getActorSpammer() {
@@ -411,75 +445,210 @@ public class ActorService extends AbstractService {
 
 		return result;
 	}
-
 	public void delete(final int actorId) {
 		Assert.notNull(LoginService.getPrincipal().getUsername());
 		Administrator admin;
-		final Member member;
-		final Student student;
-		final Collaborator collaborator;
-		final Sponsor sponsor;
+		Student student;
+		Member member;
+		Sponsor sponsor;
+		Collaborator collaborator;
+
 		if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN)) {
 			admin = this.adminRepository.findAdminByUserAccountId(actorId);
 			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
-			admin.getAccount().setEnabled(false);
-			admin.setName("anonymous");
-			admin.setPhone("anonymous");
-			admin.setSurname("anonymous");
-			admin.setPhone("000000000");
-			admin.setEmail("anonymous@email.anon");
-			admin.setPhoto("http://anon.anon");
+			admin = (Administrator) this.deleteCommon(admin);
 			this.adminRepository.save(admin);
-
-		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT)) {
-			student = this.studentRepository.findStudentByUserAccount(actorId);
-			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
-			student.getAccount().setEnabled(false);
-			student.setName("anonymous");
-			student.setPhone("anonymous");
-			student.setSurname("anonymous");
-			student.setPhone("000000000");
-			student.setEmail("anonymous@email.anon");
-			student.setPhoto("http://anon.anon");
-			this.studentRepository.save(student);
 		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
 			member = this.memberRepository.findMemberByUserAccount(actorId);
 			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
-			member.getAccount().setEnabled(false);
-			member.setName("anonymous");
-			member.setPhone("000000000");
-			member.setSurname("anonymous");
-			member.setPhone("anonymous");
-			member.setEmail("anonymous@email.anon");
+			this.anonimizeProclaimsByMember();
+			this.anonimiceComissions(member);
+			member = (Member) this.deleteCommon(member);
+			//this.finderService.delete(member.getFinder());
+			//			member.setFinder(this.finderService.create());
 
-			member.setFinder(null);
-
-			member.setPhoto("http://anon.anon");
 			this.memberRepository.save(member);
-		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR)) {
-			collaborator = this.collaboratorRepository.findCollaboratorByUserAccount(actorId);
+		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT)) {
+			student = this.studentRepository.findStudentByUserAccount(actorId);
 			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
-			collaborator.getAccount().setEnabled(false);
-			collaborator.setName("anonymous");
-			collaborator.setPhone("anonymous");
-			collaborator.setSurname("anonymous");
-			collaborator.setPhone("000000000");
-			collaborator.setEmail("anonymous@email.anon");
-			collaborator.setPhoto("http://anon.anon");
-			this.collaboratorRepository.save(collaborator);
+			this.anonimiceProclaims();
+			student = (Student) this.deleteCommon(student);
+			this.studentRepository.save(student);
 		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.SPONSOR)) {
 			sponsor = this.sponsorRepository.findSponsorByUserAccount(actorId);
 			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
-			sponsor.getAccount().setEnabled(false);
-			sponsor.setName("anonymous");
-			sponsor.setPhone("anonymous");
-			sponsor.setSurname("anonymous");
-			sponsor.setPhone("000000000");
-			sponsor.setEmail("anonymous@email.anon");
-			sponsor.setPhoto("http://anon.anon");
+			this.anonimiceSponsorships(sponsor);
+			sponsor = (Sponsor) this.deleteCommon(sponsor);
 			this.sponsorRepository.save(sponsor);
+		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR)) {
+			collaborator = this.collaboratorRepository.findCollaboratorByUserAccount(actorId);
+			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
+			this.deleteCommon(collaborator);
+			this.anonimiceEvent(collaborator);
+			this.anonimiceSwap(collaborator);
+			this.deletePortfolio(collaborator);
+			this.collaboratorRepository.save(collaborator);
 		}
 	}
+
+	private void anonimiceComissions(final Member m) {
+		Collection<Comission> comms;
+		comms = this.commService.getComissionsByMemberId(m.getId());
+		for (final Comission c : comms) {
+			c.setDescription("loremIpsum");
+			c.setFinalMode(false);
+			c.setMoment(new Date());
+			c.setName("loremIpsum");
+		}
+	}
+	private void anonimiceSwap(final Collaborator c) {
+		Collection<Swap> swaps;
+		swaps = this.swapService.getSwapsByCollaboratorId(c.getId());
+		swaps.addAll(this.swapService.getSwapsPendingByCollaboratorId(c.getId()));
+		for (final Swap s : swaps) {
+			s.setDescription("loremIpsum");
+			s.setPhone("loremIpsum");
+			s.setStatus("loremIpsum");
+		}
+		this.swapService.save(swaps);
+	}
+	private void anonimiceEvent(final Collaborator c) {
+		Collection<Event> events;
+		events = this.eventService.getEventsByCollaboratorId(c.getId());
+		for (final Event e : events) {
+			e.setDescription("loremIpsum");
+			e.setFinalMode(false);
+			e.setMoment(new Date());
+			e.setStatus("loremIpsum");
+			e.setTitle("loremIpsum");
+		}
+		this.eventService.save(events);
+	}
+
+	private void anonimiceProclaims() {
+		Collection<Proclaim> col;
+		col = this.proclaimService.findAllByStudent();
+		for (final Proclaim p : col) {
+			p.setMembers(new ArrayList<Member>());
+			p.setCategory(null);
+			p.setTicker(this.fakeTicker());
+			p.setAttachments("loremIpsum");
+			p.setClosed(true);
+			p.setDescription("loremIpsum");
+			p.setFinalMode(false);
+			p.setLaw("loremIpsum");
+			p.setMoment(new Date());
+			p.setReason("loremIpsum");
+			p.setStatus("loremIpsum");
+			p.setStudentCard(this.fakeStudentCard());
+			p.setTitle("loremIpsum");
+		}
+		this.proclaimService.save(col);
+	}
+	private void anonimizeProclaimsByMember() {
+		Collection<Proclaim> col;
+		col = this.proclaimService.findAllByMember();
+		for (final Proclaim p : col)
+			p.setMembers(new ArrayList<Member>());
+	}
+	private void deleteProfile(final Actor a) {
+		this.profileService.delete(this.profileService.getProfilesByActorId(a.getId()));
+	}
+
+	private void deleteMessage(final Actor a) {
+		Collection<MessageEntity> mess;
+		mess = this.messService.getMessagesByActor(a.getId());
+		for (final MessageEntity m : mess)
+			this.messService.deleteMessage(m);
+	}
+	private void deleteBox(final Actor a) {
+		this.boxService.delete(a.getBoxes());
+		a.setBoxes(new ArrayList<Box>());
+	}
+
+	private CreditCard fakeCreditCard() {
+		CreditCard c;
+		c = new CreditCard();
+		c.setCvv(999);
+		c.setNumber("0000000000000000");
+		c.setHolder("loremIpsum");
+		c.setMake("loremIpsum");
+		c.setExpiration(new Date());
+		return c;
+	}
+
+	private StudentCard fakeStudentCard() {
+		StudentCard sc;
+		sc = new StudentCard();
+		sc.setCentre("loremIpsum");
+		sc.setCode(0000);
+		sc.setVat("loremIpsum");
+		return sc;
+	}
+
+	private void deletePortfolio(final Collaborator c) {
+		Collection<Portfolio> p;
+		p = this.portService.findPortfolioByActor(c.getAccount().getId());
+		for (final Portfolio port : p) {
+			this.studyReportService.delete(port.getStudyReport());
+			this.workReportService.delete(port.getWorkReport());
+			this.miscReportService.delete(port.getMiscellaneousReport());
+		}
+		this.portService.delete(p);
+		c.setPortfolio(null);
+	}
+
+	private String randomice() {
+		SecureRandom random;
+		random = new SecureRandom();
+		return String.valueOf(random.nextLong());
+	}
+	private Actor deleteCommon(final Actor a) {
+		Authority aut;
+		aut = new Authority();
+		aut.setAuthority(Authority.ANONYMOUS);
+		Collection<Authority> auts;
+		auts = new ArrayList<>();
+		auts.add(aut);
+		a.getAccount().setEnabled(false);
+		//a.setAccount(this.userAccountAdapted(this.randomice(), this.randomice(), Authority.ANONYMOUS));
+		a.getAccount().setUsername(this.randomice());
+		a.getAccount().setPassword(this.randomice());
+		a.getAccount().setAuthorities(auts);
+		a.setName("loremipsum");
+		a.setPhone("loremipsum");
+		a.setSurname("loremipsum");
+		a.setPhone("000000000");
+		a.setEmail("loremipsum@email.loremipsum");
+		a.setPhoto("http://loremipsum.loremipsum");
+
+		this.deleteProfile(a);
+		this.deleteMessage(a);
+		this.deleteBox(a);
+
+		return a;
+	}
+
+	private Ticker fakeTicker() {
+		Ticker t;
+		t = new Ticker();
+		t.setTicker("00000000" + this.randomice().substring(0, 5));
+		return t;
+	}
+
+	private void anonimiceSponsorships(final Sponsor p) {
+		Collection<Sponsorship> sponsorships;
+		sponsorships = this.sponsorshipService.getSponsorshipActiveBySponsorId(p.getId());
+		sponsorships.addAll(this.sponsorshipService.getSponsorshipDesactiveBySponsorId(p.getId()));
+		for (final Sponsorship s : sponsorships) {
+			s.setBanner("http://lorem.ipsum");
+			s.setIsActive(false);
+			s.setTarget("http://lorem.ipsum");
+			s.setCreditCard(this.fakeCreditCard());
+		}
+		this.sponsorshipService.save(sponsorships);
+	}
+
 	public void flushAdministrator() {
 		this.adminRepository.flush();
 	}

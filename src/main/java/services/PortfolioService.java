@@ -138,4 +138,9 @@ public class PortfolioService extends AbstractService {
 	public void flush() {
 		this.portrepository.flush();
 	}
+
+	public void delete(final Collection<Portfolio> p) {
+		this.portrepository.delete(p);
+
+	}
 }
