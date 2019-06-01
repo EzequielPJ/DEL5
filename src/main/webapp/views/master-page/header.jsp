@@ -86,6 +86,8 @@
 								code="master.page.student.listMyProclaims" /></a></li>
 					<li><a href="proclaim/member/unassigned.do"><spring:message
 								code="master.page.student.unnasignedProclaims" /></a></li>
+					<li><a href="proclaim/member/closed.do"><spring:message
+								code="master.page.student.closed" /></a></li>
 				</ul></li>
 			<li><a class="fNiv" href="comment/member/list.do"><spring:message
 						code="master.page.comments" /></a></li>

@@ -27,6 +27,9 @@
 
 			if (all[i] != o) {
 				all[i].checked = o.checked;
+				all[i].onclick = function() {
+					return false;
+				}
 			}
 
 		}
@@ -108,8 +111,9 @@
 			<br>
 			<jstl:forEach items="${boxesOptional}" var="var">
 				<spring:message code="message.boxes" />: 
-				<a href="message/dbox.do?boxId=${var.id}&mess=${messageEntity.id}"><jstl:out value="${var.name}">
-				</jstl:out></a>
+				<a href="message/dbox.do?boxId=${var.id}&mess=${messageEntity.id}"><jstl:out
+						value="${var.name}">
+					</jstl:out></a>
 				<br>
 			</jstl:forEach>
 			<br>

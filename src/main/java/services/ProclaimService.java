@@ -64,6 +64,13 @@ public class ProclaimService extends AbstractService {
 	}
 
 	@Cacheable(value = "proclaims")
+	public Collection<Proclaim> findAllByMemberClosed() {
+		Member m;
+		m = (Member) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId());
+		return this.repository.findAllByMemberClosed(m.getId());
+	}
+
+	@Cacheable(value = "proclaims")
 	public Collection<Proclaim> findAllByStudent() {
 
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));

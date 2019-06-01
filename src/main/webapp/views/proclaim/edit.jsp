@@ -102,7 +102,7 @@
 		</jstl:if>
 
 	</security:authorize>
-<%-- 	<security:authorize access="hasRole('STUDENT')">
+	<%-- 	<security:authorize access="hasRole('STUDENT')">
 		<jstl:if test="${proclaim.id != 0 and proclaim.finalMode eq 'false'}">
 			<acme:submit name="delete" code="proclaim.delete" />
 		</jstl:if>
@@ -113,20 +113,35 @@
 
 <script>
 	var status = $("#status1").val();
-
+	var previous = "${previousStatus}";
+	
 	if (status == 'PENDING' || status == 'PENDIENTE') {
-		$("#reason1").show();
-		$("#law1").show();
+		$("#reason1").hide();
+		$("#law1").hide();
 	}
 
-	if (status == 'ACCEPTED' || status == 'ACEPTADO') {
+	if (previous == 'ACCEPTED') {
+		document.getElementById("status1").value = "ACCEPTED";
 		$("#reason1").hide();
 		$("#law1").show();
-	}
-
-	if (status == 'REJECTED' || status == 'RECHAZADO') {
+	} else if (previous == 'ACEPTADO') {
+		document.getElementById("status1").value = "ACEPTADO";
+		$("#reason1").hide();
+		$("#law1").show();
+	} else if (previous == 'REJECTED') {
+		document.getElementById("status1").value = "REJECTED";
 		$("#law1").hide();
 		$("#reason1").show();
+	} else if (previous == 'RECHAZADO') {
+		document.getElementById("status1").value = "RECHAZADO";
+		$("#law1").hide();
+		$("#reason1").show();
+	} else {
+		if (previous == '')
+			document.getElementById("status1").value = "PENDING";
+		else
+			document.getElementById("status1").value = "PENDIENTE";
+
 	}
 
 	function check(o) {

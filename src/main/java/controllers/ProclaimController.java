@@ -46,6 +46,8 @@ public class ProclaimController extends BasicController {
 
 	private Finder			oldMemberFinder;
 
+	private String			previousStatus;
+
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
@@ -65,9 +67,10 @@ public class ProclaimController extends BasicController {
 
 		result = super.listModelAndView("proclaims", "proclaim/list", proclaims, requestURI);
 
-		if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER))
+		if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
 			result.addObject("boton", true);
-
+			result.addObject("finderColumns", true);
+		}
 		return result;
 	}
 	@RequestMapping(value = "/unassigned", method = RequestMethod.GET)
@@ -77,6 +80,18 @@ public class ProclaimController extends BasicController {
 		result = super.listModelAndView("proclaims", "proclaim/list", this.service.findNoAssigned(), "proclaim/member/unassigned.do").addObject("startAssignation", true);
 		Collection<Proclaim> col;
 		col = this.service.findProclaimAssigned(this.service.findByUserAccount(LoginService.getPrincipal().getId()).getId());
+		result.addObject("finderColumns", true);
+		result.addObject("ass", col);
+		return result;
+	}
+	@RequestMapping(value = "/closed", method = RequestMethod.GET)
+	public ModelAndView closedProclaimsList() {
+		Assert.isTrue(this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER));
+		ModelAndView result;
+		result = super.listModelAndView("proclaims", "proclaim/list", this.service.findAllByMemberClosed(), "proclaim/member/unassigned.do").addObject("startAssignation", true);
+		Collection<Proclaim> col;
+		col = this.service.findProclaimAssigned(this.service.findByUserAccount(LoginService.getPrincipal().getId()).getId());
+		result.addObject("finderColumns", true);
 		result.addObject("ass", col);
 		return result;
 	}
@@ -145,7 +160,10 @@ public class ProclaimController extends BasicController {
 			requestURI = "proclaim/member/edit.do";
 			requestCancel = "/proclaim/member/list.do";
 			nameResolver = "redirect:/proclaim/member/list.do";
-			result = super.save(proclaim, binding, "proclaim.commit.error", "proclaim/edit", requestURI, requestCancel, nameResolver).addAllObjects(this.model());
+
+			this.previousStatus = proclaim.getStatus();
+
+			result = super.save(proclaim, binding, "proclaim.commit.error", "proclaim/edit", requestURI, requestCancel, nameResolver).addAllObjects(this.model()).addObject("previousStatus", this.previousStatus);
 
 			if (binding.hasErrors()) {
 				boolean checkEnglish;
@@ -248,9 +266,11 @@ public class ProclaimController extends BasicController {
 				else {
 					res = this.serviceFinder.searchWithRetain(finder.getSingleKey(), finder.getCategory(), finder.getRegisteredDate(), finder.isBeforeOrNot());
 					this.serviceFinder.save(finder, res);
+
 				}
 			}
 			result = super.listModelAndView("proclaims", "proclaim/list", res, "proclaim/member/list.do");
+			result.addObject("finderColumns", true);
 		} catch (final ValidationException e) {
 			result = super.createAndEditModelAndView(finder, "proclaim/find", "proclaim/search.do", "/").addObject("categories", this.model().get("categories"));
 		} catch (final Throwable oops) {
