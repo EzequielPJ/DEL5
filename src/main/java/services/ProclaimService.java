@@ -189,7 +189,7 @@ public class ProclaimService extends AbstractService {
 		return result;
 	}
 
-	//	@CachePut(value = "proclaims", key = "#aux.id")
+	@CachePut(value = "proclaims")
 	public void delete(final int id) {
 		Proclaim p;
 		p = this.repository.findOne(id);

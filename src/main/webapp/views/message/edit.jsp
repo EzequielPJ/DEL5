@@ -28,7 +28,7 @@
 			if (all[i] != o) {
 				all[i].checked = o.checked;
 				all[i].onclick = function() {
-					return false;
+					return !o.checked;
 				}
 			}
 
