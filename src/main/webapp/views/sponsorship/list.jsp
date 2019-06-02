@@ -41,11 +41,14 @@
 
 	</display:column>
 
+	<jstl:if test="${isActive}">
 	<display:column>
 		<a href="sponsorship/sponsor/update.do?idSponsorship=${row.id}"><spring:message
 				code="sponsorship.edit" /></a>
 
 	</display:column>
+	</jstl:if>
+	
 
 	<jstl:if test="${isActive}">
 		<display:column>

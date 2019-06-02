@@ -122,6 +122,7 @@ public class SponsorshipController extends BasicController {
 		col = this.serviceSponsorship.getSponsorshipByEventId(p.getId(), s.getEvent().getId());
 
 		Assert.isTrue(col.contains(s), "You don't have permission to do this");
+		Assert.isTrue(s.getIsActive() == true, "You can not update a sponsorship desactive");
 
 		ModelAndView result;
 		result = super.edit(s, "sponsorship/edit", "sponsorship/sponsor/edit.do", "/sponsorship/sponsor/listSponsorship.do");

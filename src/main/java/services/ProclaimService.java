@@ -189,7 +189,7 @@ public class ProclaimService extends AbstractService {
 		return result;
 	}
 
-	@CachePut(value = "proclaims", key = "#aux.id")
+	//	@CachePut(value = "proclaims", key = "#aux.id")
 	public void delete(final int id) {
 		Proclaim p;
 		p = this.repository.findOne(id);
@@ -197,7 +197,7 @@ public class ProclaimService extends AbstractService {
 		Assert.isTrue(p.isFinalMode() == false);
 		Assert.isTrue(p.getStudent().getId() == ((Student) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId())).getId());
 
-		this.repository.delete(p.getId());
+		this.repository.delete(id);
 	}
 
 	public void save(final Collection<Proclaim> col) {
