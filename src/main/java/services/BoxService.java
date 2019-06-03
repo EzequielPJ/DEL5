@@ -75,8 +75,8 @@ public class BoxService extends AbstractService {
 		return this.boxRepository.getActorByUserAccount(id);
 	}
 
-	public Collection<Actor> findAllActorsSystem(final int id) {
-		return this.boxRepository.findAllActorsSystem(id);
+	public Collection<Actor> findAllActorsSystem() {
+		return this.boxRepository.findAllActorsSystem();
 	}
 	//findOne
 	public Box findOne(final int id) {

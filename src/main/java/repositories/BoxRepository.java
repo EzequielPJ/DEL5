@@ -45,8 +45,8 @@ public interface BoxRepository extends JpaRepository<Box, Integer> {
 	Actor getActorByUserAccount(int id);
 
 	// Get todos los actores (uderAccount) del sistema menos el registrado y los baneados
-	@Query("select a from Actor a where a.account.id <> ?1 and a.account.enabled = 1")
-	Collection<Actor> findAllActorsSystem(int id);
+	@Query("select a from Actor a where a.account.enabled = 1")
+	Collection<Actor> findAllActorsSystem();
 
 	//Query para que 2 cajas del mismo acrtor no tengan el mismo nombre
 	@Query("select b.name from Actor a join a.boxes b where a.account.id=?1")

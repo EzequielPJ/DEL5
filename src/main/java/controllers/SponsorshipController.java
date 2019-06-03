@@ -137,8 +137,10 @@ public class SponsorshipController extends BasicController {
 		col = new ArrayList<>();
 		col.add(sponsorship.getTarget());
 		col.add(sponsorship.getBanner());
-
-		if (!super.luhnAlgorithm(sponsorship.getCreditCard().getNumber()) || sponsorship.getCreditCard().getMake().equals("0")) {
+		if (sponsorship.getCreditCard().getExpiration() == null) {
+			result = super.createAndEditModelAndView(sponsorship, "sponsorship.invalid.expiration", "sponsorship/edit", "sponsorship/sponsor/edit.do", "/sponsorship/sponsor/listSponsorship.do");
+			result.addObject("makes", super.creditCardMakes());
+		} else if (!super.luhnAlgorithm(sponsorship.getCreditCard().getNumber()) || sponsorship.getCreditCard().getMake().equals("0")) {
 			result = super.createAndEditModelAndView(sponsorship, "sponsorship.creditCard", "sponsorship/edit", "sponsorship/sponsor/edit.do", "/sponsorship/sponsor/listSponsorship.do");
 			result.addObject("makes", super.creditCardMakes());
 		} else if (sponsorship.getCreditCard().getExpiration().before(new Date()) || sponsorship.getCreditCard().getMake().equals("0")) {

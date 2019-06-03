@@ -94,8 +94,12 @@ public class ExportActorDataPDFController extends AbstractPdfView {
 			String w;
 			w = "";
 			for (final Proclaim p : pro)
-				w += "\n" + " Title: " + p.getTitle() + ",\n Description: " + p.getDescription() + ",\n Moment: " + p.getMoment() + ",\n Status: " + p.getStatus() + ",\n Attachments: " + p.getAttachments() + ",\n Category: " + p.getCategory().getName()
-					+ ",\n Student: " + p.getStudent().getName() + ",\n Law: " + p.getLaw() + ",\n Reason: " + p.getReason() + "\n";
+				if (p.getCategory() == null)
+					w += "\n" + " Title: " + p.getTitle() + ",\n Description: " + p.getDescription() + ",\n Moment: " + p.getMoment() + ",\n Status: " + p.getStatus() + ",\n Attachments: " + p.getAttachments() + ",\n Student: " + p.getStudent().getName()
+						+ ",\n Law: " + p.getLaw() + ",\n Reason: " + p.getReason() + "\n";
+				else
+					w += "\n" + " Title: " + p.getTitle() + ",\n Description: " + p.getDescription() + ",\n Moment: " + p.getMoment() + ",\n Status: " + p.getStatus() + ",\n Attachments: " + p.getAttachments() + ",\n Category: "
+						+ p.getCategory().getName() + ",\n Student: " + p.getStudent().getName() + ",\n Law: " + p.getLaw() + ",\n Reason: " + p.getReason() + "\n";
 			if (!pro.isEmpty())
 				table.addCell("Proclaims: " + w + "\n");
 

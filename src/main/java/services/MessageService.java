@@ -133,11 +133,11 @@ public class MessageService extends AbstractService {
 		Collection<Box> boxes;
 
 		if (spam)
-			boxes = this.messageRepository.getBoxesFromActors("Spam Box", recipients, userlogged);
+			boxes = this.messageRepository.getBoxesFromActorsWithMe("Spam Box", recipients);
 		else if (saved.getTags().contains("Notification"))
-			boxes = this.messageRepository.getBoxesFromActors("Notification Box", recipients, userlogged);
+			boxes = this.messageRepository.getBoxesFromActorsWithMe("Notification Box", recipients);
 		else
-			boxes = this.messageRepository.getBoxesFromActors("In Box", recipients, userlogged);
+			boxes = this.messageRepository.getBoxesFromActorsWithMe("In Box", recipients);
 		Collection<Box> boxesMessage;
 		boxesMessage = saved.getBox();
 		boxesMessage.addAll(boxes);

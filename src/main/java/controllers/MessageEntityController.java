@@ -47,22 +47,20 @@ public class MessageEntityController extends BasicController {
 		ModelAndView result;
 		result = super.create(this.messageService.createMessage(this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId())), "message/edit", "message/send.do", "/message/list.do");
 		result.addObject("priorities", Arrays.asList("HIGH", "NEUTRAL", "LOW"));
-		result.addObject("actors", this.boxService.findAllActorsSystem(LoginService.getPrincipal().getId()));
+		result.addObject("actors", this.boxService.findAllActorsSystem());
 		result.addObject("view", false);
 		return result;
 	}
-
 	@RequestMapping(value = "/send", method = RequestMethod.POST, params = "send")
 	public ModelAndView saveEntity(final MessageEntity messageEntity, final BindingResult binding) {
 		ModelAndView result;
 		final Box box = this.boxService.getActorSendedBox(this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId()).getId());
 		result = super.save(messageEntity, binding, "message.commit.error", "message/edit", "message/send.do", "redirect:list.do", "redirect:list.do?boxId=" + box.getId());
 		result.addObject("priorities", Arrays.asList("HIGH", "NEUTRAL", "LOW"));
-		result.addObject("actors", this.boxService.findAllActorsSystem(LoginService.getPrincipal().getId()));
+		result.addObject("actors", this.boxService.findAllActorsSystem());
 		result.addObject("view", false);
 		return result;
 	}
-
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView show(@RequestParam final int id) {
 		ModelAndView result;

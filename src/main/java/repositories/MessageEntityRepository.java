@@ -25,6 +25,9 @@ public interface MessageEntityRepository extends JpaRepository<MessageEntity, In
 	@Query("select b from Actor a join a.boxes b where b.name = ?1 and a IN ?2 and a.account.id <> ?3")
 	Collection<Box> getBoxesFromActors(String name, Collection<Actor> actors, int userlogged);
 
+	@Query("select b from Actor a join a.boxes b where b.name = ?1 and a IN ?2")
+	Collection<Box> getBoxesFromActorsWithMe(String name, Collection<Actor> actors);
+
 	@Query("select m.receiver from MessageEntity m where m.id = ?1 ")
 	Collection<Actor> getReceiver(int id);
 
