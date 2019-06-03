@@ -87,7 +87,7 @@
 				</div>
 			</jstl:if>
 		</jstl:if>
-		<jstl:if test="${view eq 'false'}">
+		<jstl:if test="${view eq 'false' and proclaim.status != 'REJECTED'}">
 			<acme:submit name="save" code="proclaim.save" />
 		</jstl:if>
 	</security:authorize>
@@ -112,55 +112,53 @@
 <acme:cancel url="${requestCancel}" code="proclaim.cancel" />
 
 <script>
-	var status = $("#status1").val();
-	var previous = "${previousStatus}";
-	
-	if (status == 'PENDING' || status == 'PENDIENTE') {
-		$("#reason1").hide();
-		$("#law1").hide();
-	}
-	console.log(previous);
-	if (previous == 'ACCEPTED') {
-		document.getElementById("status1").value = "ACCEPTED";
-		$("#reason1").hide();
-		$("#law1").show();
-	} else if (previous == 'ACEPTADO') {
-		document.getElementById("status1").value = "ACEPTADO";
-		$("#reason1").hide();
-		$("#law1").show();
-	} else if (previous == 'REJECTED') {
-		document.getElementById("status1").value = "REJECTED";
-		$("#law1").hide();
-		$("#reason1").show();
-	} else if (previous == 'RECHAZADO') {
-		document.getElementById("status1").value = "RECHAZADO";
-		$("#law1").hide();
-		$("#reason1").show();
-	} else {
-		if (previous == '')
-			document.getElementById("status1").value = "PENDING";
-		else
-			document.getElementById("status1").value = "PENDIENTE";
+  var status = $("#status1").val();
+  var previous = "${previousStatus}";
+  console.log(previous);
+  if (status == 'PENDING' || status == 'PENDIENTE') {
+    $("#reason1").hide();
+    $("#law1").hide();
+  }
+  console.log(previous);
+  if (previous == 'ACCEPTED') {
+    document.getElementById("status1").value = "ACCEPTED";
+    $("#reason1").hide();
+    $("#law1").show();
+  } else if (previous == 'ACEPTADO') {
+    document.getElementById("status1").value = "ACEPTADO";
+    $("#reason1").hide();
+    $("#law1").show();
+  } else if (previous == 'REJECTED') {
+    document.getElementById("status1").value = "REJECTED";
+    $("#law1").hide();
+    $("#reason1").show();
+  } else if (previous == 'RECHAZADO') {
+    document.getElementById("status1").value = "RECHAZADO";
+    $("#law1").hide();
+    $("#reason1").show();
+  } else if (previous == 'PENDING') {
+    document.getElementById("status1").value = "PENDING";
+  } else if (previous == 'PENDIENTE') {
+    document.getElementById("status1").value = "PENDIENTE";
+  }
 
-	}
+  function check(o) {
+    var statusCheck = o.value;
 
-	function check(o) {
-		var statusCheck = o.value;
+    if (statusCheck == 'PENDING' || statusCheck == 'PENDIENTE') {
+      $("#reason1").show();
+      $("#law1").show();
+    }
 
-		if (statusCheck == 'PENDING' || statusCheck == 'PENDIENTE') {
-			$("#reason1").show();
-			$("#law1").show();
-		}
+    if (statusCheck == 'ACCEPTED' || statusCheck == 'ACEPTADO') {
+      $("#reason1").hide();
+      $("#law1").show();
+    }
 
-		if (statusCheck == 'ACCEPTED' || statusCheck == 'ACEPTADO') {
-			$("#reason1").hide();
-			$("#law1").show();
-		}
+    if (statusCheck == 'REJECTED' || statusCheck == 'RECHAZADO') {
+      $("#law1").hide();
+      $("#reason1").show();
+    }
 
-		if (statusCheck == 'REJECTED' || statusCheck == 'RECHAZADO') {
-			$("#law1").hide();
-			$("#reason1").show();
-		}
-
-	}
+  }
 </script>

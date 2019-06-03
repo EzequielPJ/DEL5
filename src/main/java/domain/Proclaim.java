@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -156,6 +157,7 @@ public class Proclaim extends Ticketable {
 		this.law = law;
 	}
 
+	@Valid
 	@Embedded
 	public StudentCard getStudentCard() {
 		return this.studentCard;

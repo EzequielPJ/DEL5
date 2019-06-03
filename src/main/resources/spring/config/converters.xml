@@ -21,6 +21,9 @@
 		<!-- CreditCard -->
 		<bean class="converters.CreditCardToStringConverter" />
 		<bean class="converters.StringToCreditCardConverter" />
+		<!-- StudentCard -->
+		<bean class="converters.StudentCardToStringConverter" />
+		<bean class="converters.StringToStudentCardConverter" />
 		<!-- Profile -->
 		<bean class="converters.ProfileToStringConverter" />
 		<bean class="converters.StringToProfileConverter" />

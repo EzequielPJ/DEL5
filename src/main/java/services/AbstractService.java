@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.Assert;
 
 import security.Authority;
@@ -139,6 +142,20 @@ public class AbstractService {
 				if (a.substring(0, 8).equals("<script>"))
 					res = true;
 		return res;
+	}
+
+	public String getLanguageSystem() {
+		return LocaleContextHolder.getLocale().getLanguage();
+
+	}
+	public Set<String> statusByLang() {
+		Map<String, Set<String>> result;
+		result = new HashMap<String, Set<String>>();
+
+		result.put("en", new HashSet<>(Arrays.asList("PENDING", "SUBMITTED", "ACCEPTED", "REJECTED")));
+		result.put("es", new HashSet<>(Arrays.asList("PENDIENTE", "ENVIADO", "ACEPTADO", "RECHAZADO")));
+
+		return result.get(this.getLanguageSystem());
 	}
 
 }

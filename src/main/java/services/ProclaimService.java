@@ -98,7 +98,7 @@ public class ProclaimService extends AbstractService {
 
 		proclaim.setMembers(new ArrayList<Member>());
 		proclaim.setAttachments("");
-		proclaim.setStatus("SUBMITTED");
+		proclaim.setStatus(String.valueOf(this.statusByLang().toArray()[1]));
 
 		StudentCard studentCard;
 		studentCard = new StudentCard();
@@ -259,14 +259,8 @@ public class ProclaimService extends AbstractService {
 		StudentCard studentCard;
 		studentCard = result.getStudentCard();
 
-		if (studentCard.getCentre().equals("") || studentCard.getCentre().equals(" "))
-			binding.rejectValue("studentCard.centre", "centre.wrong");
-
 		if (String.valueOf(studentCard.getCode()).isEmpty() || String.valueOf(studentCard.getCode()).length() != 4)
 			binding.rejectValue("studentCard.code", "code.wrong");
-
-		if (studentCard.getCentre().equals("") || studentCard.getCentre().equals(" "))
-			binding.rejectValue("studentCard.vat", "vat.wrong");
 
 		if (binding.hasErrors()) {
 			if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT))

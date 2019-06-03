@@ -222,12 +222,18 @@ public class MessageService extends AbstractService {
 
 		MessageEntity result;
 
+		Collection<String> tags;
+		tags = new ArrayList<>();
+
+		for (final String s : message.getTags())
+			tags.add(s.toLowerCase());
+
 		if (message.getId() == 0) {
 			result = this.createMessage(this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId()));
 			result.setSubject(message.getSubject());
 			result.setBody(message.getBody());
 			result.setPriority(message.getPriority());
-			result.setTags(message.getTags());
+			result.setTags(tags);
 			if (super.checkScript(result.getTags()))
 				binding.rejectValue("tags", "tags.error");
 			if (result.getPriority().equals("NONE"))
@@ -244,7 +250,7 @@ public class MessageService extends AbstractService {
 			result.setSubject(message.getSubject());
 			result.setBody(message.getBody());
 			result.setPriority(message.getPriority());
-			result.setTags(message.getTags());
+			result.setTags(tags);
 			if (super.checkScript(result.getTags()))
 				binding.rejectValue("tags", "tags.error");
 		}
