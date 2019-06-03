@@ -63,6 +63,7 @@
 		</security:authorize>
 	</display:column>
 	<jstl:if test="${startAssignation}">
+	
 		<display:column titleKey="proclaim.assign">
 			<jstl:if test="${!fn:contains(ass,row)}">
 				<security:authorize access="hasRole('MEMBER')">
@@ -71,7 +72,8 @@
 				</security:authorize>
 			</jstl:if>
 		</display:column>
-	</jstl:if>
+		</jstl:if>
+	
 
 
 	<jstl:if test="${row.status == 'ACCEPTED' or row.status == 'ACEPTADO'}">
@@ -89,13 +91,13 @@
 
 		<display:column titleKey="proclaim.createCommentary">
 			<security:authorize access="hasRole('MEMBER')">
-				<jstl:if test="${proclaim.closed eq 'false'}">
+				<jstl:if test="${row.closed eq 'false'}">
 					<a href="comment/member/create.do?id=${row.id}"><spring:message
 							code="proclaim.createCommentary" /></a>
 				</jstl:if>
 			</security:authorize>
 			<security:authorize access="hasRole('STUDENT')">
-				<jstl:if test="${proclaim.closed eq 'false'}">
+				<jstl:if test="${row.closed eq 'false'}">
 					<a href="comment/student/create.do?id=${row.id}"><spring:message
 							code="proclaim.createCommentary" /></a>
 				</jstl:if>

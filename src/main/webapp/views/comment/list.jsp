@@ -17,6 +17,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <display:table name="comments" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
@@ -28,11 +29,12 @@
 	<display:column titleKey="comment.attachments">
 		<jstl:out value="${row.attachments}" />
 	</display:column>
-
+<jstl:if test="${idd != '0'}">
 	<display:column titleKey="comment.author">
 		<jstl:out value="${row.actor.name}" />
-	</display:column>
+	</display:column></jstl:if>
 
+<jstl:if test="${idd eq '0'}">
 	<display:column titleKey="update">
 		<security:authorize access="hasRole('MEMBER')">
 			<a href="comment/member/update.do?id=${row.id}"><spring:message
@@ -41,6 +43,7 @@
 		<security:authorize access="hasRole('STUDENT')">
 			<a href="comment/student/update.do?id=${row.id}"><spring:message
 					code="comment.update"></spring:message></a>
+
 		</security:authorize>
 
 	</display:column>
@@ -53,8 +56,14 @@
 		<security:authorize access="hasRole('STUDENT')">
 			<a href="comment/student/delete.do?id=${row.id}"><spring:message
 					code="comment.delete"></spring:message></a>
+
 		</security:authorize>
 
 	</display:column>
+	
+	<display:column titleKey="comment.proclaim">
+	<jstl:out value="${row.proclaim.title}" />
+	</display:column>
+	</jstl:if>
 
 </display:table>

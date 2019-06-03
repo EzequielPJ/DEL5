@@ -37,15 +37,16 @@ public class CommentController extends BasicController {
 		Collection<Comment> col;
 		col = new ArrayList<Comment>();
 		if (this.commService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT)) {
-			col = id == 0 ? this.commService.getCommentsByActor(LoginService.getPrincipal().getId()) : this.commService.getCommentsByActorAndProclaim(LoginService.getPrincipal().getId(), id);
+			col = id == 0 ? this.commService.getCommentsByActor(LoginService.getPrincipal().getId()) : this.commService.getCommentsByProclaim(id);
 			result = super.listModelAndView("comments", "comment/list", col, "comment/student/list.do");
 		} else {
-			col = id == 0 ? this.commService.getCommentsByActor(LoginService.getPrincipal().getId()) : this.commService.getCommentsByActorAndProclaim(LoginService.getPrincipal().getId(), id);
+			col = id == 0 ? this.commService.getCommentsByActor(LoginService.getPrincipal().getId()) : this.commService.getCommentsByProclaim(id);
 			//if (this.commService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER))
 			result = super.listModelAndView("comments", "comment/list", col, "comment/student/list.do");
 			//		else
 			//			result = new ModelAndView("403");
 		}
+		result.addObject("idd", id);
 		return result;
 	}
 	/*
@@ -72,6 +73,7 @@ public class CommentController extends BasicController {
 	public ModelAndView create(@RequestParam(defaultValue = "0") final int id) {
 		ModelAndView result;
 		try {
+			Assert.isTrue(this.procService.findOne(id).isClosed() == false);
 			//		Assert.isTrue(
 			//			this.notesService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR) || this.notesService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)
 			//				|| this.notesService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT), "You must be an collaborator, member or student");
@@ -137,11 +139,11 @@ public class CommentController extends BasicController {
 		if (this.commService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT)) {
 			res = this.commService.getCommentsByActor(LoginService.getPrincipal().getId()).contains(this.commService.findOne(id));
 			result = res ? super.delete(this.commService.findOne(id), "comment.commit.error", "comment/edit", "comment/student/edit.do", "/comment/student/list.do?id=" + this.commService.findOne(id).getProclaim().getId(),
-				"redirect:/comment/student/list.do?id=" + this.commService.findOne(id).getProclaim().getId()) : this.custom(new ModelAndView("403"));
+				"redirect:/comment/student/list.do") : this.custom(new ModelAndView("403"));
 		} else {
 			res = this.commService.getCommentsByActor(LoginService.getPrincipal().getId()).contains(this.commService.findOne(id));
-			result = res ? super.delete(this.commService.findOne(id), "comment.commit.error", "comment/edit", "comment/member/edit.do", "/comment/member/list.do?id=" + this.commService.findOne(id).getProclaim().getId(),
-				"redirect:/comment/member/list.do?id=" + this.commService.findOne(id).getProclaim().getId()) : this.custom(new ModelAndView("403"));
+			result = res ? super.delete(this.commService.findOne(id), "comment.commit.error", "comment/edit", "comment/member/edit.do", "/comment/member/list.do?id=" + this.commService.findOne(id).getProclaim().getId(), "redirect:/comment/member/list.do")
+				: this.custom(new ModelAndView("403"));
 		}
 		return result;
 	}

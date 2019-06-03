@@ -115,6 +115,9 @@ public class MiscellaneousReportService extends AbstractService {
 
 		this.validator.validate(result, binding);
 
+		if (super.checkScript(result.getAttachments()))
+			binding.rejectValue("attachments", "attachments.error");
+
 		if (binding.hasErrors())
 			throw new ValidationException();
 

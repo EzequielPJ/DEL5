@@ -98,11 +98,11 @@ public class EventController extends BasicController {
 	public ModelAndView edit(final Event event, final BindingResult binding) {
 		ModelAndView result = null;
 		if (this.eventService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
-			result = super.save(event, binding, "event.commit.error", "event/edit", "event/member/edit.do", "redirect:list.do", "redirect:list.do");
+			result = super.save(event, binding, "event.commit.error", "event/edit", "event/member/edit.do", "event/member/list.do", "redirect:list.do");
 			result.addObject("statusCol", Arrays.asList("accepted", "rejected"));
 			result.addObject("mem", true);
 		} else if (this.eventService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR)) {
-			result = super.save(event, binding, "event.commit.error", "event/edit", "event/collaborator/edit.do", "redirect:list.do", "redirect:list.do");
+			result = super.save(event, binding, "event.commit.error", "event/edit", "event/collaborator/edit.do", "event/collaborator/list.do", "redirect:list.do");
 			result.addObject("statusCol", Arrays.asList("pending", "accepted", "rejected"));
 		}
 		return result;
