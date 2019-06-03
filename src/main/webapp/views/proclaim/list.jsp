@@ -82,20 +82,20 @@
 						code="proclaim.commentaries" /></a>
 			</security:authorize>
 			<security:authorize access="hasRole('STUDENT')">
-				<jstl:if test="${!proclaim.closed}">
-					<a href="comment/student/list.do?id=${row.id}"><spring:message
-							code="proclaim.commentaries" /></a>
-				</jstl:if>
+				<a href="comment/student/list.do?id=${row.id}"><spring:message
+						code="proclaim.commentaries" /></a>
 			</security:authorize>
 		</display:column>
 
 		<display:column titleKey="proclaim.createCommentary">
 			<security:authorize access="hasRole('MEMBER')">
-				<a href="comment/member/create.do?id=${row.id}"><spring:message
-						code="proclaim.createCommentary" /></a>
+				<jstl:if test="${proclaim.closed eq 'false'}">
+					<a href="comment/member/create.do?id=${row.id}"><spring:message
+							code="proclaim.createCommentary" /></a>
+				</jstl:if>
 			</security:authorize>
 			<security:authorize access="hasRole('STUDENT')">
-				<jstl:if test="${!proclaim.closed}">
+				<jstl:if test="${proclaim.closed eq 'false'}">
 					<a href="comment/student/create.do?id=${row.id}"><spring:message
 							code="proclaim.createCommentary" /></a>
 				</jstl:if>

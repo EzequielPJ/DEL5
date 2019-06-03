@@ -118,9 +118,11 @@ public class ProclaimController extends BasicController {
 			requestCancel = "/proclaim/member/list.do";
 		}
 
+		this.previousStatus = p.getStatus();
+
 		Assert.isTrue(this.checkAuthorities(p));
 
-		return super.edit(p, "proclaim/edit", requestURI, requestCancel).addAllObjects(this.model());
+		return super.edit(p, "proclaim/edit", requestURI, requestCancel).addAllObjects(this.model()).addObject("previousStatus", this.previousStatus);
 	}
 
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
@@ -141,7 +143,9 @@ public class ProclaimController extends BasicController {
 			requestCancel = "/proclaim/member/list.do";
 		}
 
-		return super.show(p, "proclaim/edit", requestURI, requestCancel).addAllObjects(this.model());
+		this.previousStatus = p.getStatus();
+
+		return super.show(p, "proclaim/edit", requestURI, requestCancel).addAllObjects(this.model()).addObject("previousStatus", this.previousStatus);
 	}
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(final Proclaim proclaim, final BindingResult binding) {

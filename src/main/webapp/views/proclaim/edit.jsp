@@ -119,7 +119,7 @@
 		$("#reason1").hide();
 		$("#law1").hide();
 	}
-
+	console.log(previous);
 	if (previous == 'ACCEPTED') {
 		document.getElementById("status1").value = "ACCEPTED";
 		$("#reason1").hide();
