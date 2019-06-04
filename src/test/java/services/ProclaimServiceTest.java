@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import repositories.CategoryRepository;
 import utilities.AbstractTest;
 import domain.Category;
 import domain.Proclaim;
@@ -23,10 +24,13 @@ import domain.StudentCard;
 public class ProclaimServiceTest extends AbstractTest {
 
 	@Autowired
-	private ProclaimService	service;
+	private ProclaimService		service;
 
 	@Autowired
-	private CategoryService	serviceCategory;
+	private TickerService		tickerService;
+
+	@Autowired
+	private CategoryRepository	repository;
 
 
 	/**
@@ -81,7 +85,7 @@ public class ProclaimServiceTest extends AbstractTest {
 			{	// Delete his proclaim- Positive Case
 				"student1", "proclaim2", null
 			}, {
-				// Delete other proclaim - Negative Case
+				// Delete a proclaim in final mode - Negative Case
 				"student1", "proclaim1", IllegalArgumentException.class
 			}
 		};
@@ -96,7 +100,7 @@ public class ProclaimServiceTest extends AbstractTest {
 		try {
 			super.authenticate(username);
 			this.service.delete(id);
-
+			this.service.flush();
 			super.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
@@ -104,31 +108,45 @@ public class ProclaimServiceTest extends AbstractTest {
 		super.checkExceptions(expected, caught);
 	}
 
+	/**
+	 * This test has intentionally been broken due to an execution problem.
+	 */
+
 	@Test
-	public void test2() {
+	public void test2A() {
 		final Object[][] objects = {
 			{	// Simple edit - Positive Case
-				"student1", "proclaim2", "proclaimEditada", null
-			}, {
-				// Simple edit with an empty attribute - Negative Case
-				"student1", "proclaim2", "", ConstraintViolationException.class
+				"student1", super.getEntityId("proclaim2"), "proclaimEditada", null
 			}
 		};
-		for (int i = 0; i < objects.length; i++) {
-			System.out.println(i);
-			this.template2((String) objects[i][0], super.getEntityId((String) objects[i][1]), (String) objects[i][2], (Class<?>) objects[i][3]);
-		}
+		this.template2((String) objects[0][0], (int) objects[0][1], (String) objects[0][2], (Class<?>) objects[0][3]);
+	}
+
+	@Test
+	public void test2B() {
+		final Object[][] objects = {
+			{
+				// Simple edit with an empty attribute - Negative Case
+				"student1", super.getEntityId("proclaim6"), "", ConstraintViolationException.class
+			}
+		};
+		this.template2((String) objects[0][0], (int) objects[0][1], (String) objects[0][2], (Class<?>) objects[0][3]);
 	}
 
 	protected void template2(final String username, final int id, final String cadena, final Class<?> expected) {
 		Class<?> caught = null;
 		try {
 			super.authenticate(username);
-			System.out.println(id);
 			Proclaim p;
 			p = this.service.findOne(id);
-			p.setDescription(cadena);
+
+			if (cadena == null || cadena == "")
+				p.setTitle("");
+			else
+				p.setTitle(cadena);
+
 			this.service.save(p);
+			this.tickerService.flush();
 			this.service.flush();
 			super.unauthenticate();
 		} catch (final Throwable oops) {
@@ -160,7 +178,7 @@ public class ProclaimServiceTest extends AbstractTest {
 			super.authenticate(username);
 
 			this.service.assign(id);
-
+			this.service.flush();
 			super.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
@@ -172,10 +190,10 @@ public class ProclaimServiceTest extends AbstractTest {
 	public void test4() {
 		final Object[][] objects = {
 			{	// close his proclaim - Positive Case
-				"student1", "proclaim1", null
+				"member1", "proclaim1", null
 			}, {
-				//A student cancels a proclaim that is not his - Negative Case
-				"student2", "proclaim2", IllegalArgumentException.class
+				//A member cancels a proclaim that is not his - Negative Case
+				"member2", "proclaim5", IllegalArgumentException.class
 
 			}
 		};
@@ -189,12 +207,11 @@ public class ProclaimServiceTest extends AbstractTest {
 		Class<?> caught = null;
 		try {
 			super.authenticate(username);
-
 			Proclaim proclaim;
 			proclaim = this.service.findOne(id);
-
 			proclaim.setClosed(true);
-
+			this.service.save(proclaim);
+			this.service.flush();
 			super.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
@@ -224,7 +241,7 @@ public class ProclaimServiceTest extends AbstractTest {
 			proclaim = this.service.create();
 
 			Category categoria;
-			categoria = this.serviceCategory.findOne(id);
+			categoria = this.repository.findOne(id);
 
 			proclaim.setCategory(categoria);
 
@@ -242,8 +259,6 @@ public class ProclaimServiceTest extends AbstractTest {
 			studentCard.setVat("47338340Q");
 
 			proclaim.setStudentCard(studentCard);
-
-			System.out.println(proclaim.getTicker());
 
 			this.service.save(proclaim);
 			this.service.flush();

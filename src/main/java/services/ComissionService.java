@@ -49,6 +49,10 @@ public class ComissionService extends AbstractService {
 		return this.comissionRepository.findActorByUserAccountId(idActor);
 	}
 
+	public Collection<Collaborator> findCollaboratorsByComissionId(final int idComission) {
+		return this.comissionRepository.findCollaboratorsByComissionId(idComission);
+	}
+
 	public Comission createComission() {
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER));
 		Member m;

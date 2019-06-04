@@ -52,6 +52,21 @@ public class ComissionController extends BasicController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/listMembers", method = RequestMethod.GET)
+	public ModelAndView listOfMembers(@RequestParam final int idComission) {
+		ModelAndView result = null;
+		UserAccount user;
+		user = LoginService.getPrincipal();
+		if (this.comissionService.findAuthority(user.getAuthorities(), Authority.COLLABORATOR))
+			result = super.listModelAndView("actors", "actor/list", this.comissionService.findCollaboratorsByComissionId(idComission), "comission/collaborator/list.do");
+		else if (this.comissionService.findAuthority(user.getAuthorities(), Authority.MEMBER))
+			result = super.listModelAndView("actors", "actor/list", this.comissionService.findCollaboratorsByComissionId(idComission), "comission/member/list.do");
+		result.addObject("comis", true);
+		result.addObject("permission", false);
+		return result;
+	}
+
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public ModelAndView join(@RequestParam final int idComission) {
 		Assert.isTrue(this.comissionService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR), "You must be a collaborator");

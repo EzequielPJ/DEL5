@@ -28,7 +28,7 @@ public class SwapController extends BasicController {
 	private SwapService	swapService;
 
 
-	@RequestMapping(value = "/listMySwap")
+	@RequestMapping(value = "/listMySwap", method = RequestMethod.GET)
 	public ModelAndView myList() {
 		ModelAndView result = null;
 		UserAccount user;
@@ -41,7 +41,7 @@ public class SwapController extends BasicController {
 		return result;
 	}
 
-	@RequestMapping(value = "/listSwap")
+	@RequestMapping(value = "/listSwap", method = RequestMethod.GET)
 	public ModelAndView listSwap() {
 		ModelAndView result = null;
 		UserAccount user;
@@ -54,7 +54,7 @@ public class SwapController extends BasicController {
 		}
 		return result;
 	}
-	@RequestMapping(value = "/list")
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		Assert.isTrue(this.swapService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR), "You must be a collaborator");
 		ModelAndView result = null;
@@ -65,9 +65,11 @@ public class SwapController extends BasicController {
 		if (c.getComission() != null) {
 			result = super.listModelAndView("actors", "actor/list", this.swapService.findAllCollaboratorByComission(c.getId(), c.getComission().getId()), "swap/collaborator/list.do");
 			result.addObject("comis", true);
+			result.addObject("permission", true);
 		} else {
 			result = super.listModelAndView("actors", "actor/list", this.swapService.findAll(), "swap/collaborator/list.do");
 			result.addObject("comis", false);
+			result.addObject("permission", true);
 		}
 		return result;
 	}

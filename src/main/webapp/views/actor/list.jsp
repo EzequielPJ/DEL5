@@ -46,6 +46,7 @@
 	<display:column titleKey="actor.phone">
 		<jstl:out value="${row.phone}" />
 	</display:column>
+	<security:authorize access="hasRole('ADMIN')">
 	<display:column titleKey="actor.adress">
 		<jstl:out value="${row.address}" />
 	</display:column>
@@ -55,15 +56,19 @@
 	<display:column titleKey="actor.enabled">
 		<jstl:out value="${row.account.enabled}" />
 	</display:column>
-	
+	</security:authorize>
 	<security:authorize access="hasRole('COLLABORATOR')">
-	<display:column titleKey="actor.comission">
-		<jstl:out value="${row.comission.name}" />
-	</display:column>
-	<display:column>
+	<jstl:if test="${permission}">
+		<display:column titleKey="actor.comission">
+			<jstl:out value="${row.comission.name}" />
+		</display:column>
+		<display:column>
+		
 				<a href="swap/collaborator/create.do?idCollaborator=${row.id}" class="btn"><spring:message
 						code="actor.swapToComission" /></a>
+		
 		</display:column>
+		</jstl:if>
 	</security:authorize>
 
 	<security:authorize access="hasRole('ADMIN')">

@@ -1032,7 +1032,34 @@
 		<property name="ticker" ref="ticker5"></property>
 		<property name="studentCard" ref="studentCard5"></property>
 	</bean>
+	
+	<bean id="proclaim6" class="domain.Proclaim">
+    <property name="title" value="Proclaim6"></property>
+    <property name="description" value="Description6"></property>
+    <property name="moment">
+      <bean factory-bean="dateFormat" factory-method="parse">
+        <constructor-arg value="2019/03/05" />
+      </bean>
+    </property>
+    <property name="attachments" value="Demo"></property>
+    <property name="finalMode" value="false"></property>
+    <property name="status" value="PENDING"></property>
+    <property name="reason" value=""></property>
+    <property name="law" value=""></property>
+    <property name="closed" value="false"></property>
+    <property name="student" ref="student1"></property>
+    <property name="members">
+      <list>
+      </list>
+    </property>
+    <property name="category" ref="category1"></property>
+    <property name="ticker" ref="ticker6"></property>
+    <property name="studentCard" ref="studentCard6"></property>
+  </bean>
 
+  <bean id="ticker6" class="domain.Ticker">
+    <property name="ticker" value="190342-000102"></property>
+  </bean>
 
 	<bean id="studentCard5" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
@@ -1065,6 +1092,12 @@
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1088"></property>
 		<property name="vat" value="22345678Z" />
+	</bean>
+	
+	<bean id="studentCard6" class="domain.StudentCard">
+		<property name="centre" value="ETSII"></property>
+		<property name="code" value="5490"></property>
+		<property name="vat" value="47338357Q" />
 	</bean>
 
 	<bean id="ticker1" class="domain.Ticker">

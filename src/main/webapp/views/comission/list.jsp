@@ -64,6 +64,15 @@
 				code="comission.joinTo" /></a>
 				</jstl:if>
 		</display:column>
+		<display:column>
+		<a href="comission/collaborator/listMembers.do?idComission=${row.id}"><spring:message
+				code="comission.listOfMembers" /></a>
+		</display:column>
 	</security:authorize>
-
+	<security:authorize access="hasRole('MEMBER')">
+		<display:column>
+		<a href="comission/member/listMembers.do?idComission=${row.id}"><spring:message
+				code="comission.listOfMembers" /></a>
+		</display:column>
+	</security:authorize>
 </display:table>
