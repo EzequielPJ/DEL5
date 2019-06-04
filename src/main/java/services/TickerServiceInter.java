@@ -43,12 +43,13 @@ public class TickerServiceInter {
 
 					K auxFromDB;
 					auxFromDB = (K) repository.findOne(without.getId());
-
+					System.out.println(auxFromDB.getTicker());
 					boolean check;
 					check = auxFromDB.getTicker().getTicker().equals(without.getTicker().getTicker());
 
 					if (!check)
 						without.setTicker(auxFromDB.getTicker());
+
 				}
 
 				if (without.getId() == 0) {

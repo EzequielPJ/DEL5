@@ -167,7 +167,7 @@ public class ProclaimController extends BasicController {
 
 			this.previousStatus = proclaim.getStatus();
 
-			result = super.save(proclaim, binding, "proclaim.commit.error", "proclaim/edit", requestURI, requestCancel, nameResolver).addAllObjects(this.model()).addObject("previousStatus", this.previousStatus);
+			result = super.save(proclaim, binding, "proclaim.commit.error", "proclaim/edit", requestURI, requestCancel, nameResolver).addAllObjects(this.model());
 
 			if (binding.hasErrors()) {
 				boolean checkEnglish;
@@ -177,7 +177,10 @@ public class ProclaimController extends BasicController {
 					proclaim.setStatus("PENDING");
 				else
 					proclaim.setStatus("PENDIENTE");
+
 			}
+
+			result.addObject("previousStatus", this.previousStatus);
 			proclaim.setFinalMode(true);
 		}
 

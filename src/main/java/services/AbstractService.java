@@ -59,16 +59,17 @@ public class AbstractService {
 	}
 	public boolean spamWord(final Collection<String> contentMessage) {
 		boolean res = false;
+		String str;
+		str = "";
+		for (final String s : contentMessage)
+			str += s + " ";
 
 		Map<String, Boolean> result;
 		result = new HashMap<>();
 
-		for (String word : System.getProperty("spamwords").split(",")) {
-
-			if (word.startsWith(" "))
-				word = word.substring(1, word.length());
-
-			result.put(word, contentMessage.contains(word.toLowerCase()));
+		for (final String word : System.getProperty("spamwords").split(",")) {
+			result.put(word, contentMessage.contains(word.trim().toLowerCase()));
+			result.put(word, word.trim().equals(str.trim()));
 
 		}
 
@@ -77,7 +78,6 @@ public class AbstractService {
 				res = true;
 				break;
 			}
-
 		return res;
 	}
 
@@ -122,16 +122,23 @@ public class AbstractService {
 
 	public Boolean spamTags(final Collection<String> col) {
 		boolean res = false;
+		String str;
+		str = "";
+		for (final String s : col)
+			str += s + " ";
+
 		Map<String, Boolean> result;
 		result = new HashMap<>();
 
-		for (final String word : System.getProperty("spamwords").split(","))
-			result.put(word, col.contains(word.toLowerCase()));
-
+		for (final String word : System.getProperty("spamwords").split(",")) {
+			result.put(word, col.contains(word.trim().toLowerCase()));
+			result.put(word, word.trim().equals(str.trim()));
+		}
 		for (final Boolean b : result.values())
 			if (b) {
 				res = true;
 				break;
+
 			}
 		return res;
 	}

@@ -64,7 +64,7 @@
 		<div>
 			<spring:message code="proclaim.status" />
 			<form:select path="status" onchange="check(this)" id="status1"
-				disabled="${proclaim.status != 'PENDING' or 'PENDIENTE' or view eq 'true'}">
+				disabled="${not proclaim.status eq 'PENDING' or 'PENDIENTE' or view eq 'true'}">
 				<jstl:forEach items="${statusCol}" var="i">
 					<form:option value="${i}" />
 				</jstl:forEach>
@@ -114,12 +114,27 @@
 <script>
   var status = $("#status1").val();
   var previous = "${previousStatus}";
-  console.log(previous);
+
+  cookies = document.cookie.split(";");
+
+  var lang = "";
+
+  i = 0;
+
+  while (i < cookies.length) {
+    var c = cookies[i];
+    if (c.startsWith("language")) {
+      lang = c.split("=")[1];
+      break;
+    }
+    i++;
+  }
+
   if (status == 'PENDING' || status == 'PENDIENTE') {
     $("#reason1").hide();
     $("#law1").hide();
   }
-  console.log(previous);
+
   if (previous == 'ACCEPTED') {
     document.getElementById("status1").value = "ACCEPTED";
     $("#reason1").hide();
@@ -138,8 +153,36 @@
     $("#reason1").show();
   } else if (previous == 'PENDING') {
     document.getElementById("status1").value = "PENDING";
+    document.getElementById("status1").disabled = false;
   } else if (previous == 'PENDIENTE') {
     document.getElementById("status1").value = "PENDIENTE";
+    document.getElementById("status1").disabled = false;
+  }
+
+  if (lang == "es") {
+    if (previous == 'PENDING') {
+      document.getElementById("status1").value = "PENDIENTE";
+      document.getElementById("status1").disabled = false;
+    }
+    if (previous == 'ACCEPTED') {
+      document.getElementById("status1").value = "ACEPTADO";
+    }
+    if (previous == 'REJECTED') {
+      document.getElementById("status1").value = "RECHAZADO";
+    }
+  }
+
+  if (lang == "en" || lang == null) {
+    if (previous == 'PENDIENTE') {
+      document.getElementById("status1").value = "PENDING";
+      document.getElementById("status1").disabled = false;
+    }
+    if (previous == 'ACEPTADO') {
+      document.getElementById("status1").value = "ACCEPTED";
+    }
+    if (previous == 'RECHAZADO') {
+      document.getElementById("status1").value = "REJECTED";
+    }
   }
 
   function check(o) {

@@ -945,7 +945,7 @@
 		</property>
 		<property name="attachments" value="Demo"></property>
 		<property name="finalMode" value="false"></property>
-		<property name="status" value="SUBMITTED"></property>
+		<property name="status" value="PENDING"></property>
 		<property name="reason" value=""></property>
 		<property name="law" value=""></property>
 		<property name="closed" value="false"></property>

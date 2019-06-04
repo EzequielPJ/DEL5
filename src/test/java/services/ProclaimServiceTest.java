@@ -14,7 +14,6 @@ import utilities.AbstractTest;
 import domain.Category;
 import domain.Proclaim;
 import domain.StudentCard;
-import domain.Ticker;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -25,6 +24,9 @@ public class ProclaimServiceTest extends AbstractTest {
 
 	@Autowired
 	private ProclaimService	service;
+
+	@Autowired
+	private CategoryService	serviceCategory;
 
 
 	/**
@@ -92,7 +94,7 @@ public class ProclaimServiceTest extends AbstractTest {
 	protected void template(final String username, final int id, final Class<?> expected) {
 		Class<?> caught = null;
 		try {
-			this.authenticate(username);
+			super.authenticate(username);
 			this.service.delete(id);
 
 			super.unauthenticate();
@@ -121,13 +123,13 @@ public class ProclaimServiceTest extends AbstractTest {
 	protected void template2(final String username, final int id, final String cadena, final Class<?> expected) {
 		Class<?> caught = null;
 		try {
-			this.authenticate(username);
+			super.authenticate(username);
+			System.out.println(id);
 			Proclaim p;
 			p = this.service.findOne(id);
 			p.setDescription(cadena);
 			this.service.save(p);
 			this.service.flush();
-
 			super.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
@@ -155,7 +157,7 @@ public class ProclaimServiceTest extends AbstractTest {
 	protected void template3(final String username, final int id, final Class<?> expected) {
 		Class<?> caught = null;
 		try {
-			this.authenticate(username);
+			super.authenticate(username);
 
 			this.service.assign(id);
 
@@ -170,7 +172,7 @@ public class ProclaimServiceTest extends AbstractTest {
 	public void test4() {
 		final Object[][] objects = {
 			{	// close his proclaim - Positive Case
-				"student1", "proclaim2", null
+				"student1", "proclaim1", null
 			}, {
 				//A student cancels a proclaim that is not his - Negative Case
 				"student2", "proclaim2", IllegalArgumentException.class
@@ -186,7 +188,7 @@ public class ProclaimServiceTest extends AbstractTest {
 	protected void template4(final String username, final int id, final Class<?> expected) {
 		Class<?> caught = null;
 		try {
-			this.authenticate(username);
+			super.authenticate(username);
 
 			Proclaim proclaim;
 			proclaim = this.service.findOne(id);
@@ -204,9 +206,9 @@ public class ProclaimServiceTest extends AbstractTest {
 	public void test5() {
 		final Object[][] objects = {
 			{	// Simple creation - Positive Case
-				"student1", "proclaim2", null
+				"student1", "category1", null
 			}, { // A sponsor create a proclaim
-				"sponsor1", "proclaim2", IllegalArgumentException.class
+				"sponsor1", "category1", IllegalArgumentException.class
 			}
 		};
 		for (int i = 0; i < objects.length; i++) {
@@ -217,24 +219,21 @@ public class ProclaimServiceTest extends AbstractTest {
 	protected void template5(final String username, final int id, final Class<?> expected) {
 		Class<?> caught = null;
 		try {
-			this.authenticate(username);
+			super.authenticate(username);
 			Proclaim proclaim;
 			proclaim = this.service.create();
 
 			Category categoria;
-			categoria = this.service.findOne(id).getCategory();
+			categoria = this.serviceCategory.findOne(id);
 
-			this.service.create();
 			proclaim.setCategory(categoria);
 
 			proclaim.setDescription("Hola");
 
-			proclaim.setLaw("hola");
-
-			proclaim.setReason("hola");
 			proclaim.setTitle("hola");
 
 			proclaim.setAttachments("http://us.es");
+			proclaim.setStatus("SUBMITTED");
 
 			StudentCard studentCard;
 			studentCard = new StudentCard();
@@ -244,10 +243,11 @@ public class ProclaimServiceTest extends AbstractTest {
 
 			proclaim.setStudentCard(studentCard);
 
-			proclaim.setTicker(new Ticker());
+			System.out.println(proclaim.getTicker());
 
 			this.service.save(proclaim);
 			this.service.flush();
+
 			super.unauthenticate();
 
 		} catch (final Throwable oops) {
