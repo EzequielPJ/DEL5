@@ -597,18 +597,7 @@
 		</property>
 		<property name="enabled" value="true" />
 	</bean>
-	<bean id="userAccount3" class="security.UserAccount">
-		<property name="username" value="student2" />
-		<property name="password" value="213ee683360d88249109c2f92789dbc3" />
-		<property name="authorities">
-			<list>
-				<bean class="security.Authority">
-					<property name="authority" value="STUDENT" />
-				</bean>
-			</list>
-		</property>
-		<property name="enabled" value="true" />
-	</bean>
+
 	<bean id="userAccount4" class="security.UserAccount">
 		<property name="username" value="collaborator1" />
 		<property name="password" value="94b6660cdbf78a3043faf009b2db12f8" />
@@ -684,6 +673,19 @@
 		<property name="enabled" value="true" />
 	</bean>
 
+	<bean id="userAccount10" class="security.UserAccount">
+		<property name="username" value="anonymous" />
+		<property name="password" value="jg9f0d7sn8sn40vjs93vs9vnw9vos387" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ANONYMOUS" />
+				</bean>
+			</list>
+		</property>
+		<property name="enabled" value="false" />
+	</bean>
+
 
 	<bean id="administrator1" class="domain.Administrator">
 		<property name="name" value="Admin1" />
@@ -731,28 +733,6 @@
 		<property name="suspicious" value="false" />
 	</bean>
 
-	<bean id="student2" class="domain.Student">
-		<property name="name" value="Student2" />
-		<property name="surname" value="Student2" />
-		<property name="middlename" value="Student2"></property>
-		<property name="photo" value="" />
-		<property name="email" value="st2@mail.com" />
-		<property name="phone" value="955547126" />
-		<property name="address" value="" />
-		<property name="account">
-			<ref bean="userAccount3" />
-		</property>
-		<property name="boxes">
-			<list>
-				<ref bean="box11" />
-				<ref bean="box12" />
-				<ref bean="box13" />
-				<ref bean="box14" />
-				<ref bean="box15" />
-			</list>
-		</property>
-		<property name="suspicious" value="false" />
-	</bean>
 
 	<bean id="collaborator1" class="domain.Collaborator">
 		<property name="name" value="Collaborator1" />
@@ -973,7 +953,7 @@
 		<property name="reason" value="Unreacheable"></property>
 		<property name="law" value=""></property>
 		<property name="closed" value="true"></property>
-		<property name="student" ref="student2"></property>
+		<property name="student" ref="student1"></property>
 		<property name="members">
 			<list>
 				<ref bean="member2" />
@@ -998,7 +978,7 @@
 		<property name="reason" value=""></property>
 		<property name="law" value="Reglamento de la US, Art.37.5"></property>
 		<property name="closed" value="false"></property>
-		<property name="student" ref="student2"></property>
+		<property name="student" ref="student1"></property>
 		<property name="members">
 			<list>
 				<ref bean="member1" />
@@ -1009,7 +989,7 @@
 		<property name="ticker" ref="ticker4"></property>
 		<property name="studentCard" ref="studentCard4"></property>
 	</bean>
-<bean id="proclaim5" class="domain.Proclaim">
+	<bean id="proclaim5" class="domain.Proclaim">
 		<property name="title" value="Proclaim5"></property>
 		<property name="description" value="Sin asignar"></property>
 		<property name="moment">
@@ -1032,44 +1012,33 @@
 		<property name="ticker" ref="ticker5"></property>
 		<property name="studentCard" ref="studentCard5"></property>
 	</bean>
-	
+
 	<bean id="proclaim6" class="domain.Proclaim">
-    <property name="title" value="Proclaim6"></property>
-    <property name="description" value="Description6"></property>
-    <property name="moment">
-      <bean factory-bean="dateFormat" factory-method="parse">
-        <constructor-arg value="2019/03/05" />
-      </bean>
-    </property>
-    <property name="attachments" value="Demo"></property>
-    <property name="finalMode" value="false"></property>
-    <property name="status" value="PENDING"></property>
-    <property name="reason" value=""></property>
-    <property name="law" value=""></property>
-    <property name="closed" value="false"></property>
-    <property name="student" ref="student1"></property>
-    <property name="members">
-      <list>
-      </list>
-    </property>
-    <property name="category" ref="category1"></property>
-    <property name="ticker" ref="ticker6"></property>
-    <property name="studentCard" ref="studentCard6"></property>
-  </bean>
-
-  <bean id="ticker6" class="domain.Ticker">
-    <property name="ticker" value="190342-000102"></property>
-  </bean>
-
-	<bean id="studentCard5" class="domain.StudentCard">
-		<property name="centre" value="ETSII"></property>
-		<property name="code" value="5489"></property>
-		<property name="vat" value="47338340Q" />
+		<property name="title" value="Proclaim2"></property>
+		<property name="description" value="Description2"></property>
+		<property name="moment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/03/05" />
+			</bean>
+		</property>
+		<property name="attachments" value="Demo"></property>
+		<property name="finalMode" value="false"></property>
+		<property name="status" value="PENDING"></property>
+		<property name="reason" value=""></property>
+		<property name="law" value=""></property>
+		<property name="closed" value="false"></property>
+		<property name="student" ref="student1"></property>
+		<property name="members">
+			<list>
+			</list>
+		</property>
+		<property name="category" ref="category1"></property>
+		<property name="ticker" ref="ticker6"></property>
+		<property name="studentCard" ref="studentCard2"></property>
 	</bean>
 
-	<bean id="ticker5" class="domain.Ticker">
-		<property name="ticker" value="190342-000100"></property>
-	</bean>
+
+
 	<bean id="studentCard1" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="1088"></property>
@@ -1093,7 +1062,14 @@
 		<property name="code" value="1088"></property>
 		<property name="vat" value="22345678Z" />
 	</bean>
-	
+
+	<bean id="studentCard5" class="domain.StudentCard">
+		<property name="centre" value="ETSII"></property>
+		<property name="code" value="5489"></property>
+		<property name="vat" value="47338340Q" />
+	</bean>
+
+
 	<bean id="studentCard6" class="domain.StudentCard">
 		<property name="centre" value="ETSII"></property>
 		<property name="code" value="5490"></property>
@@ -1116,6 +1092,12 @@
 		<property name="ticker" value="190426-000011"></property>
 	</bean>
 
+	<bean id="ticker5" class="domain.Ticker">
+		<property name="ticker" value="190342-000100"></property>
+	</bean>
+	<bean id="ticker6" class="domain.Ticker">
+		<property name="ticker" value="190342-000102"></property>
+	</bean>
 
 
 	<bean id="customisationsys1" class="domain.CustomisationSystem">
@@ -1126,7 +1108,8 @@
 		<property name="spamwords">
 			<map>
 				<entry key="en">
-					<value>sex, cialis, one millon, you´ve been selected, Nigeria</value>
+					<value>sex, cialis, one millon, you´ve been selected, Nigeria
+					</value>
 				</entry>
 				<entry key="es">
 					<value>sexo, un millon, ha sido seleccionado, viagra</value>
@@ -1385,7 +1368,7 @@
 		<property name="note" value="8"></property>
 		<property name="description" value="Wow"></property>
 		<property name="event" ref="event1"></property>
-		<property name="actor" ref="student2"></property>
+		<property name="actor" ref="student1"></property>
 	</bean>
 	<bean id="note3" class="domain.Notes">
 		<property name="note" value="7"></property>

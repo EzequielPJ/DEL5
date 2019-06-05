@@ -90,6 +90,8 @@ public class ActorService extends AbstractService {
 	private ComissionService			commService;
 	@Autowired
 	private EventService				eventService;
+	@Autowired
+	UserAccountRepository				uaRepository;
 
 
 	public Collection<Actor> getActorSpammer() {
@@ -606,15 +608,15 @@ public class ActorService extends AbstractService {
 	private Actor deleteCommon(final Actor a) {
 		Authority aut;
 		aut = new Authority();
-		aut.setAuthority(Authority.ANONYMOUS);
-		Collection<Authority> auts;
-		auts = new ArrayList<>();
-		auts.add(aut);
+		aut.setAuthority(this.selectAuthority(a));
+		//Collection<Authority> auts;
+		//auts = new ArrayList<>();
+		//		auts.add(aut);
 		a.getAccount().setEnabled(false);
 		//a.setAccount(this.userAccountAdapted(this.randomice(), this.randomice(), Authority.ANONYMOUS));
-		a.getAccount().setUsername(this.randomice());
-		a.getAccount().setPassword(this.randomice());
-		a.getAccount().setAuthorities(auts);
+		//		a.getAccount().setUsername(this.randomice());
+		//		a.getAccount().setPassword(this.randomice());
+		//		a.getAccount().setAuthorities(auts);
 		a.setName("loremipsum");
 		a.setPhone("loremipsum");
 		a.setSurname("loremipsum");
@@ -625,10 +627,13 @@ public class ActorService extends AbstractService {
 		this.deleteProfile(a);
 		this.deleteMessage(a);
 		this.deleteBox(a);
-
+		UserAccount ua;
+		ua = this.uaRepository.findByUsername("anonymous");
+		a.getAccount().removeAuthority(aut);
+		this.uaRepository.delete(a.getAccount());
+		a.setAccount(ua);
 		return a;
 	}
-
 	private Ticker fakeTicker() {
 		Ticker t;
 		t = new Ticker();
@@ -663,5 +668,24 @@ public class ActorService extends AbstractService {
 	}
 	public void flushSponsor() {
 		this.sponsorRepository.flush();
+	}
+
+	private String selectAuthority(final Actor a) {
+		Collection<Authority> auts;
+		auts = a.getAccount().getAuthorities();
+		String res;
+		res = "";
+		for (final Authority auth : auts)
+			if (auth.getAuthority().equals(Authority.ADMIN))
+				res = Authority.ADMIN;
+			else if (auth.getAuthority().equals(Authority.COLLABORATOR))
+				res = Authority.COLLABORATOR;
+			else if (auth.getAuthority().equals(Authority.MEMBER))
+				res = Authority.MEMBER;
+			else if (auth.getAuthority().equals(Authority.SPONSOR))
+				res = Authority.SPONSOR;
+			else if (auth.getAuthority().equals(Authority.STUDENT))
+				res = Authority.STUDENT;
+		return res;
 	}
 }

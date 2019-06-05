@@ -28,6 +28,18 @@
 		</property>
 		<property name="enabled" value="true" />
 	</bean>
+	<bean id="userAccount2" class="security.UserAccount">
+		<property name="username" value="anonymous" />
+		<property name="password" value="jg9f0d7sn8sn40vjs93vs9vnw9vos387" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ANONYMOUS" />
+				</bean>
+			</list>
+		</property>
+		<property name="enabled" value="false" />
+	</bean>
 
 
 	<bean id="profile1" class="domain.Profile">
@@ -161,5 +173,41 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="category1" class="domain.Category">
+		<property name="name" value="Teachers Proclaims"></property>
+		<property name="categories">
+			<list></list>
+		</property>
+	</bean>
+
+	<bean id="category2" class="domain.Category">
+		<property name="name" value="Building Infraestructure"></property>
+		<property name="categories">
+			<list></list>
+		</property>
+	</bean>
+
+	<bean id="category3" class="domain.Category">
+		<property name="name" value="Proclaim"></property>
+		<property name="categories">
+			<list></list>
+		</property>
+	</bean>
+
+	<bean id="category4" class="domain.Category">
+		<property name="name" value="Teachers Schedule"></property>
+		<property name="categories">
+			<list></list>
+		</property>
+	</bean>
+
+	<bean id="category5" class="domain.Category">
+		<property name="name" value="Bullying"></property>
+		<property name="categories">
+			<list></list>
+		</property>
+	</bean>
+	
 
 </beans>

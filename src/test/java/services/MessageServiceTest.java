@@ -49,10 +49,10 @@ public class MessageServiceTest extends AbstractTest {
 		final Object testingData[][] = {
 			{
 				//Positive test: Update a box
-				"student2", "userAccount2", "userAccount3", "subject", "body", null
+				"collaborator1", "userAccount4", "userAccount5", "subject", "body", null
 			}, {
 				//Negative test: The business rule that has been violated: message subject can not be null
-				"student2", "userAccount2", "userAccount3", "", "body", ConstraintViolationException.class
+				"collaborator1", "userAccount4", "userAccount5", "", "body", ConstraintViolationException.class
 			}
 		};
 
