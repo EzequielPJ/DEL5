@@ -53,6 +53,9 @@ public class EventServiceTest extends AbstractTest {
 			}, {
 				//Modifiying an event whose owner is not the one logged. Negative Case.
 				"collaborator2", super.getEntityId("event1"), IllegalArgumentException.class
+			}, {
+				//Creating an event whose authority is not the correct. Negative Case.
+				"admin1", 0, IllegalArgumentException.class
 			}
 		};
 		for (int i = 0; i < testingData.length; i++)

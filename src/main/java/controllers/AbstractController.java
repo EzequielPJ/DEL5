@@ -10,6 +10,7 @@
 
 package controllers;
 
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import domain.CustomisationSystem;
+import domain.Sponsorship;
 
 @Controller
 public class AbstractController {
@@ -142,6 +144,12 @@ public class AbstractController {
 		List<String> makes;
 		makes = Arrays.asList("VISA", "MASTERCARD", "AMEX", "DINERS", "FLY");
 		return makes;
+	}
+
+	public static Sponsorship randomizeSponsorships(final Collection<Sponsorship> sponsorships) {
+		final SecureRandom rnd = new SecureRandom();
+		final int i = rnd.nextInt(sponsorships.size());
+		return (Sponsorship) sponsorships.toArray()[i];
 	}
 
 }

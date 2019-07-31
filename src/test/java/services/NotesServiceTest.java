@@ -47,9 +47,14 @@ public class NotesServiceTest extends AbstractTest {
 	public void driver() {
 		final Object[][] testingData = {
 			{
+				//Positive case: A student creates a note
 				"student1", 0, super.getEntityId("event1"), null
 			}, {
+				//Negative case: An admin can't update a note
 				"admin1", super.getEntityId("note2"), 0, IllegalArgumentException.class
+			}, {
+				//Negative case: A sponsor can't create a note
+				"sponsor1", 0, super.getEntityId("event1"), IllegalArgumentException.class
 			}
 		};
 

@@ -81,4 +81,30 @@ public class ComissionServiceTest extends AbstractTest {
 		}
 		super.checkExceptions(expected, caught);
 	}
+	@Test
+	public void driverDelete() {
+
+		final Object[][] testingData = {
+			{
+				//Negative Case - An administrator can not create comissions
+				"member2", super.getEntityId("comission1"), IllegalArgumentException.class
+			}
+		};
+
+		this.templateDelete((String) testingData[0][0], (int) testingData[0][1], (Class<?>) testingData[0][2]);
+	}
+	protected void templateDelete(final String auth, final int entity, final Class<?> expected) {
+		Class<?> caught = null;
+
+		try {
+			super.authenticate(auth);
+
+			this.service.deleteComission(entity);
+			this.service.flush();
+			super.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		super.checkExceptions(expected, caught);
+	}
 }

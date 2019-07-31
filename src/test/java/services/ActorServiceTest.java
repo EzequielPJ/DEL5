@@ -64,7 +64,18 @@ public class ActorServiceTest extends AbstractTest {
 			this.registerSponsor(i, (String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (String) testingData[i][6],
 				(Class<?>) testingData[i][7]);
 	}
+	@Test
+	public void testRegisterSponsorNegative() {
+		final Object testingData[][] = {
+			// Negative test
+			{
+				"Belén", "Garrido", "BGL", "belen@example.com", "666444333", "www.hola.com", "DP", ConstraintViolationException.class
+			}
+		};
 
+		this.registerSponsor(0, (String) testingData[0][0], (String) testingData[0][1], (String) testingData[0][2], (String) testingData[0][3], (String) testingData[0][4], (String) testingData[0][5], (String) testingData[0][6],
+			(Class<?>) testingData[0][7]);
+	}
 	protected void registerSponsor(final int i, final String name, final String surname, final String middleName, final String email, final String phone, final String photo, final String title, final Class<?> expected) {
 		Class<?> caught;
 		caught = null;

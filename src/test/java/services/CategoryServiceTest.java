@@ -12,6 +12,7 @@ package services;
  */
 
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import utilities.AbstractTest;
+import domain.Category;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -55,6 +57,9 @@ public class CategoryServiceTest extends AbstractTest {
 			}, {
 				//Negative test: Un miembro no puede crear una categoria.
 				"member1", "hola", IllegalArgumentException.class
+			}, {
+				//Negative test: Un admin1 intenta crear una categoria vacia
+				"admin1", "", ConstraintViolationException.class
 			}
 		};
 
@@ -67,11 +72,18 @@ public class CategoryServiceTest extends AbstractTest {
 		caught = null;
 
 		try {
-			this.authenticate(username);
+			super.authenticate(username);
 
-			this.service.createCategory().setName(word);
+			Category c;
+			c = this.service.createCategory();
 
-			this.unauthenticate();
+			c.setName(word);
+
+			this.service.save(c);
+
+			this.service.flush();
+
+			super.unauthenticate();
 
 		} catch (final Throwable oops) {
 			caught = oops.getClass();

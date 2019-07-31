@@ -52,6 +52,10 @@ public class EventService extends AbstractService {
 		return this.eventRepository.getEventsByCollaboratorId(idCollaborator);
 	}
 
+	public Collaborator findCollaboratorByEventId(final int idEvent) {
+		return this.eventRepository.findCollaboratorByEventId(idEvent);
+	}
+
 	public Event createEvent() {
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COLLABORATOR));
 		Collaborator c;

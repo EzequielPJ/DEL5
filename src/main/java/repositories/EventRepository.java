@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Actor;
+import domain.Collaborator;
 import domain.Event;
 
 @Repository
@@ -24,4 +25,8 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
 
 	@Query("select e from Event e where e.collaborator.id = ?1")
 	Collection<Event> getEventsByCollaboratorId(final int idCollaborator);
+
+	@Query("select e.collaborator from Event e where e.id = ?1")
+	Collaborator findCollaboratorByEventId(final int idEvent);
+
 }

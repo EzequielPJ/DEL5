@@ -34,7 +34,7 @@ public class BoxServiceTest extends AbstractTest {
 	 * Attribute: name | Bad value: null | Normal value: Yes | Coverage: 100% |
 	 */
 	@Test
-	public void ActorTest() {
+	public void BoxTest1() {
 		final Object testingData[][] = {
 			{
 				//Positive test: Create a box
@@ -53,18 +53,43 @@ public class BoxServiceTest extends AbstractTest {
 
 		caught = null;
 		try {
-			this.authenticate(username);
+			super.authenticate(username);
 			//create a box
 			Box b;
 			b = this.boxService.createBox();
 			b.setName(name);
 			this.boxService.save(b);
 			this.boxService.flush();
-			this.unauthenticate();
+			super.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
 		super.checkExceptions(expected, caught);
 	}
+	@Test
+	public void BoxTestDeleteFromSystem() {
+		final Object testingData[][] = {
+			{
+				//Negative test: Delete a system box
+				"collaborator2", IllegalArgumentException.class
+			}
+		};
 
+		this.template((String) testingData[0][0], (Class<?>) testingData[0][1]);
+	}
+	private void template(final String string, final Class<?> expected) {
+
+		Class<?> caught;
+		caught = null;
+
+		try {
+			super.authenticate(string);
+			this.boxService.delete(this.boxService.findOne(super.getEntityId("box21")));
+			this.boxService.flush();
+			super.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		super.checkExceptions(expected, caught);
+	}
 }

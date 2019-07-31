@@ -16,11 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import services.ActorService;
 import services.EventService;
 import services.NotesService;
 import services.SponsorshipService;
 import domain.Collaborator;
 import domain.Event;
+import domain.Sponsorship;
 
 @Controller
 @RequestMapping(value = {
@@ -37,6 +39,19 @@ public class EventController extends BasicController {
 	@Autowired
 	private SponsorshipService	sponsorshipService;
 
+	@Autowired
+	private ActorService		serviceActor;
+
+
+	@RequestMapping(value = "/showCollaborator", method = RequestMethod.GET)
+	public ModelAndView showCollaboratorByEvent(@RequestParam final int idEvent) {
+		Collaborator c;
+		ModelAndView result;
+		c = this.eventService.findCollaboratorByEventId(idEvent);
+		result = super.show(this.serviceActor.map(this.eventService.findCollaboratorByEventId(idEvent), Authority.COLLABORATOR), "actor/edit", "actor/edit.do", "/event/listEvents.do");
+		result.addObject("view", true);
+		return result;
+	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
@@ -84,6 +99,15 @@ public class EventController extends BasicController {
 				result.addObject("score", "-1");
 		} else
 			result.addObject("score", "-1");
+		Event e;
+		e = this.eventService.findOne(idEvent);
+		Collection<Sponsorship> col;
+		col = this.sponsorshipService.getSponsorshipByEventId(e.getId());
+		Sponsorship sponsorship;
+		if (col.size() > 0) {
+			sponsorship = super.randomizeSponsorships(col);
+			result.addObject("linkBanner", sponsorship.getBanner());
+		}
 		return result;
 	}
 

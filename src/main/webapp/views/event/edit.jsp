@@ -16,6 +16,7 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <form:form action="${requestURI}" modelAttribute="event">
 
@@ -48,6 +49,11 @@
 		</jstl:if>
 	</security:authorize>
 	<br>
+	<div>
+	<jstl:if test="${not fn:containsIgnoreCase(fn:toLowerCase(linkBanner),'ipsum')}">
+	<img src="${linkBanner}">
+	</jstl:if>
+	</div>
 
 	<jstl:if test="${!event.finalMode and !view}">
 				<acme:submit name="save" code="event.save" />

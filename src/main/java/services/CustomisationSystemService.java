@@ -177,4 +177,8 @@ public class CustomisationSystemService extends AbstractService {
 
 		return result;
 	}
+
+	public void flush() {
+		this.repository.flush();
+	}
 }

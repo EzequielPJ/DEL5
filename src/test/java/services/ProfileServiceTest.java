@@ -44,9 +44,14 @@ public class ProfileServiceTest extends AbstractTest {
 	public void driver() {
 		final Object[][] objects = {
 			{
+				//Positive test: A student creates a profile
 				"student1", 0, null
 			}, {
+				//Negative test: A member try to update a profile whose not belong to him
 				"member1", super.getEntityId("profile2"), IllegalArgumentException.class
+			}, {
+				//Negative test: A sponsor try to update a profile whose not belong to him
+				"sponsor1", super.getEntityId("profile2"), IllegalArgumentException.class
 			}
 		};
 

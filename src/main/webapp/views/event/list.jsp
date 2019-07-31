@@ -36,6 +36,10 @@
 			</display:column>
 		</security:authorize>
 	</jstl:if>
+	
+	<display:column titleKey="event.status" sortable="true">
+		<jstl:out value="${row.status}"></jstl:out>
+	</display:column>
 
 	<display:column titleKey="event.title">
 		<jstl:out value="${row.title}" />
@@ -86,6 +90,10 @@
 					</jstl:if>
 				</jstl:if>
 			</display:column>
+			<display:column>
+				<a href="event/showCollaborator.do?idEvent=${row.id}"><spring:message
+									code="event.showCollaborator" /></a>
+			</display:column>
 
 			<security:authorize
 				access="hasAnyRole('COLLABORATOR', 'STUDENT', 'MEMBER')">
@@ -99,6 +107,7 @@
 				</display:column>
 			</security:authorize>
 		</jstl:if>
+		
 	</jstl:if>
 	<security:authorize access="hasRole('SPONSOR')">
 	

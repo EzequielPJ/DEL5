@@ -2,6 +2,7 @@
 package services;
 
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import utilities.AbstractTest;
+import domain.CustomisationSystem;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -34,7 +36,7 @@ public class CustomServiceTest extends AbstractTest {
 	 * - Analysis of data coverage: 0%
 	 */
 	@Test
-	public void ActorTest() {
+	public void CustomTest() {
 		final Object testingData[][] = {
 			{
 				//Positive test:
@@ -54,7 +56,8 @@ public class CustomServiceTest extends AbstractTest {
 		caught = null;
 
 		try {
-			this.authenticate(username);
+
+			super.authenticate(username);
 
 			this.customService.marcadorNumericoArray();
 
@@ -62,7 +65,42 @@ public class CustomServiceTest extends AbstractTest {
 
 			this.customService.marcadorNumerico();
 
-			this.unauthenticate();
+			super.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		super.checkExceptions(expected, caught);
+	}
+
+	@Test
+	public void EditCustomTest() {
+		final Object testingData[][] = {
+			{
+				//Negative test: System name empty
+				"admin1", null, ConstraintViolationException.class
+			}
+		};
+
+		this.templateEditCustom((String) testingData[0][0], (String) testingData[0][1], (Class<?>) testingData[0][2]);
+	}
+
+	protected void templateEditCustom(final String username, final String param, final Class<?> expected) {
+		Class<?> caught;
+		caught = null;
+
+		try {
+
+			super.authenticate(username);
+
+			CustomisationSystem c;
+			c = this.customService.findUnique();
+
+			c.setSystemName(param);
+
+			this.customService.save(this.customService.fromCustomisationSystemToObjetForm(c));
+			this.customService.flush();
+			super.unauthenticate();
 
 		} catch (final Throwable oops) {
 			caught = oops.getClass();

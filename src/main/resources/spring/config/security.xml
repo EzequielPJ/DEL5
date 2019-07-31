@@ -39,6 +39,8 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/event/showEvent.do"
 			access="permitAll" />
+		<security:intercept-url pattern="/event/showCollaborator.do"
+			access="permitAll" />
 		<security:intercept-url pattern="/notes/list.do"
 			access="permitAll" />
 		<security:intercept-url pattern="/notes/show.do"

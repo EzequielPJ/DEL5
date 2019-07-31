@@ -64,6 +64,9 @@ public class FinderServiceTest extends AbstractTest {
 			}, {
 				//Negative test. Trying to use finder function with no logged user
 				"", "", super.getEntityId("category2"), true, new SimpleDateFormat("yyyy/MM/dd").parse("2019/04/01"), IllegalArgumentException.class
+			}, {
+				//Negative test. Trying to use finder function with collaborator user
+				"student1", "", super.getEntityId("category2"), true, new SimpleDateFormat("yyyy/MM/dd").parse("2019/04/01"), IllegalArgumentException.class
 			}
 		};
 
@@ -77,13 +80,13 @@ public class FinderServiceTest extends AbstractTest {
 		try {
 			super.authenticate(username);
 
+			final Collection<Proclaim> result = this.finderService.searchWithRetain(singleKey, this.category.findOne(category), date, before);
+
 			Member m;
 			m = (Member) this.category.findByUserAccount(LoginService.getPrincipal().getId());
 
 			Finder f;
 			f = m.getFinder();
-
-			final Collection<Proclaim> result = this.finderService.searchWithRetain(singleKey, this.category.findOne(category), date, before);
 
 			this.finderService.save(f, result);
 

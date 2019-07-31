@@ -11,6 +11,7 @@ import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
@@ -108,8 +109,9 @@ public class FinderService extends AbstractService {
 	}
 
 	public List<Proclaim> searchWithRetain(final String s, final Category category, final Date registered, final boolean before) {
-		List<Proclaim> result;
+		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER));
 
+		List<Proclaim> result;
 		result = new ArrayList<Proclaim>(this.serviceProclaim.findNoAssigned());
 
 		if (!(s.equals("")))

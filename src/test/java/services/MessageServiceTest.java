@@ -53,6 +53,9 @@ public class MessageServiceTest extends AbstractTest {
 			}, {
 				//Negative test: The business rule that has been violated: message subject can not be null
 				"collaborator1", "userAccount4", "userAccount5", "", "body", ConstraintViolationException.class
+			}, {
+				//Negative test: The business rule that has been violated: message body can not be null
+				"collaborator1", "userAccount4", "userAccount5", "subject", "", ConstraintViolationException.class
 			}
 		};
 

@@ -61,18 +61,40 @@ public class AbstractService {
 		boolean res = false;
 		String str;
 		str = "";
-		for (final String s : contentMessage)
-			str += s + " ";
 
+		List<String> aux;
+		aux = new ArrayList<String>();
+
+		for (final String s : contentMessage) {
+			aux.add(this.limpiaCadena(s));
+			str += s + " ";
+		}
+		if (str.endsWith(" ")) {
+			final int len = str.length();
+			str = str.substring(0, len).trim();
+		}
 		Map<String, Boolean> result;
 		result = new HashMap<>();
 
-		for (final String word : System.getProperty("spamwords").split(",")) {
-			result.put(word, contentMessage.contains(word.trim().toLowerCase()));
-			result.put(word, word.trim().equals(str.trim()));
+		for (String word : System.getProperty("spamwords").split(",")) {
 
+			if (word.startsWith(" "))
+				word = word.substring(1, word.length());
+
+			for (int i = 0; i < aux.size(); i++) {
+				final String fromAux = aux.get(i);
+				boolean check;
+				check = fromAux.equalsIgnoreCase(word) || word.equalsIgnoreCase(str);
+				if (result.containsKey(word)) {
+					final boolean test = result.get(word);
+					if (test)
+						result.put(word, true);
+					else
+						result.put(word, check);
+				} else
+					result.put(word, check);
+			}
 		}
-
 		for (final Boolean b : result.values())
 			if (b) {
 				res = true;

@@ -50,7 +50,11 @@ public class SponsorshipServiceTest extends AbstractTest {
 			}, {
 				// Negative test: The business rule that has been violated: A sponsorship cannot be updated by another sponsor.
 				"sponsor2", "sponsorship1", "http://www.troll.com", IllegalArgumentException.class
+			}, {
+				// Negative test: The business rule that has been violated: A sponsorship cannot be updated by no logged user.
+				"", "sponsorship1", "http://www.troll.com", IllegalArgumentException.class
 			}
+
 		};
 
 		for (int i = 0; i < testingData.length; i++)

@@ -27,8 +27,9 @@
 
 		<!--CleverCloud -->
 		<!-- <property name="jdbcUrl" value="jdbc:mysql://bkxhklah2kxoe4btxvim-mysql.services.clever-cloud.com:3306/bkxhklah2kxoe4btxvim" 
-			/> <property name="user" value="ugo04qchyjqkbrpu" /> <property name="password" 
-			value="5xozahaBvGESEkNcoORE" /> -->
+			/> 
+		<property name="user" value="ugo04qchyjqkbrpu" />
+		<property name="password" value="5xozahaBvGESEkNcoORE" />  -->
 
 		<!-- Localhost - Tomcat -->
 
